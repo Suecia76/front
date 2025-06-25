@@ -1,0 +1,141 @@
+html, body, #root{
+margin: 0;
+padding: 0;
+height: 100%;
+overflow: hidden;
+}
+
+#root {
+  max-width: 475px;
+  min-width: 320px;
+  width: 100%;
+  overflow: auto;
+  margin: 0;
+  padding: 0rem;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.categoria-imagen {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: auto;
+}
+.categoria-imagen img {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  object-fit: contain;
+}
+.btn-open {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.modal {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.modal-content {
+  background: rgb(255, 250, 243);
+  width: 90%;
+  height: 90%;
+  text-align: center;
+  border-radius: 10px;
+  position: relative;
+}
+
+.btn-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 30px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.tag {
+  max-width: 150px;
+  margin: 5px;
+}
+
+.tag-body {
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  width: 120px;
+  justify-content: center;
+  align-items: center;
+  padding: 3px 7px;
+  border: 2px solid black;
+  border-radius: 30px;
+  background-color: white;
+  transition: 0.5s;
+}
+
+.tag-body:hover {
+  cursor: pointer;
+  background-color: #f5f5f5;
+  transition: 0.5s;
+}
+
+.tag-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.agregar {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin: 20px;
+  border-radius: 30px;
+  transition: 0.5s;
+}
+
+.agregar:hover {
+  background: #0056b3;
+  transition: 0.5s;
+}
+.tag-div {
+  display: flex;
+  flex-direction: column;
+}
+.progress {
+  width: 100%;
+  height: 20px;
+  background-color: blue;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 10px auto;
+}
