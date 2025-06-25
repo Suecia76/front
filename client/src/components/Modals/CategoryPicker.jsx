@@ -81,7 +81,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
                 >
                   <img
                     className="category__icon"
-                    src={url + cat.imagen || "./default-icon.png"}
+                    src={`/assets/icons/${cat.imagen}`}
                     alt={cat.nombre}
                   />
                   <div>
@@ -103,7 +103,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
                     >
                       <img
                         className="category__icon"
-                        src={url + cat.imagen || "./default-icon.png"}
+                        src={`/assets/icons/${cat.imagen}`}
                         alt={cat.nombre}
                       />
                       <p>{cat.nombre}</p>

@@ -60,7 +60,7 @@ const Incomes = () => {
 
         {/* <IncomesCard
           title="Ingreso de prueba"
-          icon="./src/assets/icons/balance.svg"
+          icon="/assets/icons/balance.svg"
           amount={484}
           category="Prueba"
           state="Prueba"
