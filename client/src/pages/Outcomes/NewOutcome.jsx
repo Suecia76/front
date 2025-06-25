@@ -83,7 +83,7 @@ const NewOutcome = () => {
       if (!user) return;
       try {
         const response = await axios.get(
-          `http://localhost:3000/gastos/usuario/${user.id}`
+          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`
         );
         setGastos(response.data);
       } catch (error) {
@@ -101,7 +101,7 @@ const NewOutcome = () => {
 
       const token = Cookies.get("token") || null;
       const response = await axios.post(
-        "http://localhost:3000/gastos",
+        "https://back-fbch.onrender.com/gastos",
         {
           ...data,
           user_fk: user.id,
@@ -128,7 +128,7 @@ const NewOutcome = () => {
     try {
       const token = Cookies.get("token") || null;
       await axios.delete(
-        `http://localhost:3000/gastos/${outcomeToDelete._id}`,
+        `https://back-fbch.onrender.com/gastos/${outcomeToDelete._id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -238,7 +238,7 @@ const NewOutcome = () => {
               console.log("Categoría seleccionada:", category); // Depuración
               setValue("categoria_fk", category._id, { shouldValidate: true }); // Actualizar el valor del campo y disparar validación
               setSelectedCategoryImage(
-                `http://localhost:3000/uploads/${category.imagen}` // Actualizar la imagen seleccionada
+                `https://back-fbch.onrender.com/uploads/${category.imagen}` // Actualizar la imagen seleccionada
               );
             }}
           />

@@ -19,14 +19,14 @@ const IncomeExpenseChart = () => {
 
         // Obtener ingresos
         const ingresosRes = await axios.get(
-          `http://localhost:3000/ingresos/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setIngresos(ingresosRes.data);
 
         // Obtener gastos
         const gastosRes = await axios.get(
-          `http://localhost:3000/gastos/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setGastos(gastosRes.data);

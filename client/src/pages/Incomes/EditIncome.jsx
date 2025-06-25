@@ -74,7 +74,7 @@ const EditIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/ingresos/${id}`,
+          `https://back-fbch.onrender.com/ingresos/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -113,7 +113,7 @@ const EditIncome = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.put(
-        `http://localhost:3000/ingresos/${id}`,
+        `https://back-fbch.onrender.com/ingresos/${id}`,
         {
           ...data,
         },

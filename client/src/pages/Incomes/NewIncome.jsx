@@ -82,7 +82,7 @@ const NewIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/ingresos/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -111,7 +111,7 @@ const NewIncome = () => {
       console.log("Datos enviados:", data);
 
       const response = await axios.post(
-        "http://localhost:3000/ingresos",
+        "https://back-fbch.onrender.com/ingresos",
         {
           ...data,
           user_fk: user.id,
@@ -142,7 +142,7 @@ const NewIncome = () => {
     try {
       const token = Cookies.get("token") || null;
       await axios.delete(
-        `http://localhost:3000/ingresos/${incomeToDelete._id}`,
+        `https://back-fbch.onrender.com/ingresos/${incomeToDelete._id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",

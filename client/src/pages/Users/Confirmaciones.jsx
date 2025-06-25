@@ -20,7 +20,7 @@ const Confirmaciones = () => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `http://localhost:3000/usuarios/pendientes/${user.id}`,
+          `https://back-fbch.onrender.com/usuarios/pendientes/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setPendientes(res.data);
@@ -38,8 +38,8 @@ const Confirmaciones = () => {
       const token = Cookies.get("token");
       const url =
         tipo === "ingreso"
-          ? `http://localhost:3000/ingresos/${id}/confirmar`
-          : `http://localhost:3000/gastos/${id}/confirmar`;
+          ? `https://back-fbch.onrender.com/ingresos/${id}/confirmar`
+          : `https://back-fbch.onrender.com/gastos/${id}/confirmar`;
       await axios.post(
         url,
         {},

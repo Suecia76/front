@@ -37,7 +37,7 @@ const EditCategory = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/categorias/${id}`,
+          `https://back-fbch.onrender.com/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -74,7 +74,7 @@ const EditCategory = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:3000/categorias/${id}`,
+        `https://back-fbch.onrender.com/categorias/${id}`,
         formData,
         {
           headers: {
