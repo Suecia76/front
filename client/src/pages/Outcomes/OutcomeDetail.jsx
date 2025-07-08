@@ -91,11 +91,14 @@ const OutcomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
 
-        const res = await axios.get(`http://localhost:3000/gastos/${id}`, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        });
+        const res = await axios.get(
+          `https://back-1-1j7o.onrender.com/gastos/${id}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
 
         setOutcome(res.data);
 
@@ -129,7 +132,7 @@ const OutcomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.put(`http://localhost:3000/gastos/${id}`, data, {
+      await axios.put(`https://back-1-1j7o.onrender.com/gastos/${id}`, data, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -153,7 +156,7 @@ const OutcomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/categorias/${id}`,
+          `https://back-1-1j7o.onrender.com/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -191,7 +194,7 @@ const OutcomeDetail = () => {
       const token = Cookies.get("token") || null;
 
       const res = await axios.put(
-        `http://localhost:3000/gastos/${id}`,
+        `https://back-1-1j7o.onrender.com/gastos/${id}`,
         {
           ...getValues(), // obtiene los valores actuales del form
           pendienteConfirmacion: false, // marca como confirmado
@@ -210,7 +213,7 @@ const OutcomeDetail = () => {
     }
   }
 
-  const url = "http://localhost:3000/uploads/";
+  const url = "https://back-1-1j7o.onrender.com/uploads/";
 
   const cuotas = watch("cuotas");
 
@@ -220,7 +223,7 @@ const OutcomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.delete(`http://localhost:3000/gastos/${id}`, {
+      await axios.delete(`https://back-1-1j7o.onrender.com/gastos/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },

@@ -51,7 +51,7 @@ const FormLogin = () => {
     try {
       setLoginError(""); // Limpia error anterior
       const response = await axios.post(
-        "http://localhost:3000/usuarios/login",
+        "https://back-1-1j7o.onrender.com/usuarios/login",
         data
       );
 
@@ -90,7 +90,7 @@ const FormLogin = () => {
             {...register("password")}
             error={errors.password?.message}
           />
-          
+
           <button
             type="button"
             className="password__btn"
@@ -98,9 +98,17 @@ const FormLogin = () => {
             onClick={() => setShowPassword((v) => !v)}
           >
             {showPassword ? (
-              <img  className="password__icon" src="/assets/icons/hide-password.svg" alt="Ocultar contraseña" />
+              <img
+                className="password__icon"
+                src="/assets/icons/hide-password.svg"
+                alt="Ocultar contraseña"
+              />
             ) : (
-              <img className="password__icon"  src="/assets/icons/show-password.svg" alt="Mostrar contraseña" />
+              <img
+                className="password__icon"
+                src="/assets/icons/show-password.svg"
+                alt="Mostrar contraseña"
+              />
             )}
           </button>
         </div>

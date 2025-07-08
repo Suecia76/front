@@ -58,22 +58,22 @@ const NewOutcome = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [error, setError] = useState(null);
   const [toggleFrecuenciaActivo, setToggleFrecuenciaActivo] = useState(false);
-const [toggleCuotasActivo, setToggleCuotasActivo] = useState(false);
+  const [toggleCuotasActivo, setToggleCuotasActivo] = useState(false);
 
-const navigate=useNavigate();
+  const navigate = useNavigate();
 
- const optionsFrecuencia = [
-    { value: "semanal", label: "Semanal" },  
-    { value: "quincenal", label: "Quincenal" }, 
-    { value: "mensual", label: "Mensual" }  
-  ]
+  const optionsFrecuencia = [
+    { value: "semanal", label: "Semanal" },
+    { value: "quincenal", label: "Quincenal" },
+    { value: "mensual", label: "Mensual" },
+  ];
 
   const optionsCuotas = [
-    {value:3, label:"3 cuotas"},
-    {value:6, label:"6 cuotas"},
-    {value:12, label:"12 cuotas"}
-  ]
-  
+    { value: 3, label: "3 cuotas" },
+    { value: 6, label: "6 cuotas" },
+    { value: 12, label: "12 cuotas" },
+  ];
+
   const {
     register,
     handleSubmit,
@@ -101,7 +101,7 @@ const navigate=useNavigate();
       if (!user) return;
       try {
         const response = await axios.get(
-          `http://localhost:3000/gastos/usuario/${user.id}`
+          `https://back-1-1j7o.onrender.com/gastos/usuario/${user.id}`
         );
         setGastos(response.data);
       } catch (error) {
@@ -119,16 +119,16 @@ const navigate=useNavigate();
       console.log("Datos del formulario:", data); // Depuración
       const token = Cookies.get("token") || null;
 
-           //Si el toggle de acreditado esta marcado entonces lo acreditamos
-    const estado = data.acreditado ? "pagado" : "pendiente";
-    
+      //Si el toggle de acreditado esta marcado entonces lo acreditamos
+      const estado = data.acreditado ? "pagado" : "pendiente";
+
       const response = await axios.post(
-        "http://localhost:3000/gastos",
+        "https://back-1-1j7o.onrender.com/gastos",
         {
           ...data,
           user_fk: user.id,
           estado: "pendiente",
-          pendienteConfirmacion: !data.acreditado
+          pendienteConfirmacion: !data.acreditado,
         },
         {
           headers: {
@@ -141,7 +141,7 @@ const navigate=useNavigate();
       reset();
       setSelectedCategoryImage(null);
 
-      navigate("/outcomes")
+      navigate("/outcomes");
     } catch (error) {
       console.error("Error al crear el gasto:", error.response?.data);
     } finally {
@@ -192,77 +192,101 @@ const navigate=useNavigate();
             <p className="input-error">{errors.categoria_fk.message}</p>
           )}
 
-        
-
-   
-
-        
           {/* Cobrado o pendiente */}
           <div className="toggle-container">
-              <Toggle label="Gasto ya abonado" defaultChecked={false} {...register("acreditado")}/>
+            <Toggle
+              label="Gasto ya abonado"
+              defaultChecked={false}
+              {...register("acreditado")}
+            />
 
-              <p className="toggle-container__message">Marcá esta opción si ya pagaste
-                {
-                  toggleCuotasActivo && ("la primera cuota")
+            <p className="toggle-container__message">
+              Marcá esta opción si ya pagaste
+              {toggleCuotasActivo && "la primera cuota"}
+            </p>
+          </div>
+
+          {/* Tipo de gasto*/}
+          {toggleFrecuenciaActivo ? (
+            <div className="toggle-container toggle-container--active">
+              <Toggle
+                label="Gasto fijo"
+                onChange={() =>
+                  setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)
                 }
+                defaultChecked={toggleFrecuenciaActivo}
+              />
+
+              <Select
+                labelField="Frecuencia del gasto"
+                options={optionsFrecuencia}
+              />
+
+              {errors.frecuencia && (
+                <p className="input-error">{errors.frecuencia.message}</p>
+              )}
+
+              {/* Campo para la fecha de inicio */}
+              <Input
+                type="date"
+                label="Fecha de inicio"
+                name="fechaInicio"
+                {...register("fechaInicio")}
+                error={errors.fechaInicio && errors.fechaInicio.message}
+              />
+            </div>
+          ) : (
+            <div className="toggle-container">
+              <Toggle
+                label="Gasto fijo"
+                onChange={() =>
+                  setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)
+                }
+                defaultChecked={toggleFrecuenciaActivo}
+              />
+
+              <p className="toggle-container__message">
+                Marcá esta opción si este gasto es recurrente y querés que te
+                recordemos pagarlo
               </p>
             </div>
-
-            {/* Tipo de gasto*/}
-          {
-            toggleFrecuenciaActivo ? (
-              <div className="toggle-container toggle-container--active">
-                <Toggle label="Gasto fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} /> 
-
-                  <Select labelField="Frecuencia del gasto" options={optionsFrecuencia} />
-
-                  {errors.frecuencia && (
-            <p className="input-error">{errors.frecuencia.message}</p>
           )}
-
-          {/* Campo para la fecha de inicio */}
-            <Input
-              type="date"
-              label="Fecha de inicio"
-              name="fechaInicio"
-              {...register("fechaInicio")}
-              error={errors.fechaInicio && errors.fechaInicio.message}
-            />
-              </div>
-            ): (
-                <div className="toggle-container">
-                  <Toggle label="Gasto fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} />
-
-                  <p className="toggle-container__message">Marcá esta opción si este gasto es recurrente y querés que te recordemos pagarlo</p>
-              </div>
-            )
-          }
 
           {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
 
+          {/* Campo para las cuotas */}
+          {toggleCuotasActivo ? (
+            <div className="toggle-container toggle-container--active">
+              <Toggle
+                label="Gasto en cuotas"
+                onChange={setToggleCuotasActivo}
+                defaultChecked={toggleCuotasActivo}
+              />
 
-        {/* Campo para las cuotas */}
-          {
-            toggleCuotasActivo ? (
-              <div className="toggle-container toggle-container--active">
-                  <Toggle label="Gasto en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />      
-                  
-                  <Select labelField="Cantidad de cuotas" options={optionsCuotas}  {...register("cuotas")}/>
-              </div>
-            ) : (
-            <div className="toggle-container">
-                <Toggle label="Gasto en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />
-
-              <p className="toggle-container__message">Marcá esta opción si vas a pagar este total en varias cuotas</p>
+              <Select
+                labelField="Cantidad de cuotas"
+                options={optionsCuotas}
+                {...register("cuotas")}
+              />
             </div>
-            )
-          }
+          ) : (
+            <div className="toggle-container">
+              <Toggle
+                label="Gasto en cuotas"
+                onChange={setToggleCuotasActivo}
+                defaultChecked={toggleCuotasActivo}
+              />
+
+              <p className="toggle-container__message">
+                Marcá esta opción si vas a pagar este total en varias cuotas
+              </p>
+            </div>
+          )}
 
           {errors.cuotas && (
             <p className="input-error">{errors.cuotas.message}</p>
           )}
 
-         
           {/* Mostrar la imagen de la categoría seleccionada */}
           {selectedCategoryImage && (
             <div className="selected-category-image">
@@ -275,15 +299,18 @@ const navigate=useNavigate();
             </div>
           )}
 
-              <div className="toggle-container">
+          <div className="toggle-container">
             <Toggle
-            label="Pago automático"
-            name="cuotasAutomaticas"
-            {...register("cuotasAutomaticas")}
-            // defaultChecked={true}
-          />
+              label="Pago automático"
+              name="cuotasAutomaticas"
+              {...register("cuotasAutomaticas")}
+              // defaultChecked={true}
+            />
 
-          <p className="toggle-container__message">Activá esta función si querés que el gasto se marque como pagado automáticamente</p>
+            <p className="toggle-container__message">
+              Activá esta función si querés que el gasto se marque como pagado
+              automáticamente
+            </p>
           </div>
 
           <Button

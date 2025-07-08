@@ -19,14 +19,14 @@ const IncomeExpenseChart = () => {
 
         // Obtener ingresos
         const ingresosRes = await axios.get(
-          `http://localhost:3000/ingresos/usuario/${user.id}`,
+          `https://back-1-1j7o.onrender.com/ingresos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setIngresos(ingresosRes.data);
 
         // Obtener gastos
         const gastosRes = await axios.get(
-          `http://localhost:3000/gastos/usuario/${user.id}`,
+          `https://back-1-1j7o.onrender.com/gastos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setGastos(gastosRes.data);
@@ -60,7 +60,8 @@ const IncomeExpenseChart = () => {
       const gastosData = fechas.map((fecha) =>
         gastos
           .filter(
-            (gasto) => new Date(gasto.fechaInicio).toLocaleDateString() === fecha
+            (gasto) =>
+              new Date(gasto.fechaInicio).toLocaleDateString() === fecha
           )
           .reduce((total, gasto) => total + gasto.cantidad, 0)
       );

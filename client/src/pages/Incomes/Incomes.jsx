@@ -21,7 +21,7 @@ const Incomes = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/ingresos/usuario/${user.id}`,
+          `https://back-1-1j7o.onrender.com/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -51,9 +51,12 @@ const Incomes = () => {
                 title={ingreso.nombre}
                 amount={ingreso.cantidad}
                 categoria_fk={ingreso.categoria_fk}
-                state={ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"}
-                stateClassName={ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"}
-                
+                state={
+                  ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"
+                }
+                stateClassName={
+                  ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"
+                }
               />
             ))}
           </ul>

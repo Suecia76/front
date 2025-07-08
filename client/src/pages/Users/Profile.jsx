@@ -53,7 +53,7 @@ const Profile = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:3000/usuarios/${user.id}`,
+        `https://back-1-1j7o.onrender.com/usuarios/${user.id}`,
         formDataToSend,
         {
           headers: {
@@ -67,7 +67,7 @@ const Profile = () => {
       console.log("Usuario actualizado:", response.data.user);
 
       setPreviewImage(
-        `http://localhost:3000/uploads/imagenes_perfil/${response.data.user.image}`
+        `https://back-1-1j7o.onrender.com/uploads/imagenes_perfil/${response.data.user.image}`
       ); // Actualizar la vista previa de la imagen
       setSuccess("Perfil actualizado correctamente.");
     } catch (err) {
@@ -81,7 +81,7 @@ const Profile = () => {
   return (
     <div className="profile">
       <StatusBar label="Mi perfil" />
-      
+
       <form onSubmit={handleSubmit} className="profile-form">
         {/* <div className="form-group">
           <label htmlFor="profileImage">Foto de perfil</label>
@@ -101,7 +101,6 @@ const Profile = () => {
             </div>
           )}
         </div> */}
-
 
         <div className="form-group">
           <label htmlFor="name">Nombre</label>

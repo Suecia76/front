@@ -14,7 +14,7 @@ const Outcomes = () => {
       if (!user) return;
       try {
         const response = await axios.get(
-          `http://localhost:3000/gastos/usuario/${user.id}`
+          `https://back-1-1j7o.onrender.com/gastos/usuario/${user.id}`
         );
         setGastos(response.data);
       } catch (error) {

@@ -53,11 +53,14 @@ const EditGoal = () => {
     const fetchGoal = async () => {
       try {
         const token = Cookies.get("token") || null;
-        const response = await axios.get(`http://localhost:3000/metas/${id}`, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        });
+        const response = await axios.get(
+          `https://back-1-1j7o.onrender.com/metas/${id}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
 
         const goal = response.data;
         setValue("nombre", goal.nombre);
@@ -78,7 +81,7 @@ const EditGoal = () => {
     try {
       const token = Cookies.get("token") || null;
       await axios.put(
-        `http://localhost:3000/metas/${id}`,
+        `https://back-1-1j7o.onrender.com/metas/${id}`,
         { ...data },
         {
           headers: {
@@ -98,7 +101,7 @@ const EditGoal = () => {
     setDeleting(true);
     try {
       const token = Cookies.get("token") || null;
-      await axios.delete(`http://localhost:3000/metas/${id}`, {
+      await axios.delete(`https://back-1-1j7o.onrender.com/metas/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },

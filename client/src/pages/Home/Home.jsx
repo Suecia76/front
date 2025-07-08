@@ -57,7 +57,7 @@ const Home = () => {
         console.log("ID del usuario:", user.id); // Verificar el ID del usuario
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/usuarios/saldo/${user.id}`,
+          `https://back-1-1j7o.onrender.com/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -81,7 +81,7 @@ const Home = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.get(
-        `http://localhost:3000/usuarios/${user.id}/resumen-mensual
+        `https://back-1-1j7o.onrender.com/usuarios/${user.id}/resumen-mensual
       `,
         {
           headers: {
@@ -103,7 +103,7 @@ const Home = () => {
         {/* <h1>Bienvenido, Usuario</h1> */}
 
         {/* Mostrar el saldo del usuario */}
-        <TotalBalance saldo={saldo} /* options={options}  *//>
+        <TotalBalance saldo={saldo} /* options={options}  */ />
 
         {/*   <section className="carousel">
         <motion.div

@@ -83,7 +83,7 @@ const NewGoal = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/metas/usuario/${user.id}`,
+          `https://back-1-1j7o.onrender.com/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -103,7 +103,7 @@ const NewGoal = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.post(
-        "http://localhost:3000/metas",
+        "https://back-1-1j7o.onrender.com/metas",
         {
           ...data,
           user_fk: user.id,
@@ -117,7 +117,7 @@ const NewGoal = () => {
       );
       setGoals([...goals, response.data.goal]);
       reset(); // Reiniciar el formulario de creación
-      navigate("/goals"); 
+      navigate("/goals");
     } catch (error) {
       console.error("Error al crear la meta:", error);
       setError("Error al crear la meta.");
@@ -128,11 +128,14 @@ const NewGoal = () => {
     if (!goalToDelete) return;
     try {
       const token = Cookies.get("token") || null;
-      await axios.delete(`http://localhost:3000/metas/${goalToDelete._id}`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
+      await axios.delete(
+        `https://back-1-1j7o.onrender.com/metas/${goalToDelete._id}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
       // Actualizar la lista de metas después de eliminar
       setGoals(goals.filter((goal) => goal._id !== goalToDelete._id));
       setShowModal(false); // Cerrar el modal
@@ -149,7 +152,7 @@ const NewGoal = () => {
       const token = Cookies.get("token") || null;
       const updatedProgreso = goalToUpdate.progreso + parseFloat(data.avance);
       const response = await axios.put(
-        `http://localhost:3000/metas/${goalToUpdate._id}`,
+        `https://back-1-1j7o.onrender.com/metas/${goalToUpdate._id}`,
         {
           progreso: updatedProgreso,
         },
@@ -200,8 +203,8 @@ const NewGoal = () => {
   return (
     <>
       <StatusBar label="Nueva meta" />
-    
-      <div id="newIncome">      
+
+      <div id="newIncome">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             name="nombre"
@@ -293,7 +296,6 @@ const NewGoal = () => {
           </div>
         )}
       </div>
-      
     </>
   );
 };
