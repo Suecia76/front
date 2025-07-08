@@ -89,7 +89,7 @@ const Categories = () => {
                   >
                     <img
                       className="category__icon"
-                      src={`${url + cat.imagen}.png` || "./default-icon.png"}
+                      src={url + cat.imagen || "./default-icon.png"}
                       alt={cat.nombre}
                     />
                     <p>{cat.nombre}</p>
@@ -111,7 +111,7 @@ const Categories = () => {
                 <div key={cat._id} className="category">
                   <img
                     className="category__icon"
-                    src={url + cat.imagen || "./default-icon.png"}
+                    src={`${url + cat.imagen}` || "./default-icon.png"}
                     alt={cat.nombre}
                   />
                   <div>
