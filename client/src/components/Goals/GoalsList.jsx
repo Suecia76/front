@@ -16,7 +16,7 @@ const GoalsList = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/metas/usuario/${user.id}`,
+          `http://localhost:3000/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",

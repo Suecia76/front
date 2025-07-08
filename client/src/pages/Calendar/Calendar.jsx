@@ -19,7 +19,7 @@ const CalendarPage = () => {
     const fetchMovimientos = async () => {
       const token = Cookies.get("token");
       const res = await axios.get(
-        `https://back-fbch.onrender.com/usuarios/calendario/${user.id}`,
+        `http://localhost:3000/usuarios/calendario/${user.id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMovimientos(res.data);
@@ -85,33 +85,41 @@ const CalendarPage = () => {
     <div>
       <StatusBar label="Confimar transacciones" />
 
-      <div className="tabs">
-        {tabs.map((tab) => (
-          <Tab
-            label={tab.label}
-            key={tab.value}
-            isSelected={selectedTab === tab.value}
-            onSelect={() => setSelectedTab(tab.value)}
-          />
+      {/*  <div className="tabs">
+          {tabs.map(tab=> (
+          <Tab 
+          label={tab.label}
+          key ={tab.value}
+          isSelected={selectedTab === tab.value}
+          onSelect={()=> setSelectedTab(tab.value)}/>
         ))}
-      </div>
+      </div> */}
 
       {selectedTab === "mes" && (
         <>
           <div className="month-picker">
-            <h3>{format(visibleDate, "MMMM yyyy", { locale: es })}</h3>
+            <h3 className="month-picker__title">
+              {format(visibleDate, "MMMM yyyy", { locale: es })}
+            </h3>
+            <div className="month-picker__nav">
+              <button
+                onClick={() => {
+                  setSelectedDate(null); // Limpiar la selección
+                  setVisibleDate((prev) => subMonths(prev, 1));
+                }}
+              >
+                Mes anterior
+              </button>
 
-            <button
-              onClick={() => setVisibleDate((prev) => subMonths(prev, 1))}
-            >
-              Mes anterior
-            </button>
-
-            <button
-              onClick={() => setVisibleDate((prev) => addMonths(prev, 1))}
-            >
-              Mes siguiente
-            </button>
+              <button
+                onClick={() => {
+                  setSelectedDate(null); // Limpiar la selección
+                  setVisibleDate((prev) => addMonths(prev, 1));
+                }}
+              >
+                Mes siguiente
+              </button>
+            </div>
           </div>
 
           <Calendar
@@ -119,10 +127,11 @@ const CalendarPage = () => {
             onClickDay={handleDayClick}
             view="month"
             maxDetail="month"
-            // minDate={startOfMonth(new Date())}
-            // maxDate={startOfMonth(new Date())}
-            value={visibleDate}
-            onChange={setVisibleDate}
+            activeStartDate={visibleDate} // 👈 Forzar mes visible
+            value={selectedDate ? new Date(selectedDate) : null} // 👈 Solo marca el día si hay selección
+            onActiveStartDateChange={({ activeStartDate }) =>
+              setVisibleDate(activeStartDate)
+            }
             showNavigation={false}
           />
 

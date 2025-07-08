@@ -12,6 +12,7 @@ import {
   EditOutcome,
   EditIncome,
   EditCategory,
+  Categories,
   EditGoal,
   CalendarPage,
   Balances,
@@ -20,6 +21,7 @@ import {
   Group,
   Confirmaciones,
   IncomeDetail,
+  OutcomeDetail
 } from "./pages";
 import { useState, useEffect } from "react";
 import Loader from "./components/Animations/Loader";
@@ -66,6 +68,17 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/categories/"
+            element={
+              <PrivateRoute>
+                {" "}
+                <Categories />{" "}
+              </PrivateRoute>
+            }
+          />
+
           <Route
             path="/categories/add"
             element={
@@ -74,7 +87,9 @@ function App() {
                 <CategoryCreate />{" "}
               </PrivateRoute>
             }
-          />{" "}
+          />
+
+           
           <Route
             path="/categories/edit/:id"
             element={
@@ -84,6 +99,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          
           {/* Incomes */}
           <Route
             path="/incomes"
@@ -131,6 +147,17 @@ function App() {
               </PrivateRoute>
             }
           />
+
+           <Route
+            path="/outcomes/:id"
+            element={
+              <PrivateRoute>
+                {" "}
+                <OutcomeDetail />{" "}
+              </PrivateRoute>
+            }
+          />
+
           <Route
             path="/outcome/add"
             element={

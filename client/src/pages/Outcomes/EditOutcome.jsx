@@ -77,14 +77,11 @@ const EditOutcome = () => {
     const fetchOutcome = async () => {
       try {
         const token = Cookies.get("token") || null;
-        const response = await axios.get(
-          `https://back-fbch.onrender.com/gastos/${id}`,
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
+        const response = await axios.get(`http://localhost:3000/gastos/${id}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
 
         const outcome = response.data;
         // Cargar los valores del gasto en el formulario
@@ -120,7 +117,7 @@ const EditOutcome = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.put(
-        `https://back-fbch.onrender.com/gastos/${id}`,
+        `http://localhost:3000/gastos/${id}`,
         {
           ...data,
         },

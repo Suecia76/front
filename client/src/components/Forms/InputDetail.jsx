@@ -1,20 +1,26 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import PropTypes from 'prop-types';
 
-const InputDetail = ({label, value, type = "text"}) => {
+const InputDetail = forwardRef(({label, type, error, ...otherProps}, ref) => {
   return (
      <div className='transaction__input-container'>
         <label className='transaction__input-label'>{label}</label>
 
-        <input className='transaction__input' type={type} value={value} />
+        <input ref={ref} className='transaction__input' type={type} {...otherProps} />
+
+        {error?.length > 0 &&(
+          <p className="input-error">{error}</p>
+        )}
     </div>
-  )
-}
+  );
+});
+
+InputDetail.displayName = "InputDetail";
 
 InputDetail.propTypes = {
   label: PropTypes.string.isRequired,
-  value: PropTypes.any.isRequired,
-  type: PropTypes.string
+  type: PropTypes.string,
+  error: PropTypes.string
 };
 
 export {InputDetail}

@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -11,9 +12,8 @@ import { Button } from "../../components/Button";
 import { InputCalculator } from "../../components/Forms/InputCalculator";
 import { StatusBar } from "../../components/StatusBar";
 import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
-import { IconButton } from "../../components/Buttons/IconButton";
 import { Toggle } from "../../components/Forms/Toggle";
+import { Select } from "../../components";
 
 const schema = yup.object().shape({
   cantidad: yup
@@ -43,6 +43,7 @@ const schema = yup.object().shape({
     .date()
     .typeError("Fecha inválida")
     .required("La fecha de inicio es obligatoria"),
+  cuotasAutomaticas: yup.boolean(),
 });
 
 const NewIncome = () => {
@@ -51,8 +52,14 @@ const NewIncome = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [selectedCategoryImage, setSelectedCategoryImage] = useState(null);
   const [incomeToDelete, setIncomeToDelete] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [toggleFrecuenciaActivo, setToggleFrecuenciaActivo] = useState(false);
+   
+  const [toggleCuotasActivo, setToggleCuotasActivo] = useState(false);
+
+    const navigate=useNavigate();
 
   const {
     register,
@@ -72,6 +79,7 @@ const NewIncome = () => {
       cuotas: 1,
       frecuencia: "mensual",
       fechaInicio: new Date().toISOString().slice(0, 10),
+      cuotasAutomaticas: false,
     },
   });
 
@@ -82,7 +90,7 @@ const NewIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `http://localhost:3000/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -110,25 +118,36 @@ const NewIncome = () => {
       console.log("Token:", token);
       console.log("Datos enviados:", data);
 
-      const response = await axios.post(
-        "https://back-fbch.onrender.com/ingresos",
-        {
-          ...data,
-          user_fk: user.id,
-          estado: "pendiente",
-        },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
+      // Si el toggle de cuotas está desactivado, forzar 1
+          if (!toggleCuotasActivo) {
+            data.cuotas = 1;
+      }
+
+      //Si el toggle de acreditado esta marcado entonces lo acreditamos
+    const estado = data.acreditado ? "pagado" : "pendiente";
+
+        const response = await axios.post(
+          "http://localhost:3000/ingresos",
+          {
+            ...data,
+            user_fk: user.id,
+            estado: "pendiente",
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
 
       console.log("Creaste un ingreso correctamente", response.data);
 
       setIngresos([...ingresos, response.data.ingreso]);
       reset();
+      
       setSelectedCategoryImage(null); // Reiniciar la imagen seleccionada
+
+      navigate("/incomes")
     } catch (error) {
       console.error("Error al crear el ingreso:", error.response?.data);
       setError("Error al crear el ingreso.");
@@ -137,43 +156,28 @@ const NewIncome = () => {
     }
   };
 
-  const handleDelete = async () => {
-    if (!incomeToDelete) return;
-    try {
-      const token = Cookies.get("token") || null;
-      await axios.delete(
-        `https://back-fbch.onrender.com/ingresos/${incomeToDelete._id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      setIngresos(
-        ingresos.filter((ingreso) => ingreso._id !== incomeToDelete._id)
-      );
-      setShowModal(false);
-      setIncomeToDelete(null);
-    } catch (error) {
-      console.error("Error al eliminar el ingreso:", error.response?.data);
-    }
-  };
 
-  const openDeleteModal = (ingreso) => {
-    setIncomeToDelete(ingreso);
-    setShowModal(true);
-  };
+    const optionsFrecuencia = [
+    { value: "semanal", label: "Semanal" },  
+    { value: "quincenal", label: "Quincenal" }, 
+    { value: "mensual", label: "Mensual" }  
+  ]
 
-  const closeModal = () => {
-    setShowModal(false);
-    setIncomeToDelete(null);
-  };
+
+  const optionsCuotas = [
+    {value:3, label:"3 cuotas"},
+    {value:6, label:"6 cuotas"},
+    {value:12, label:"12 cuotas"}
+  ]
 
   return (
     <>
       <StatusBar label="Nuevo ingreso" />
+
       <div id="newIncome">
         <form onSubmit={handleSubmit(onSubmit)} className="autolayout-1">
+          
+          {/* Monto */}
           <InputCalculator
             label="Monto"
             placeholder="0"
@@ -181,6 +185,8 @@ const NewIncome = () => {
             {...register("cantidad")}
             error={errors.cantidad && errors.cantidad.message}
           />
+
+          {/* Nombre */}
           <Input
             type="text"
             label="Título"
@@ -189,6 +195,8 @@ const NewIncome = () => {
             {...register("nombre")}
             error={errors.nombre && errors.nombre.message}
           />
+
+          {/* Descripción */}
           <Textarea
             label="Descripción"
             name="descripcion"
@@ -196,43 +204,8 @@ const NewIncome = () => {
             {...register("descripcion")}
             error={errors.descripcion && errors.descripcion.message}
           />
-          <label htmlFor="tipo">Tipo de ingreso</label>
-          <select id="tipo" {...register("tipo")}>
-            <option value="fijo">Fijo</option>
-            <option value="variable">Variable</option>
-          </select>
-          {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
-          {/* Campo para las cuotas */}
-          <label htmlFor="cuotas">Cuotas</label>
-          <select id="cuotas" {...register("cuotas")}>
-            <option value={1}>1</option>
-            <option value={3}>3</option>
-            <option value={6}>6</option>
-            <option value={12}>12</option>
-          </select>
-          {errors.cuotas && (
-            <p className="input-error">{errors.cuotas.message}</p>
-          )}
-          {/* Campo para la frecuencia */}
-          <label htmlFor="frecuencia">Frecuencia</label>
-          <select id="frecuencia" {...register("frecuencia")}>
-            <option value="mensual">Mensual</option>
-            <option value="quincenal">Quincenal</option>
-            <option value="semanal">Semanal</option>
-          </select>
-          {errors.frecuencia && (
-            <p className="input-error">{errors.frecuencia.message}</p>
-          )}
-          {/* Campo para la fecha de inicio */}
-          <Input
-            type="date"
-            label="Fecha de inicio"
-            name="fechaInicio"
-            {...register("fechaInicio")}
-            error={errors.fechaInicio && errors.fechaInicio.message}
-          />
 
-          <CategoryInput
+           <CategoryInput
             onCategorySelect={(category) => {
               setValue("categoria_fk", category._id, { shouldValidate: true });
               setSelectedCategory(category);
@@ -242,13 +215,82 @@ const NewIncome = () => {
           {errors.categoria_fk && (
             <p className="input-error">{errors.categoria_fk.message}</p>
           )}
-          <Toggle
-            label="Cuotas automáticas"
+
+           {/* Cobrado o pendiente */}
+          <div className="toggle-container">
+              <Toggle label="Dinero ya acreditado" defaultChecked={false} {...register("acreditado")}/>
+
+              <p className="toggle-container__message">Marcá esta opción si ya recibiste el dinero 
+                {
+                  toggleCuotasActivo && ("de la primera cuota")
+                }
+              </p>
+            </div>
+
+          {/* Tipo de ingreso */}
+          {
+            toggleFrecuenciaActivo ? (
+              <div className="toggle-container toggle-container--active">
+                  <Toggle label="Ingreso fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} />      
+                  
+                  <Select labelField="Frecuencia del gasto" options={optionsFrecuencia}/>
+              </div>
+            ) : (
+            <div className="toggle-container">
+                <Toggle label="Ingreso fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} />
+
+                    <p className="toggle-container__message">Marcá esta opción si este ingreso es recurrente y querés que te recordemos acreditarlo</p>
+            </div>
+            )
+          }
+        
+          {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
+
+          {/* Campo para las cuotas */}
+          {
+            toggleCuotasActivo ? (
+              <div className="toggle-container toggle-container--active">
+                  <Toggle label="Ingreso en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />      
+                  
+                  <Select labelField="Cantidad de cuotas" options={optionsCuotas}  {...register("cuotas")}/>
+              </div>
+            ) : (
+            <div className="toggle-container">
+                <Toggle label="Ingreso en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />
+
+              <p className="toggle-container__message">Marcá esta opción si vas a cobrar este total en varias cuotas</p>
+            </div>
+            )
+          }
+
+          {errors.cuotas && (
+            <p className="input-error">{errors.cuotas.message}</p>
+          )}
+         
+         
+
+          {/* Campo para la fecha de inicio */}
+        {/*   <Input
+            type="date"
+            label="Fecha de cobro"
+            name="fechaInicio"
+            {...register("fechaInicio")}
+            error={errors.fechaInicio && errors.fechaInicio.message}
+          /> */}
+
+                 <div className="toggle-container">
+            <Toggle
+            label="Acreditación automática"
             name="cuotasAutomaticas"
             {...register("cuotasAutomaticas")}
-            defaultChecked={true}
+            // defaultChecked={true}
           />
 
+          <p className="toggle-container__message">Activá esta función si querés que el ingreso se acredite automáticamente en tu saldo cada mes</p>
+          </div>
+
+          <input type="hidden" {...register("cuotasAutomaticas")} value={true}/>
+         
           <Button
             type="submit"
             label={loading ? "Creando..." : "Agregar ingreso"}

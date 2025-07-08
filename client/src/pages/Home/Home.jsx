@@ -12,22 +12,22 @@ const Home = () => {
   const navCards = [
     {
       label: "Ingresos",
-      img: "/assets/icons/Incomes.svg",
+      img: "./src/assets/icons/Incomes.svg",
       link: "/incomes",
     },
     {
       label: "Gastos",
-      img: "/assets/icons/Gastos.svg",
+      img: "./src/assets/icons/Gastos.svg",
       link: "/outcomes",
     },
     {
       label: "Metas",
-      img: "/assets/icons/Ahorro.svg",
+      img: "./src/assets/icons/Ahorro.svg",
       link: "/goals",
     },
     {
       label: "Categorias",
-      img: "/assets/icons/Categorias.svg",
+      img: "./src/assets/icons/Categorias.svg",
       link: "/categories",
     },
   ];
@@ -57,7 +57,7 @@ const Home = () => {
         console.log("ID del usuario:", user.id); // Verificar el ID del usuario
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/saldo/${user.id}`,
+          `http://localhost:3000/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -73,7 +73,29 @@ const Home = () => {
     fetchSaldo();
   }, [user]);
 
-  const options = ["Saldo total", "Saldo controlado", "Saldo disponible"];
+  const resumenMensual = async () => {
+    if (!user || !user.id) {
+      console.error("El usuario no está definido o no tiene un ID.");
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || null;
+      const response = await axios.get(
+        `http://localhost:3000/usuarios/${user.id}/resumen-mensual
+      `,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
+          },
+        }
+      );
+      console.log("Resumen mensual:", response.data);
+    } catch (error) {
+      console.error("Error al obtener el resumen mensual:", error);
+    }
+  };
+
+  // const options = ["Saldo total", "Saldo controlado", "Saldo disponible"];
 
   return (
     <>
@@ -81,7 +103,7 @@ const Home = () => {
         {/* <h1>Bienvenido, Usuario</h1> */}
 
         {/* Mostrar el saldo del usuario */}
-        <TotalBalance saldo={saldo} options={options} />
+        <TotalBalance saldo={saldo} /* options={options}  *//>
 
         {/*   <section className="carousel">
         <motion.div
@@ -113,7 +135,16 @@ const Home = () => {
           ))}
         </section>
 
+        {/* saldoActual
+totalIngresosMes
+totalGastosMes
+disponible */}
+
         <section className="section-info" id="balance-status">
+          <div className="card">
+            <h2>Resumen Mensual</h2>
+            <button onClick={resumenMensual}>Obtener Resumen Mensual</button>
+          </div>
           <div>
             <IncomeExpenseChart />
           </div>

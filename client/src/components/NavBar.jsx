@@ -46,7 +46,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/">
               <img
                 className="navbar__link-icon"
-                src="/assets/icons/home.svg"
+                src="../src/assets/icons/home.svg"
                 alt="Inicio"
               />
               Inicio
@@ -57,7 +57,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/calendar">
               <img
                 className="navbar__link-icon"
-                src="/assets/icons/calendar.svg"
+                src="../src/assets/icons/calendar.svg"
                 alt="Calendario"
               />
               Calendario
@@ -68,7 +68,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/balances">
               <img
                 className="navbar__link-icon"
-                src="/assets/icons/balance.svg"
+                src="../src/assets/icons/balance.svg"
                 alt="Balance"
               />
               Balance
@@ -79,32 +79,10 @@ const NavBar = () => {
             <a className="navbar__link" href="/group">
               <img
                 className="navbar__link-icon"
-                src="/assets/icons/group.svg"
+                src="../src/assets/icons/group.svg"
                 alt="Grupo"
               />
               Grupo
-            </a>
-          </li>
-
-          <li className="navbar__link-container">
-            <a className="navbar__link" href="/settings">
-              <img
-                className="navbar__link-icon"
-                src="/assets/icons/settings.svg"
-                alt="Configuración"
-              />
-              Configuración
-            </a>
-          </li>
-
-          <li className="navbar__link-container">
-            <a className="navbar__link" href="/notifications">
-              <img
-                className="navbar__link-icon"
-                src="/assets/icons/bell.svg"
-                alt="Notificaciones"
-              />
-              Notificaciones
             </a>
           </li>
         </ul>

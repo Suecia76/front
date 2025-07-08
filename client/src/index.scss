@@ -123,13 +123,14 @@ $max-width: 480px;
 $border-radius: .5rem;
 
 @mixin input {
-  background-color: var(--extralight-blue);
+  background-color: var(--white);
   border: none;
   width: 100%;
   height: 3rem;
   border-radius: $border-radius;
   padding-left: 0.5rem;
   font-size: 1.1rem;
+  color: var(--dark-blue);
 
   &:focus {
     outline: var(--light-blue) 2px solid;
@@ -177,6 +178,7 @@ input, select, textarea{
   &:focus{
     outline: none;
   }
+  
 
   &[type=number]::-webkit-inner-spin-button, 
   [type=number]::-webkit-outer-spin-button {
@@ -228,21 +230,32 @@ width: 100%;
 /* Forms*/
 #login, 
 #register, 
-#newIncome {
+#newIncome,
+.form {
   display: flex;
   align-items: flex-start;
   width: 100%;
 }
 
-#login input, 
-#register input {
+ input, 
+ input {
   @include input;
 }
 
 label {
   color: var(--dark-blue);
-  font-family: var(--fredoka);
-  font-size: 1.2rem;
+  font-family: var(--montserrat);
+  font-size: 1rem;
+}
+
+.form-actions{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+  gap: .5rem
 }
 
  .switch {
@@ -299,6 +312,40 @@ input:checked + .slider:before {
   width: 95%;
 }
 
+.toggle-container{
+  padding: 1rem;
+  display: flex;
+  font-size: 1.2rem;
+  flex-direction: column;
+  gap: .5rem;
+  font-weight: 500;
+  justify-content: left;
+  text-align: left;
+  color: var(--dark-blue);
+
+    &:not(:last-of-type) {
+     border-bottom: 1px solid var(--light-blue);
+  }
+
+  &:last-of-type{
+    margin-bottom: 1rem;
+  }
+
+  &--active{
+    // background-color: var(--white);
+    border-radius: $border-radius;
+    border: 1px solid var(--indigo);
+  }
+}
+
+  .toggle-container__message {
+    font-size: 14px;
+    opacity: 70%;
+    text-align: left;
+    font-style: italic;
+    font-weight: 400;
+  }
+
 /* Incomes and Outcomes */
 .container-input-calculator{
   border: 1px solid var(--indigo);
@@ -312,10 +359,9 @@ input:checked + .slider:before {
 
 #newIncome input:not(.input-calculator):not([type="checkbox"]),
 #newIncome textarea,
-#newIncome select,
+.select,
 #newOutcome input:not(.input-calculator):not([type="checkbox"]),
-#newOutcome textarea,
-#newOutcome select{
+#newOutcome textarea{
   height: 3rem;
   border-radius: $border-radius;
   padding-left: 0.5rem;
@@ -343,7 +389,31 @@ input:checked + .slider:before {
   color: var(--indigo);
 }
 
+.password{
+  position: relative;
 
+  .password__btn{
+  position: absolute;
+  right: 20px;
+  top: 45px;
+  background: "none";
+  border: "none";
+}
+
+.password__icon{
+  width: 24px;
+}
+}
+
+.confirmation{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--white);
+  border-radius: $border-radius;
+  margin-bottom: 2rem;
+}
 /* General styles */
 .display-flex {
   display: flex;
@@ -412,7 +482,7 @@ input:checked + .slider:before {
   color: var(--white);
 }
 
-.btn-filled-blue:focus {
+.btn--filled-blue:focus {
   filter: brightness(95%);
 }
 
@@ -422,6 +492,17 @@ input:checked + .slider:before {
 
 .btn--text-blue:focus {
   font-weight: 500;
+}
+
+.btn-floating__container{
+  position: relative;
+}
+
+.btn--floating-left{
+  position: absolute;
+  top: 55px;
+  right: 0;
+  text-decoration: underline;
 }
 
 
@@ -581,10 +662,26 @@ input:checked + .slider:before {
     }
   }
 
-
 }
 
+.selectField{
+  height: 3rem;
+  border-radius: $border-radius;
+  padding-left: 0.5rem;
+  font-size: 1.1rem;
+  border: var(--indigo) 1px solid;
+  color: var(--dark-blue);
+  width: 100%;
+  background-color: var(--white);
 
+  .selectField__option{
+    padding: 0.5rem;
+    cursor: pointer;
+    &:hover {
+      background-color: var(--light-blue);
+    }
+  }
+}
 
 .modal-actions {
   margin-top: 20px;
@@ -609,7 +706,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 /*# sourceMappingURL=index.scss.map */
-#newIncome input:not(.input-calculator):not([type=checkbox]), #newIncome textarea, #newIncome select, #newOutcome input:not(.input-calculator):not([type=checkbox]), #newOutcome textarea, #newOutcome select, #categorias input:not(.input-calculator):not([type=checkbox]), #categorias select, #categorias textarea {
+#newIncome input:not(.input-calculator):not([type=checkbox]), #newIncome textarea, #newIncome select, #newOutcome input:not(.input-calculator):not([type=checkbox]), #newOutcome textarea, #newOutcome select, #categorias input:not(.input-calculator):not([type=checkbox]), #categorias select, #categorias textarea, .textareaField {
   height: 3rem;
   border-radius: 0.5rem;
   padding-left: 0.5rem;
@@ -661,7 +758,7 @@ input:checked + .slider:before {
   margin-top: 2rem;
 }
 
-.incomes{
+.incomes, .outcomes{
 display: flex;
 flex-direction: column;
 gap: 1rem;
@@ -674,6 +771,23 @@ gap: 1rem;
     align-items: center;
 }
 
+  .movements{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    .movements__item{
+      border-radius: $border-radius;
+
+     /*  &.movements__item--fulfilled{
+        border: 1px solid green;
+      }
+
+      &.movements__item--pending{
+        border: 1px solid var(--red);
+      } */
+    }
+  }
+   
 .transaction-card, .goal-card{
   border: 1px solid var(--dark-blue);
   border-radius: $border-radius;
@@ -685,8 +799,8 @@ gap: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    justify-content: space-between;
-    display: flex;
+    gap: 1rem;
+    // justify-content: flex;
     width: 100%;
     height: 100%;
   }
@@ -695,15 +809,19 @@ gap: 1rem;
     border: 2px solid var(--blue);
     padding: .5rem;
     border-radius: 10rem;
-    width: 3rem;
+    width: 4rem;
     height: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
-
+    
     .income-card__icon, .goal-card__icon{
-      width: 80%;
+      width: 70%;
     }
+  }
+
+  .transaction-card__icon{
+    max-width: 70%;
   }
 
   .transaction-card__info, .goal-card__info{
@@ -711,7 +829,7 @@ gap: 1rem;
     flex-direction: column;
     text-align: left;
     justify-content: start;
-    width: 55%;
+    width: 100%;
   }
 
   .transaction-card__title,  .goal-card__title{
@@ -725,6 +843,17 @@ gap: 1rem;
     }
   }
 }
+
+.goal-card{
+  display: flex;
+  position: relative;
+
+  .goal-card__buttons{
+    position: absolute;
+    right: 10px;
+  }
+}
+
 
   .transaction-detail__header{
     display: flex;
@@ -799,6 +928,7 @@ gap: 1rem;
 .data-card{
   width: 100%;
   border-radius: $border-radius;
+  height: fit-content;
   
   &.data-card--small{
     width: calc(50% - 1.5rem);
@@ -1289,9 +1419,20 @@ gap: 1rem;
 
 .month-picker{
  display: flex;
+ flex-direction: column;
  justify-content: center;
  gap: 1rem; 
  margin-bottom: 1rem;
+ background-color: var(--white);
+ border-radius: $border-radius;
+ padding: 1rem;
+
+ .month-picker__nav{
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  justify-content: center;
+ }
 }
 
 .calendar{
@@ -1312,16 +1453,3 @@ gap: 1rem;
     }
   }
 
-  .movements{
-    .movements__item{
-      border-radius: $border-radius;
-
-      &.movements__item--fulfilled{
-        border: 1px solid green;
-      }
-
-      &.movements__item--pending{
-        border: 1px solid var(--red);
-      }
-    }
-  }

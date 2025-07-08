@@ -2,9 +2,15 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { IconButton } from "../Buttons/IconButton";
 import { Button } from "../Button";
+import { useState } from "react";
+import { ModalWrapper } from "../Modals/ModalWrapper";
 
 const InputCalculator = forwardRef(
   ({ label, type = "number", name, value, onChange, ...moreProps }, ref) => {
+
+    const [openedCalculator, setOpenedCalculator] = useState(false);
+
+
     return (
       <div className="display-flex flex-start flex-column">
         {label && <label>{label}</label>}
@@ -24,7 +30,15 @@ const InputCalculator = forwardRef(
             {...moreProps}
           />
 
-          <IconButton label="" className="btn-calculator" icon="calculator-indigo" />
+          <IconButton label="" className="btn-calculator" icon="calculator-indigo" onClick={() => setOpenedCalculator(true)} />
+
+            {openedCalculator && (
+              <ModalWrapper onClose={() => setOpenedCalculator(false)}>
+                <div className="modal__content">
+                  <p>Calculadora</p>
+                </div>
+              </ModalWrapper>
+            )}
         </div>
       </div>
     );

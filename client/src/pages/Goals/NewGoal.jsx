@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { StatusBar } from "../../components/StatusBar";
 import * as yup from "yup";
-import { GoalsList } from "../../components/Goals/GoalsList";
+import { useNavigate } from "react-router-dom";
 
 // Esquema de validación para el formulario de creación de metas
 const schema = yup.object().shape({
@@ -40,6 +40,7 @@ const advanceSchema = yup.object().shape({
 
 const NewGoal = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [goals, setGoals] = useState([]); // Lista de metas
   const [error, setError] = useState(null); // Estado para errores
   const [showModal, setShowModal] = useState(false); // Controlar visibilidad del modal
@@ -82,7 +83,7 @@ const NewGoal = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/metas/usuario/${user.id}`,
+          `http://localhost:3000/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -102,7 +103,7 @@ const NewGoal = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.post(
-        "https://back-fbch.onrender.com/metas",
+        "http://localhost:3000/metas",
         {
           ...data,
           user_fk: user.id,
@@ -116,6 +117,7 @@ const NewGoal = () => {
       );
       setGoals([...goals, response.data.goal]);
       reset(); // Reiniciar el formulario de creación
+      navigate("/goals"); 
     } catch (error) {
       console.error("Error al crear la meta:", error);
       setError("Error al crear la meta.");
@@ -126,14 +128,11 @@ const NewGoal = () => {
     if (!goalToDelete) return;
     try {
       const token = Cookies.get("token") || null;
-      await axios.delete(
-        `https://back-fbch.onrender.com/metas/${goalToDelete._id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+      await axios.delete(`http://localhost:3000/metas/${goalToDelete._id}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
       // Actualizar la lista de metas después de eliminar
       setGoals(goals.filter((goal) => goal._id !== goalToDelete._id));
       setShowModal(false); // Cerrar el modal
@@ -150,7 +149,7 @@ const NewGoal = () => {
       const token = Cookies.get("token") || null;
       const updatedProgreso = goalToUpdate.progreso + parseFloat(data.avance);
       const response = await axios.put(
-        `https://back-fbch.onrender.com/metas/${goalToUpdate._id}`,
+        `http://localhost:3000/metas/${goalToUpdate._id}`,
         {
           progreso: updatedProgreso,
         },
@@ -201,7 +200,8 @@ const NewGoal = () => {
   return (
     <>
       <StatusBar label="Nueva meta" />
-      <div id="newIncome">
+    
+      <div id="newIncome">      
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             name="nombre"
@@ -293,41 +293,7 @@ const NewGoal = () => {
           </div>
         )}
       </div>
-      <GoalsList goals={goals} />{" "}
-      {/* Componente para mostrar la lista de metas */}
-      {error && <p className="error-message">{error}</p>}
-      {goals.length > 0 ? (
-        <ul className="goals">
-          {goals.map((goal) => (
-            <li key={goal._id}>
-              <div>
-                <strong>{goal.nombre}</strong> - ${goal.objetivo}
-                <p>{goal.descripcion}</p>
-                <p>Progreso: ${goal.progreso}</p>
-              </div>
-              <div>
-                <button
-                  className="btn-delete"
-                  onClick={() => openDeleteModal(goal)}
-                >
-                  Eliminar
-                </button>
-                <Link to={`/goals/edit/${goal._id}`} className="btn-edit">
-                  Editar
-                </Link>
-                <button
-                  className="btn-advance"
-                  onClick={() => openAdvanceModal(goal)}
-                >
-                  Agregar Avance
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No tienes metas registradas.</p>
-      )}
+      
     </>
   );
 };

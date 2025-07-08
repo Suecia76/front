@@ -1,18 +1,22 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 
-const Toggle = ({ htmlFor, label, ...moreProps }) => {
-  const [isChecked, setIsChecked] = useState(false);
+const Toggle = ({ label, onChange, defaultChecked, ...moreProps }) => {
+  const [isChecked, setIsChecked] = useState(defaultChecked || false);
 
   const handleToggle = () => {
-    setIsChecked(!isChecked); //Lo seteamos para que se convierta en el valor booleano contrario
+    const newChecked = !isChecked;
+    setIsChecked(newChecked);
+    if (onChange) {
+          onChange(newChecked); // ✅ comunicamos el nuevo estado
+        }
   };
 
   return (
-    <div className="toggle" {...moreProps}>
-      <p>{label} </p>
-      <label className="switch" htmlFor={htmlFor}>
-        <input type="checkbox" checked={isChecked} onChange={handleToggle} />
+    <div className="toggle">
+      <p>{label}</p>
+      <label className="switch">
+        <input type="checkbox" checked={isChecked} onChange={handleToggle} {...moreProps} />
         <span className="slider"></span>
       </label>
     </div>
@@ -20,8 +24,9 @@ const Toggle = ({ htmlFor, label, ...moreProps }) => {
 };
 
 Toggle.propTypes = {
-  htmlFor: PropTypes.string,
   label: PropTypes.string,
+  onChange: PropTypes.func,
+  defaultChecked: PropTypes.bool,
 };
 
 export { Toggle };

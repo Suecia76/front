@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 
 const Textarea = forwardRef(
-  ({ label, maxLength = 100, name, placeholder, ...moreProps}, 
+  ({ label, maxLength = 100, name, placeholder, content ="", ...moreProps}, 
     ref
   ) => {
     return (
@@ -15,7 +15,9 @@ const Textarea = forwardRef(
           name={name}
           maxLength={maxLength}
           placeholder={placeholder}
+          className="textareaField"
           {...moreProps}
+          defaultValue={content.length > 0 && (content)}
         ></textarea>
       </div>
     );
@@ -30,6 +32,7 @@ Textarea.propTypes = {
   maxLength: PropTypes.number,
   placeholder: PropTypes.string,
   name: PropTypes.string.isRequired,
+  content: PropTypes.string
 };
 
 export { Textarea };

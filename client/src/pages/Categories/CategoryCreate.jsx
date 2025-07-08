@@ -6,9 +6,10 @@ import * as yup from "yup";
 import { AuthContext } from "../../context/AuthContext";
 import { Input } from "../../components/Forms/Input";
 import { Button } from "../../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TopBar } from "../../components/Topbar";
 import Cookies from "js-cookie";
+import { StatusBar } from "../../components";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("El nombre es obligatorio"),
@@ -23,6 +24,8 @@ const CategoryCreate = () => {
   const [showModal, setShowModal] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState(null);
   const [imagen, setImagen] = useState(null); // Estado para la imagen
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -44,7 +47,7 @@ const CategoryCreate = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/categorias/usuario/${user.id}`,
+          `http://localhost:3000/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -52,6 +55,7 @@ const CategoryCreate = () => {
           }
         );
         setCategorias(response.data);
+        navigate("/categories/add")
       } catch (error) {
         console.error("Error al obtener las categorías:", error.response?.data);
         setError("Error al cargar las categorías.");
@@ -92,7 +96,7 @@ const CategoryCreate = () => {
       });
 
       const response = await axios.post(
-        "https://back-fbch.onrender.com/categorias",
+        "http://localhost:3000/categorias",
         formData,
         {
           headers: {
@@ -124,12 +128,12 @@ const CategoryCreate = () => {
     }
   };
 
-  const handleDelete = async () => {
+  /* const handleDelete = async () => {
     if (!categoryToDelete) return;
     try {
       const token = Cookies.get("token") || null;
       await axios.delete(
-        `https://back-fbch.onrender.com/categorias/${categoryToDelete._id}`,
+        `http://localhost:3000/categorias/${categoryToDelete._id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -144,9 +148,9 @@ const CategoryCreate = () => {
     } catch (error) {
       console.error("Error al eliminar la categoría:", error.response?.data);
     }
-  };
+  }; */
 
-  const openDeleteModal = (categoria) => {
+  /* const openDeleteModal = (categoria) => {
     setCategoryToDelete(categoria);
     setShowModal(true);
   };
@@ -154,74 +158,13 @@ const CategoryCreate = () => {
   const closeModal = () => {
     setShowModal(false);
     setCategoryToDelete(null);
-  };
+  }; */
 
-  let url = "https://back-fbch.onrender.com/uploads/";
+  let url = "http://localhost:3000/uploads/";
 
   return (
     <>
-      {/* <TopBar /> */}
-      <div id="categorias">
-        <div>
-          <h2>Mis Categorías</h2>
-
-          {loading && <p>Cargando...</p>}
-          {error && <p className="error-message">{error}</p>}
-
-          {categorias.length > 0 ? (
-            <ul>
-              {categorias.map((categoria) => {
-                const imageUrl = url + categoria.imagen;
-
-                return (
-                  <li key={categoria._id}>
-                    <div>
-                      <strong>{categoria.nombre}</strong>
-                      <div className="categoria-imagen">
-                        <img src={imageUrl} alt={categoria.nombre} />
-                      </div>
-                    </div>
-                    <div>
-                      <button
-                        className="btn-delete"
-                        onClick={() => openDeleteModal(categoria)}
-                      >
-                        Eliminar
-                      </button>
-                      <Link
-                        to={`/categories/edit/${categoria._id}`}
-                        className="btn-edit"
-                      >
-                        Editar
-                      </Link>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p>No tienes categorías registradas.</p>
-          )}
-
-          {showModal && (
-            <div className="modal">
-              <div className="modal-content">
-                <h3>¿Estás seguro de que deseas eliminar esta categoría?</h3>
-                <p>
-                  <strong>{categoryToDelete?.nombre}</strong>
-                </p>
-                <div className="modal-actions">
-                  <button className="btn-cancel" onClick={closeModal}>
-                    Cancelar
-                  </button>
-                  <button className="btn-confirm" onClick={handleDelete}>
-                    Eliminar
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+      <StatusBar label="Agregar categoría"/>
         <form
           method="POST"
           onSubmit={handleSubmit(onSubmit)}
@@ -251,14 +194,21 @@ const CategoryCreate = () => {
             <p className="error-message">{errors.imagen.message}</p>
           )}
 
+          <div className="form-actions">
           <Button
-            type="submit"
-            label={loading ? "Creando..." : "Agregar Categoría"}
-            className="btn-filled-blue"
-            disabled={loading}
-          />
+                    type="submit"
+                    label={loading ? "Creando..." : "Agregar Categoría"}
+                    className="btn btn--filled-blue"
+                    disabled={loading}
+                />
+
+                <Button label="Cancelar"
+                className="btn btn--text"
+              onClick={() => navigate("/categories")}
+                />
+          </div>
+        
         </form>
-      </div>
     </>
   );
 };

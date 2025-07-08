@@ -14,7 +14,8 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
   const [userCategories, setUserCategories] = useState([]);
   const [error, setError] = useState(null);
 
-  const url = "https://back-fbch.onrender.com/uploads/";
+  const url = "http://localhost:3000/uploads/";
+  // const extension = ".png";
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -27,13 +28,13 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
 
       try {
         const defaultResponse = await axios.get(
-          "https://back-fbch.onrender.com/categorias"
+          "http://localhost:3000/categorias"
         );
 
         setDefaultCategories(defaultResponse.data);
 
         const userResponse = await axios.get(
-          `https://back-fbch.onrender.com/categorias/usuario/${user.id}`,
+          `http://localhost:3000/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${Cookies.get("token")}`,
@@ -43,6 +44,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
 
         setUserCategories(userResponse.data);
       } catch (err) {
+        z;
         console.error("Error al obtener las categorías:", err);
         setError(
           "Error al cargar las categorías. Por favor, inténtalo de nuevo más tarde."
@@ -81,7 +83,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
                 >
                   <img
                     className="category__icon"
-                    src={`/assets/icons/${cat.imagen}`}
+                    src={`${url + cat.imagen}.png` || "./default-icon.png"}
                     alt={cat.nombre}
                   />
                   <div>
@@ -103,7 +105,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
                     >
                       <img
                         className="category__icon"
-                        src={`/assets/icons/${cat.imagen}`}
+                        src={url + cat.imagen || "./default-icon.png"}
                         alt={cat.nombre}
                       />
                       <p>{cat.nombre}</p>

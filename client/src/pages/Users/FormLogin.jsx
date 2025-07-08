@@ -51,7 +51,7 @@ const FormLogin = () => {
     try {
       setLoginError(""); // Limpia error anterior
       const response = await axios.post(
-        "https://back-fbch.onrender.com/usuarios/login",
+        "http://localhost:3000/usuarios/login",
         data
       );
 
@@ -82,7 +82,7 @@ const FormLogin = () => {
           error={errors.email?.message}
         />
 
-        <div style={{ position: "relative" }}>
+        <div className="password">
           <Input
             type={showPassword ? "text" : "password"}
             label="Contraseña"
@@ -90,20 +90,18 @@ const FormLogin = () => {
             {...register("password")}
             error={errors.password?.message}
           />
+          
           <button
             type="button"
-            style={{
-              position: "absolute",
-              right: 10,
-              top: 35,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            }}
+            className="password__btn"
             tabIndex={-1}
             onClick={() => setShowPassword((v) => !v)}
           >
-            {showPassword ? "🙈" : "👁️"}
+            {showPassword ? (
+              <img  className="password__icon" src="/assets/icons/hide-password.svg" alt="Ocultar contraseña" />
+            ) : (
+              <img className="password__icon"  src="/assets/icons/show-password.svg" alt="Mostrar contraseña" />
+            )}
           </button>
         </div>
         {loginError && <div style={{ color: "red" }}>{loginError}</div>}

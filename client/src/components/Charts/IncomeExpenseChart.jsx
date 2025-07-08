@@ -19,14 +19,14 @@ const IncomeExpenseChart = () => {
 
         // Obtener ingresos
         const ingresosRes = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `http://localhost:3000/ingresos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setIngresos(ingresosRes.data);
 
         // Obtener gastos
         const gastosRes = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`,
+          `http://localhost:3000/gastos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setGastos(gastosRes.data);
@@ -43,7 +43,7 @@ const IncomeExpenseChart = () => {
       const fechas = [
         ...new Set(
           [...ingresos, ...gastos].map((item) =>
-            new Date(item.createdAt).toLocaleDateString()
+            new Date(item.fechaInicio).toLocaleDateString()
           )
         ),
       ];
@@ -52,7 +52,7 @@ const IncomeExpenseChart = () => {
         ingresos
           .filter(
             (ingreso) =>
-              new Date(ingreso.createdAt).toLocaleDateString() === fecha
+              new Date(ingreso.fechaInicio).toLocaleDateString() === fecha
           )
           .reduce((total, ingreso) => total + ingreso.cantidad, 0)
       );
@@ -60,7 +60,7 @@ const IncomeExpenseChart = () => {
       const gastosData = fechas.map((fecha) =>
         gastos
           .filter(
-            (gasto) => new Date(gasto.createdAt).toLocaleDateString() === fecha
+            (gasto) => new Date(gasto.fechaInicio).toLocaleDateString() === fecha
           )
           .reduce((total, gasto) => total + gasto.cantidad, 0)
       );
@@ -72,9 +72,15 @@ const IncomeExpenseChart = () => {
         ],
         options: {
           chart: { type: "line", height: 350, width: "100%" },
-          xaxis: { categories: fechas },
+          xaxis: {
+            categories: fechas,
+            labels: { show: false }, // Oculta fechas
+          },
+          yaxis: {
+            labels: { show: false }, // Oculta números del costado
+          },
           stroke: { curve: "smooth" },
-          colors: ["#28a745", "#dc3545"],
+          colors: ["#28F1A4", "#2057F2"],
           title: { text: "Comparación de Ingresos vs Gastos" },
           dataLabels: { enabled: false },
         },

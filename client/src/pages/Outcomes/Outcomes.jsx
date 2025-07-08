@@ -14,7 +14,7 @@ const Outcomes = () => {
       if (!user) return;
       try {
         const response = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`
+          `http://localhost:3000/gastos/usuario/${user.id}`
         );
         setGastos(response.data);
       } catch (error) {
@@ -27,7 +27,7 @@ const Outcomes = () => {
 
   return (
     <>
-      <div>
+      <div className="outcomes">
         <StatusBar label="Mis gastos" />
         {gastos.length > 0 ? (
           gastos.map((gasto) => (
@@ -37,6 +37,7 @@ const Outcomes = () => {
               title={gasto.nombre}
               categoria_fk={gasto.categoria_fk}
               state={gasto.estado}
+              _id={gasto._id}
             />
           ))
         ) : (
@@ -45,7 +46,7 @@ const Outcomes = () => {
 
         {/* <OutcomesCard
           title="Gasto de prueba"
-          icon="/assets/icons/balance.svg"
+          icon="./src/assets/icons/balance.svg"
           amount={1256658}
           category="Prueba"
           state="Prueba"

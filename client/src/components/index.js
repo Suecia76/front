@@ -12,3 +12,5 @@ export {InputDetail} from './Forms/InputDetail';
 export {ModalWrapper} from './Modals/ModalWrapper';
 export {CategoryPicker} from './Modals/CategoryPicker';
 export {Toggle} from './Forms/Toggle';
+export {Select} from './Forms/Select';
+export {Textarea} from './Forms/Textarea';

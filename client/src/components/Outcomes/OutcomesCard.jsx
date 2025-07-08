@@ -14,6 +14,8 @@ const OutcomesCard = ({
   date,
   _id,
   categoria_fk,
+  cuotasTotales,
+  cuotasProcesadas,
 }) => {
   const [category, setCategory] = useState(null);
 
@@ -21,7 +23,7 @@ const OutcomesCard = ({
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.get(
-        `https://back-fbch.onrender.com/categorias/${id}`,
+        `http://localhost:3000/categorias/${id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -41,9 +43,17 @@ const OutcomesCard = ({
 
   return (
     <article key={_id} className="transaction-card">
-      <a className="transaction-card__link" href={`outcome/${_id}`}>
+      <a className="transaction-card__link" href={`outcomes/${_id}`}>
         <figure className="transaction-card__icon-container">
-          <img className="transaction-card__icon" src={icon} alt={iconName} />
+          <img
+            className="transaction-card__icon"
+            src={
+              category?.imagen
+                ? `assets/icons/${category.imagen}.png`
+                : "/assets/icons/default.svg"
+            }
+            alt={category?.nombre || "icono"}
+          />
         </figure>
 
         <div className="transaction-card__info">
@@ -59,6 +69,12 @@ const OutcomesCard = ({
             <span>Estado: </span>
             {state}
           </p>
+
+          {cuotasTotales > 1 && cuotasProcesadas > 0 && (
+            <p>
+              Cuotas: {cuotasProcesadas}/{cuotasTotales}
+            </p>
+          )}
         </div>
 
         <div className="transaction-card__date-container">
@@ -82,6 +98,8 @@ OutcomesCard.propTypes = {
   _id: PropTypes.any.isRequired,
   amount: PropTypes.number,
   categoria_fk: PropTypes.any,
+  cuotasTotales: PropTypes.number,
+  cuotasProcesadas: PropTypes.number,
 };
 
 export { OutcomesCard };

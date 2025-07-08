@@ -21,7 +21,7 @@ const Incomes = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `http://localhost:3000/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -51,6 +51,9 @@ const Incomes = () => {
                 title={ingreso.nombre}
                 amount={ingreso.cantidad}
                 categoria_fk={ingreso.categoria_fk}
+                state={ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"}
+                stateClassName={ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"}
+                
               />
             ))}
           </ul>
@@ -60,7 +63,7 @@ const Incomes = () => {
 
         {/* <IncomesCard
           title="Ingreso de prueba"
-          icon="/assets/icons/balance.svg"
+          icon="./src/assets/icons/balance.svg"
           amount={484}
           category="Prueba"
           state="Prueba"

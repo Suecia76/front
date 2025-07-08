@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom"; // <-- Importa useNavigate
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,11 +10,10 @@ import { Textarea } from "../../components/Forms/Textarea";
 import { CategoryInput } from "../../components/Forms/CategoryInput";
 import { Button } from "../../components/Button";
 import { InputCalculator } from "../../components/Forms/InputCalculator";
-import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { StatusBar } from "../../components/StatusBar";
-import { CategoryExpenseChart } from "../../components/Charts/CategoryExpenseChart";
 import { Toggle } from "../../components/Forms/Toggle";
+import { Select } from "../../components";
 
 const schema = yup.object().shape({
   cantidad: yup
@@ -47,16 +47,33 @@ const schema = yup.object().shape({
     .string()
     .required("Por favor selecciona una categoría")
     .notOneOf([""], "Por favor selecciona una categoría"),
+  cuotasAutomaticas: yup.boolean(),
 });
 
 const NewOutcome = () => {
   const { user } = useContext(AuthContext);
   const [gastos, setGastos] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [outcomeToDelete, setOutcomeToDelete] = useState(null);
   const [selectedCategoryImage, setSelectedCategoryImage] = useState(null); // Estado para la imagen seleccionada
   const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [error, setError] = useState(null);
+  const [toggleFrecuenciaActivo, setToggleFrecuenciaActivo] = useState(false);
+const [toggleCuotasActivo, setToggleCuotasActivo] = useState(false);
+
+const navigate=useNavigate();
+
+ const optionsFrecuencia = [
+    { value: "semanal", label: "Semanal" },  
+    { value: "quincenal", label: "Quincenal" }, 
+    { value: "mensual", label: "Mensual" }  
+  ]
+
+  const optionsCuotas = [
+    {value:3, label:"3 cuotas"},
+    {value:6, label:"6 cuotas"},
+    {value:12, label:"12 cuotas"}
+  ]
+  
   const {
     register,
     handleSubmit,
@@ -75,6 +92,7 @@ const NewOutcome = () => {
       frecuencia: "mensual",
       fechaInicio: new Date().toISOString().slice(0, 10),
       categoria_fk: "",
+      cuotasAutomaticas: false,
     },
   });
 
@@ -83,7 +101,7 @@ const NewOutcome = () => {
       if (!user) return;
       try {
         const response = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`
+          `http://localhost:3000/gastos/usuario/${user.id}`
         );
         setGastos(response.data);
       } catch (error) {
@@ -98,13 +116,19 @@ const NewOutcome = () => {
     try {
       setLoading(true);
       setError(null);
-
+      console.log("Datos del formulario:", data); // Depuración
       const token = Cookies.get("token") || null;
+
+           //Si el toggle de acreditado esta marcado entonces lo acreditamos
+    const estado = data.acreditado ? "pagado" : "pendiente";
+    
       const response = await axios.post(
-        "https://back-fbch.onrender.com/gastos",
+        "http://localhost:3000/gastos",
         {
           ...data,
           user_fk: user.id,
+          estado: "pendiente",
+          pendienteConfirmacion: !data.acreditado
         },
         {
           headers: {
@@ -116,41 +140,13 @@ const NewOutcome = () => {
       setGastos([...gastos, response.data.gasto]);
       reset();
       setSelectedCategoryImage(null);
+
+      navigate("/outcomes")
     } catch (error) {
       console.error("Error al crear el gasto:", error.response?.data);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleDelete = async () => {
-    if (!outcomeToDelete) return;
-    try {
-      const token = Cookies.get("token") || null;
-      await axios.delete(
-        `https://back-fbch.onrender.com/gastos/${outcomeToDelete._id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      setGastos(gastos.filter((gasto) => gasto._id !== outcomeToDelete._id));
-      setShowModal(false);
-      setOutcomeToDelete(null);
-    } catch (error) {
-      console.error("Error al eliminar el gasto:", error.response?.data);
-    }
-  };
-
-  const openDeleteModal = (gasto) => {
-    setOutcomeToDelete(gasto);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setOutcomeToDelete(null);
   };
 
   return (
@@ -184,68 +180,89 @@ const NewOutcome = () => {
             error={errors.descripcion && errors.descripcion.message}
           />
 
-          {/* Campo para el tipo */}
-          <label htmlFor="tipo">Tipo de gasto</label>
-          <select id="tipo" {...register("tipo")}>
-            <option value="fijo">Fijo</option>
-            <option value="variable">Variable</option>
-          </select>
-          {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
-
-          {/* Campo para el estado */}
-          <label htmlFor="estado">Estado del gasto</label>
-          <select id="estado" {...register("estado")}>
-            <option value="pendiente">Pendiente</option>
-            <option value="pagado">Pagado</option>
-          </select>
-          {errors.estado && <p>{errors.estado.message}</p>}
-
-          {/* Campo para las cuotas */}
-          <label htmlFor="cuotas">Cuotas</label>
-          <select id="cuotas" {...register("cuotas")}>
-            <option value={1}>1</option>
-            <option value={3}>3</option>
-            <option value={6}>6</option>
-            <option value={12}>12</option>
-          </select>
-          {errors.cuotas && (
-            <p className="input-error">{errors.cuotas.message}</p>
-          )}
-
-          {/* Campo para la frecuencia */}
-          <label htmlFor="frecuencia">Frecuencia</label>
-          <select id="frecuencia" {...register("frecuencia")}>
-            <option value="mensual">Mensual</option>
-            <option value="quincenal">Quincenal</option>
-            <option value="semanal">Semanal</option>
-          </select>
-          {errors.frecuencia && (
-            <p className="input-error">{errors.frecuencia.message}</p>
-          )}
-
-          {/* Campo para la fecha de inicio */}
-          <Input
-            type="date"
-            label="Fecha de inicio"
-            name="fechaInicio"
-            {...register("fechaInicio")}
-            error={errors.fechaInicio && errors.fechaInicio.message}
-          />
-
           {/* Componente CategoryPicker */}
           <CategoryInput
             onCategorySelect={(category) => {
-              console.log("Categoría seleccionada:", category); // Depuración
-              setValue("categoria_fk", category._id, { shouldValidate: true }); // Actualizar el valor del campo y disparar validación
-              setSelectedCategoryImage(
-                `https://back-fbch.onrender.com/uploads/${category.imagen}` // Actualizar la imagen seleccionada
-              );
+              setValue("categoria_fk", category._id, { shouldValidate: true });
+              setSelectedCategory(category);
             }}
+            selectedCategory={selectedCategory}
           />
           {errors.categoria_fk && (
             <p className="input-error">{errors.categoria_fk.message}</p>
           )}
 
+        
+
+   
+
+        
+          {/* Cobrado o pendiente */}
+          <div className="toggle-container">
+              <Toggle label="Gasto ya abonado" defaultChecked={false} {...register("acreditado")}/>
+
+              <p className="toggle-container__message">Marcá esta opción si ya pagaste
+                {
+                  toggleCuotasActivo && ("la primera cuota")
+                }
+              </p>
+            </div>
+
+            {/* Tipo de gasto*/}
+          {
+            toggleFrecuenciaActivo ? (
+              <div className="toggle-container toggle-container--active">
+                <Toggle label="Gasto fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} /> 
+
+                  <Select labelField="Frecuencia del gasto" options={optionsFrecuencia} />
+
+                  {errors.frecuencia && (
+            <p className="input-error">{errors.frecuencia.message}</p>
+          )}
+
+          {/* Campo para la fecha de inicio */}
+            <Input
+              type="date"
+              label="Fecha de inicio"
+              name="fechaInicio"
+              {...register("fechaInicio")}
+              error={errors.fechaInicio && errors.fechaInicio.message}
+            />
+              </div>
+            ): (
+                <div className="toggle-container">
+                  <Toggle label="Gasto fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} />
+
+                  <p className="toggle-container__message">Marcá esta opción si este gasto es recurrente y querés que te recordemos pagarlo</p>
+              </div>
+            )
+          }
+
+          {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
+
+
+        {/* Campo para las cuotas */}
+          {
+            toggleCuotasActivo ? (
+              <div className="toggle-container toggle-container--active">
+                  <Toggle label="Gasto en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />      
+                  
+                  <Select labelField="Cantidad de cuotas" options={optionsCuotas}  {...register("cuotas")}/>
+              </div>
+            ) : (
+            <div className="toggle-container">
+                <Toggle label="Gasto en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />
+
+              <p className="toggle-container__message">Marcá esta opción si vas a pagar este total en varias cuotas</p>
+            </div>
+            )
+          }
+
+          {errors.cuotas && (
+            <p className="input-error">{errors.cuotas.message}</p>
+          )}
+
+         
           {/* Mostrar la imagen de la categoría seleccionada */}
           {selectedCategoryImage && (
             <div className="selected-category-image">
@@ -258,12 +275,16 @@ const NewOutcome = () => {
             </div>
           )}
 
-          <Toggle
-            label="Cuotas automáticas"
+              <div className="toggle-container">
+            <Toggle
+            label="Pago automático"
             name="cuotasAutomaticas"
             {...register("cuotasAutomaticas")}
-            defaultChecked={true}
+            // defaultChecked={true}
           />
+
+          <p className="toggle-container__message">Activá esta función si querés que el gasto se marque como pagado automáticamente</p>
+          </div>
 
           <Button
             type="submit"
@@ -272,58 +293,6 @@ const NewOutcome = () => {
             disabled={loading}
           />
         </form>
-      </div>
-      <CategoryExpenseChart user={user} />
-      <div>
-        <h2>Mis Gastos</h2>
-        {loading && <p>Cargando...</p>}
-        {error && <p className="error-message">{error}</p>}
-
-        {gastos.length > 0 ? (
-          <ul>
-            {gastos.map((gasto) => (
-              <li key={gasto._id}>
-                <div>
-                  <strong>{gasto.nombre}</strong> - ${gasto.cantidad}
-                  <p>{gasto.descripcion}</p>
-                </div>
-                <div>
-                  <button
-                    className="btn-delete"
-                    onClick={() => openDeleteModal(gasto)}
-                  >
-                    Eliminar
-                  </button>
-                  <Link to={`/outcomes/edit/${gasto._id}`} className="btn-edit">
-                    Editar
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No tienes gastos registrados.</p>
-        )}
-
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>¿Estás seguro de que deseas eliminar este gasto?</h3>
-              <p>
-                <strong>{outcomeToDelete?.nombre}</strong> - $
-                {outcomeToDelete?.cantidad}
-              </p>
-              <div className="modal-actions">
-                <button className="btn-cancel" onClick={closeModal}>
-                  Cancelar
-                </button>
-                <button className="btn-confirm" onClick={handleDelete}>
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
