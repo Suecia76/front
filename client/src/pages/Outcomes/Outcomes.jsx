@@ -46,7 +46,7 @@ const Outcomes = () => {
 
         {/* <OutcomesCard
           title="Gasto de prueba"
-          icon="./src/assets/icons/balance.svg"
+          icon="/assets/icons/balance.svg"
           amount={1256658}
           category="Prueba"
           state="Prueba"
