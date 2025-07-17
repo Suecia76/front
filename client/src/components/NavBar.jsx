@@ -46,7 +46,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/">
               <img
                 className="navbar__link-icon"
-                src="../src/assets/icons/home.svg"
+                src=".assets/icons/home.svg"
                 alt="Inicio"
               />
               Inicio
@@ -57,7 +57,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/calendar">
               <img
                 className="navbar__link-icon"
-                src="../src/assets/icons/calendar.svg"
+                src=".assets/icons/calendar.svg"
                 alt="Calendario"
               />
               Calendario
@@ -68,7 +68,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/balances">
               <img
                 className="navbar__link-icon"
-                src="../src/assets/icons/balance.svg"
+                src=".assets/icons/balance.svg"
                 alt="Balance"
               />
               Balance
@@ -79,7 +79,7 @@ const NavBar = () => {
             <a className="navbar__link" href="/group">
               <img
                 className="navbar__link-icon"
-                src="../src/assets/icons/group.svg"
+                src=".assets/icons/group.svg"
                 alt="Grupo"
               />
               Grupo

@@ -215,7 +215,7 @@ textarea {
   display: none;
 }
 
-.arrow-down{
+.arrow-down {
   rotate: -90deg;
 }
 
@@ -247,8 +247,8 @@ textarea {
   justify-content: center;
   width: 100%;
   background-color: var(--extralight-blue);
-  padding-block: .8rem;
-  color: var(--dark-blue);  
+  padding-block: 0.8rem;
+  color: var(--dark-blue);
   border-bottom: 2px solid var(--light-blue);
   margin-bottom: 2rem;
   position: sticky;
@@ -374,9 +374,6 @@ input:checked + .slider:before {
   font-weight: 400;
 }
 
- 
- 
-
 /* Incomes and Outcomes */
 .container-input-calculator {
   border: 1px solid var(--indigo);
@@ -388,22 +385,22 @@ input:checked + .slider:before {
   width: 90%;
   align-items: center;
 
-  .input-calculator{
-    &:focus{
+  .input-calculator {
+    &:focus {
       outline: none;
     }
-    &:focus::placeholder{
-    color: transparent;
+    &:focus::placeholder {
+      color: transparent;
     }
 
-    &::placeholder{
+    &::placeholder {
       color: var(--light-blue);
     }
   }
 
-  .icon-btn__icon{
-        width: 2.5rem;
-      }
+  .icon-btn__icon {
+    width: 2.5rem;
+  }
 }
 
 #newIncome input:not(.input-calculator):not([type="checkbox"]),
@@ -411,8 +408,9 @@ input:checked + .slider:before {
 .select,
 #newOutcome input:not(.input-calculator):not([type="checkbox"]),
 #newOutcome textarea,
-#new-goal input:not(.input-calculator):not([type="checkbox"]):not(.input-sign__input),
-#new-goal textarea{
+#new-goal
+  input:not(.input-calculator):not([type="checkbox"]):not(.input-sign__input),
+#new-goal textarea {
   height: 3rem;
   border-radius: $border-radius;
   padding-left: 0.5rem;
@@ -503,7 +501,7 @@ input:checked + .slider:before {
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-}  
+}
 
 .input-error {
   text-align: left;
@@ -556,7 +554,7 @@ input:checked + .slider:before {
 }
 
 .btn-calculator {
-  /* background-image: url(./src/assets/icons/calc.png); */
+  /* background-image: url(assets/icons/calc.png); */
   background-position: center;
   border-radius: 0rem;
   width: 3rem;
@@ -698,8 +696,8 @@ input:checked + .slider:before {
   text-align: left;
   display: flex;
   justify-content: space-between;
-  align-items: center;  
-  .selected-category{
+  align-items: center;
+  .selected-category {
     display: flex;
     justify-content: start;
     align-items: center;
@@ -720,7 +718,7 @@ input:checked + .slider:before {
   color: var(--dark-blue);
   width: 100%;
   background-color: var(--white);
-  
+
   .selectField__option {
     padding: 0.5rem;
     cursor: pointer;
@@ -773,8 +771,8 @@ input:checked + .slider:before {
   background-color: var(--white);
 }
 
-.textareaField{
-  padding: .5rem;
+.textareaField {
+  padding: 0.5rem;
   resize: none;
   min-height: 4rem;
   width: 95%;
@@ -893,49 +891,48 @@ input:checked + .slider:before {
   }
 }
 
-  .transaction-card__icon-container,
-  .goal-card__icon-container {
-    border: 2px solid var(--blue);
-    padding: 0.5rem;
-    border-radius: 10rem;
-    width: 4rem;
-    height: 3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.transaction-card__icon-container,
+.goal-card__icon-container {
+  border: 2px solid var(--blue);
+  padding: 0.5rem;
+  border-radius: 10rem;
+  width: 4rem;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    .income-card__icon,
-    .goal-card__icon {
-      width: 70%;
-    }
+  .income-card__icon,
+  .goal-card__icon {
+    width: 70%;
   }
+}
 
-  .transaction-card__icon {
-    max-width: 70%;
-  }
+.transaction-card__icon {
+  max-width: 70%;
+}
 
-  .transaction-card__info,
-  .goal-card__info {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    justify-content: start;
-    width: 100%;
-  }
+.transaction-card__info,
+.goal-card__info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  justify-content: start;
+  width: 100%;
+}
 
-  .transaction-card__title,
-  .goal-card__title {
-    font-size: 1.2rem;
+.transaction-card__title,
+.goal-card__title {
+  font-size: 1.2rem;
+  font-family: var(--fredoka);
+  font-weight: var(--medium);
+
+  .income-card__amount,
+  .goal-card__amount {
+    font-weight: var(--semibold);
     font-family: var(--fredoka);
-    font-weight: var(--medium);
-
-    .income-card__amount,
-    .goal-card__amount {
-      font-weight: var(--semibold);
-      font-family: var(--fredoka);
-    }
   }
-
+}
 
 .goal-card {
   display: flex;
@@ -1014,37 +1011,34 @@ input:checked + .slider:before {
   }
 }
 
-      .transaction__input-label{
-        font-size: .8rem;
-        font-weight: var(--light);
-        font-family: var(--montserrat);
-        opacity: 0.8;
-      }
-    
-      .transaction__input{
-        background-color: transparent;
-        outline: none;
-        border: none;
-        font-size: 1.5rem;
-        color: var(--dark-blue);
-        font-weight: var(--medium);
-      }
+.transaction__input-label {
+  font-size: 0.8rem;
+  font-weight: var(--light);
+  font-family: var(--montserrat);
+  opacity: 0.8;
+}
 
-      .transaction__input--cantidad{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+.transaction__input {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--dark-blue);
+  font-weight: var(--medium);
+}
 
-        .transaction__input-sign{
-          display: inline-block;
-          width: 1rem;
-        }
-      }
+.transaction__input--cantidad {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
-    
+  .transaction__input-sign {
+    display: inline-block;
+    width: 1rem;
+  }
+}
 
-    
-.data-card{
+.data-card {
   width: 100%;
   border-radius: $border-radius;
   height: fit-content;
@@ -1309,15 +1303,15 @@ input:checked + .slider:before {
     align-items: baseline;
     position: relative;
     background-color: var(--white);
-    padding-bottom: .5rem;
+    padding-bottom: 0.5rem;
     padding-top: 1rem;
     border-radius: 2rem;
-    margin-bottom: 1rem;;
+    margin-bottom: 1rem;
   }
 
   .navbar__actions-container {
     background-color: var(--blue);
-      outline: 5px solid var(--white);
+    outline: 5px solid var(--white);
     position: absolute;
     left: 50%;
     top: -10%;
@@ -1373,15 +1367,15 @@ input:checked + .slider:before {
     }
   }
 
-.navbar__actions--active{
-  display: flex;
-}
-  
-  .navbar__link-container{
-    padding-inline: .5rem;
+  .navbar__actions--active {
+    display: flex;
+  }
+
+  .navbar__link-container {
+    padding-inline: 0.5rem;
     width: 25%;
 
-    .navbar__link{
+    .navbar__link {
       color: var(--blue);
       display: flex;
       flex-direction: column;
@@ -1536,60 +1530,59 @@ input:checked + .slider:before {
   }
 }
 
-.month-picker{
- display: flex;
- flex-direction: row;
- justify-content: space-between;
- align-items: center;
- gap: .2rem; 
+.month-picker {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.2rem;
 
- background-color: var(--white);
- border-radius: $border-radius;
- padding: 1rem;
-
- .month-picker__month{
-  font-size: 1.2rem;
-  font-weight: var(--semibold);
-  text-align: center;
-  color: var(--dark-blue);
-  text-transform: capitalize;
- }
-
- .month-picker__year{
-  font-size: 1rem;
-  font-weight: var(--regular);
-  text-align: center;
-  color: var(--light-blue);
- }
-
- .month-picker__button{
-
-  width: 2rem;
-  height: 2rem;
+  background-color: var(--white);
   border-radius: $border-radius;
+  padding: 1rem;
 
-  &:focus{
-      border: 1px solid var(--light-blue);
+  .month-picker__month {
+    font-size: 1.2rem;
+    font-weight: var(--semibold);
+    text-align: center;
+    color: var(--dark-blue);
+    text-transform: capitalize;
   }
- }
+
+  .month-picker__year {
+    font-size: 1rem;
+    font-weight: var(--regular);
+    text-align: center;
+    color: var(--light-blue);
+  }
+
+  .month-picker__button {
+    width: 2rem;
+    height: 2rem;
+    border-radius: $border-radius;
+
+    &:focus {
+      border: 1px solid var(--light-blue);
+    }
+  }
 }
 
-.calendar{
-   list-style: "none";
-   padding: 0;
-   margin: 0;
-   background-color: var(--white);
-  
-  .calendar__date{
+.calendar {
+  list-style: "none";
+  padding: 0;
+  margin: 0;
+  background-color: var(--white);
+
+  .calendar__date {
     display: inline-block;
-  
-    font-size: .8rem;
+
+    font-size: 0.8rem;
     overflow: hidden;
     text-overflow: ellipsis;
     // background-color: white;
-  
-    &.calendar__date--income{
-        color:green;
+
+    &.calendar__date--income {
+      color: green;
     }
 
     &.calendar__date--outcome {
@@ -1597,44 +1590,42 @@ input:checked + .slider:before {
     }
   }
 }
-  .react-calendar{
-    background-color: var(--white);
-    padding-bottom: .5rem;
-    padding-top: 1rem;
-    padding-inline: 1rem;
+.react-calendar {
+  background-color: var(--white);
+  padding-bottom: 0.5rem;
+  padding-top: 1rem;
+  padding-inline: 1rem;
+  border-radius: $border-radius;
+
+  .react-calendar__tile {
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: var(--dark-blue);
     border-radius: $border-radius;
+    display: flex;
+    flex-direction: column;
+    min-height: 3.5rem;
 
-    .react-calendar__tile{
-      padding: 0.5rem;
-      font-size: 1rem;
+    &.react-calendar__tile--now {
+      background-color: var(--extralight-blue);
       color: var(--dark-blue);
-      border-radius: $border-radius;
-      display: flex;
-      flex-direction: column;
-      min-height: 3.5rem;
-
-
-      &.react-calendar__tile--now{
-        background-color: var(--extralight-blue);
-        color: var(--dark-blue);
-      }
-    }
-
-    .react-calendar__month-view__weekdays__weekday{
-      text-transform: capitalize;
-      font-weight: var(--semibold);
-      color: var(--dark-blue);
-      
-      abbr{
-        text-decoration: none;
-      }
     }
   }
 
-/* Profile */
-.profile{
+  .react-calendar__month-view__weekdays__weekday {
+    text-transform: capitalize;
+    font-weight: var(--semibold);
+    color: var(--dark-blue);
 
-  .profile__avatar{
+    abbr {
+      text-decoration: none;
+    }
+  }
+}
+
+/* Profile */
+.profile {
+  .profile__avatar {
     width: 6rem;
     height: 6rem;
     border-radius: 100rem;
@@ -1642,50 +1633,49 @@ input:checked + .slider:before {
     border: 2px solid var(--blue);
   }
 
-  .profile__name{
+  .profile__name {
     font-size: 1.5rem;
     font-weight: var(--semibold);
     color: var(--dark-blue);
     text-align: center;
   }
 
-  .profile__email{
+  .profile__email {
     font-size: 1.1rem;
     color: var(--light-blue);
     text-align: center;
   }
 
-  .profile-form{
+  .profile-form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
-  .btn{
+  .btn {
     margin-top: 1rem;
   }
 }
 
-.goals{
+.goals {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
-  
-  .goals-list{
+  .goals-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
-  .no-goals-message{
+  .no-goals-message {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 }
 
-#new-goal{
+#new-goal {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -1693,37 +1683,37 @@ input:checked + .slider:before {
   max-width: $max-width;
   margin: auto;
 
-   .input-sign{
+  .input-sign {
     width: 95%;
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: 0.5rem;
     background-color: var(--white);
     border: 1px solid var(--indigo);
     border-radius: $border-radius;
-    padding-inline: .5rem;
-    
-    .input-sign__sign{
+    padding-inline: 0.5rem;
+
+    .input-sign__sign {
       color: var(--indigo);
     }
-    .input-sign__input{
+    .input-sign__input {
       background-color: transparent;
       border: none;
 
-      &:focus{
+      &:focus {
         outline: none;
       }
     }
   }
 }
 
-.filters{
+.filters {
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding-bottom: 2rem;
 
-  .filters__searchbar{
+  .filters__searchbar {
     display: flex;
     background-color: var(--white);
     border-radius: $border-radius;
@@ -1732,15 +1722,14 @@ input:checked + .slider:before {
     margin-inline: 1rem;
   }
 
-  .filters__options{
+  .filters__options {
     display: flex;
     gap: 1rem;
     padding-inline: 1rem;
     justify-content: space-around;
   }
 
-  .filters__icon{
+  .filters__icon {
     width: 24px;
   }
-  
 }
