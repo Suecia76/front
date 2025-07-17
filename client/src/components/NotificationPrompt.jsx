@@ -24,10 +24,12 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 const NotificationPrompt = ({ userId }) => {
-  const [permission, setPermission] = useState(Notification.permission);
+  const [permission, setPermission] = useState(
+    typeof Notification !== "undefined" ? Notification.permission : "default"
+  );
 
   const handleEnableNotifications = async () => {
-    if ("Notification" in window) {
+    if (typeof Notification !== "undefined") {
       const result = await Notification.requestPermission();
       setPermission(result);
 
