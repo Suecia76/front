@@ -8,8 +8,7 @@ function isOpera() {
 }
 function isSafari() {
   return (
-    /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
-    !isOpera()
+    /^((?!chrome|android).)*safari/i.test(navigator.userAgent) && !isOpera()
   );
 }
 
@@ -40,10 +39,13 @@ const NotificationPrompt = ({ userId }) => {
               serviceWorkerRegistration: await navigator.serviceWorker.ready,
             });
             if (token) {
-              await axios.post("http://localhost:3000/usuarios/suscripcion-fcm", {
-                userId,
-                fcmToken: token,
-              });
+              await axios.post(
+                "https://back-fbch.onrender.com/usuarios/suscripcion-fcm",
+                {
+                  userId,
+                  fcmToken: token,
+                }
+              );
             } else {
               alert("No se pudo obtener el token de FCM.");
             }
@@ -59,10 +61,13 @@ const NotificationPrompt = ({ userId }) => {
               import.meta.env.VITE_VAPID_PUBLIC_KEY
             ),
           });
-          await axios.post("http://localhost:3000/usuarios/suscripcion-push", {
-            subscription,
-            userId,
-          });
+          await axios.post(
+            "https://back-fbch.onrender.com/usuarios/suscripcion-push",
+            {
+              subscription,
+              userId,
+            }
+          );
         }
       }
     }

@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { StatusBar } from "../../components/StatusBar";
-import {Input} from "../../components";
+import { Input } from "../../components";
 
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext); // Obtener el usuario del contexto
@@ -55,7 +55,7 @@ const Profile = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:3000/usuarios/${user.id}`,
+        `https://back-fbch.onrender.com/usuarios/${user.id}`,
         formDataToSend,
         {
           headers: {
@@ -69,7 +69,7 @@ const Profile = () => {
       console.log("Usuario actualizado:", response.data.user);
 
       setPreviewImage(
-        `http://localhost:3000/uploads/imagenes_perfil/${response.data.user.image}`
+        `https://back-fbch.onrender.com/uploads/imagenes_perfil/${response.data.user.image}`
       ); // Actualizar la vista previa de la imagen
       setSuccess("Perfil actualizado correctamente.");
     } catch (err) {
@@ -83,7 +83,7 @@ const Profile = () => {
   return (
     <div className="profile">
       <StatusBar label="Mi perfil" />
-      
+
       <form onSubmit={handleSubmit} className="profile-form">
         {/* <div className="form-group">
           <label htmlFor="profileImage">Foto de perfil</label>
@@ -104,16 +104,35 @@ const Profile = () => {
           )}
         </div> */}
 
-        <Input label="Nombre" id="name" name="name" value={formData.name} onChange={handleInputChange}/>
+        <Input
+          label="Nombre"
+          id="name"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+        />
 
-        <Input label="Email" type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required/>
-       
-        <Input label="Nueva Contraseña" type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} />
+        <Input
+          label="Email"
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+        />
+
+        <Input
+          label="Nueva Contraseña"
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleInputChange}
+        />
 
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
-
-          
 
         <button
           type="submit"

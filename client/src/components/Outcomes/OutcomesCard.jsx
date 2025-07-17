@@ -23,7 +23,7 @@ const OutcomesCard = ({
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.get(
-        `http://localhost:3000/categorias/${id}`,
+        `https://back-fbch.onrender.com/categorias/${id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -60,7 +60,7 @@ const OutcomesCard = ({
               className="transaction-card__icon"
               src={
                 category?.imagen
-                  ? `http://localhost:3000/uploads/${category.imagen}`
+                  ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
                   : "/assets/icons/default.svg"
               }
               alt={category?.nombre || "icono"}

@@ -56,10 +56,10 @@ const NewIncome = () => {
   const [incomeToDelete, setIncomeToDelete] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [toggleFrecuenciaActivo, setToggleFrecuenciaActivo] = useState(false);
-   
+
   const [toggleCuotasActivo, setToggleCuotasActivo] = useState(false);
 
-    const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -90,7 +90,7 @@ const NewIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/ingresos/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -119,40 +119,39 @@ const NewIncome = () => {
       console.log("Datos enviados:", data);
 
       // Si el toggle de cuotas está desactivado, forzar 1
-          if (!toggleCuotasActivo) {
-            data.cuotas = 1;
+      if (!toggleCuotasActivo) {
+        data.cuotas = 1;
       }
 
-      if(data.cantidad == null || data.cantidad === ""){
-        data.cantidad= 0;
+      if (data.cantidad == null || data.cantidad === "") {
+        data.cantidad = 0;
       }
-
 
       //Si el toggle de acreditado esta marcado entonces lo acreditamos
-    const estado = data.acreditado ? "pagado" : "pendiente";
+      const estado = data.acreditado ? "pagado" : "pendiente";
 
-        const response = await axios.post(
-          "http://localhost:3000/ingresos",
-          {
-            ...data,
-            user_fk: user.id,
-            estado: "pendiente",
+      const response = await axios.post(
+        "https://back-fbch.onrender.com/ingresos",
+        {
+          ...data,
+          user_fk: user.id,
+          estado: "pendiente",
+        },
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
           },
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
+        }
+      );
 
       console.log("Creaste un ingreso correctamente", response.data);
 
       setIngresos([...ingresos, response.data.ingreso]);
       reset();
-      
+
       setSelectedCategoryImage(null); // Reiniciar la imagen seleccionada
 
-      navigate("/incomes")
+      navigate("/incomes");
     } catch (error) {
       console.error("Error al crear el ingreso:", error.response?.data);
       setError("Error al crear el ingreso.");
@@ -161,19 +160,17 @@ const NewIncome = () => {
     }
   };
 
-
-    const optionsFrecuencia = [
-    { value: "semanal", label: "Semanal" },  
-    { value: "quincenal", label: "Quincenal" }, 
-    { value: "mensual", label: "Mensual" }  
-  ]
-
+  const optionsFrecuencia = [
+    { value: "semanal", label: "Semanal" },
+    { value: "quincenal", label: "Quincenal" },
+    { value: "mensual", label: "Mensual" },
+  ];
 
   const optionsCuotas = [
-    {value:3, label:"3 cuotas"},
-    {value:6, label:"6 cuotas"},
-    {value:12, label:"12 cuotas"}
-  ]
+    { value: 3, label: "3 cuotas" },
+    { value: 6, label: "6 cuotas" },
+    { value: 12, label: "12 cuotas" },
+  ];
 
   return (
     <>
@@ -181,7 +178,6 @@ const NewIncome = () => {
 
       <div id="newIncome">
         <form onSubmit={handleSubmit(onSubmit)} className="autolayout-1">
-          
           {/* Monto */}
           <InputCalculator
             label="Monto"
@@ -210,7 +206,7 @@ const NewIncome = () => {
             error={errors.descripcion && errors.descripcion.message}
           />
 
-           <CategoryInput
+          <CategoryInput
             onCategorySelect={(category) => {
               setValue("categoria_fk", category._id, { shouldValidate: true });
               setSelectedCategory(category);
@@ -222,74 +218,106 @@ const NewIncome = () => {
           )}
 
           {/* Tipo de ingreso */}
-          {
-            toggleFrecuenciaActivo ? (
-              <div className="toggle-container toggle-container--active">
-                  <Toggle label="Ingreso fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} />      
-                  
-                  <Select labelField="Frecuencia del gasto" options={optionsFrecuencia}/>
-              </div>
-            ) : (
-            <div className="toggle-container">
-                <Toggle label="Ingreso fijo" onChange={()=>setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)} defaultChecked={toggleFrecuenciaActivo} />
+          {toggleFrecuenciaActivo ? (
+            <div className="toggle-container toggle-container--active">
+              <Toggle
+                label="Ingreso fijo"
+                onChange={() =>
+                  setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)
+                }
+                defaultChecked={toggleFrecuenciaActivo}
+              />
 
-                    <p className="toggle-container__message">Marcá esta opción si este ingreso es recurrente y querés que te recordemos acreditarlo</p>
+              <Select
+                labelField="Frecuencia del gasto"
+                options={optionsFrecuencia}
+              />
             </div>
-            )
-          }
-        
+          ) : (
+            <div className="toggle-container">
+              <Toggle
+                label="Ingreso fijo"
+                onChange={() =>
+                  setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)
+                }
+                defaultChecked={toggleFrecuenciaActivo}
+              />
+
+              <p className="toggle-container__message">
+                Marcá esta opción si este ingreso es recurrente y querés que te
+                recordemos acreditarlo
+              </p>
+            </div>
+          )}
+
           {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
 
           {/* Campo para las cuotas */}
-          {
-            toggleCuotasActivo ? (
-              <div className="toggle-container toggle-container--active">
-                  <Toggle label="Ingreso en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />      
-                  
-                  <Select labelField="Cantidad de cuotas" options={optionsCuotas}  {...register("cuotas")}/>
-              </div>
-            ) : (
-            <div className="toggle-container">
-                <Toggle label="Ingreso en cuotas" onChange={setToggleCuotasActivo} defaultChecked={toggleCuotasActivo} />
+          {toggleCuotasActivo ? (
+            <div className="toggle-container toggle-container--active">
+              <Toggle
+                label="Ingreso en cuotas"
+                onChange={setToggleCuotasActivo}
+                defaultChecked={toggleCuotasActivo}
+              />
 
-              <p className="toggle-container__message">Marcá esta opción si vas a cobrar este total en varias cuotas</p>
+              <Select
+                labelField="Cantidad de cuotas"
+                options={optionsCuotas}
+                {...register("cuotas")}
+              />
             </div>
-            )
-          }
-
-          {
-            (toggleFrecuenciaActivo || toggleCuotasActivo) && (
+          ) : (
             <div className="toggle-container">
-                <Toggle
-                  label="Acreditación automática"
-                  name="cuotasAutomaticas"
-                  {...register("cuotasAutomaticas")}
-                  // defaultChecked={true}
-                />
+              <Toggle
+                label="Ingreso en cuotas"
+                onChange={setToggleCuotasActivo}
+                defaultChecked={toggleCuotasActivo}
+              />
 
-                <p className="toggle-container__message">Activá esta función si querés que el ingreso se acredite automáticamente en tu saldo cada mes</p>
-          </div>
+              <p className="toggle-container__message">
+                Marcá esta opción si vas a cobrar este total en varias cuotas
+              </p>
+            </div>
+          )}
 
-            )
-          }
-          
+          {(toggleFrecuenciaActivo || toggleCuotasActivo) && (
+            <div className="toggle-container">
+              <Toggle
+                label="Acreditación automática"
+                name="cuotasAutomaticas"
+                {...register("cuotasAutomaticas")}
+                // defaultChecked={true}
+              />
+
+              <p className="toggle-container__message">
+                Activá esta función si querés que el ingreso se acredite
+                automáticamente en tu saldo cada mes
+              </p>
+            </div>
+          )}
+
           {/* Cobrado o pendiente solo se muestra si no es una transacción en cuotas o fija*/}
           {!toggleCuotasActivo && !toggleFrecuenciaActivo && (
-            
-              <div className="toggle-container">
-                  <Toggle label="Dinero ya acreditado" defaultChecked={false} {...register("acreditado")}/>
-                  <p className="toggle-container__message">Marcá esta opción si ya tenés el dinero.No disponible para ingresos fijos o en cuotas</p>
-              </div>
+            <div className="toggle-container">
+              <Toggle
+                label="Dinero ya acreditado"
+                defaultChecked={false}
+                {...register("acreditado")}
+              />
+              <p className="toggle-container__message">
+                Marcá esta opción si ya tenés el dinero.No disponible para
+                ingresos fijos o en cuotas
+              </p>
+            </div>
           )}
 
           {errors.cuotas && (
             <p className="input-error">{errors.cuotas.message}</p>
           )}
-         
-         
 
           {/* Campo para la fecha de inicio */}
-        {/*   <Input
+          {/*   <Input
             type="date"
             label="Fecha de cobro"
             name="fechaInicio"
@@ -297,10 +325,12 @@ const NewIncome = () => {
             error={errors.fechaInicio && errors.fechaInicio.message}
           /> */}
 
-          
-                
-          <input type="hidden" {...register("cuotasAutomaticas")} value={true}/>
-         
+          <input
+            type="hidden"
+            {...register("cuotasAutomaticas")}
+            value={true}
+          />
+
           <Button
             type="submit"
             label={loading ? "Creando..." : "Agregar ingreso"}

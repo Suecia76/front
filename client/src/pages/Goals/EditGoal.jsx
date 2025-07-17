@@ -9,8 +9,7 @@ import { Textarea } from "../../components/Forms/Textarea";
 import { Button } from "../../components/Button";
 import { Select } from "../../components";
 import Cookies from "js-cookie";
-import { StatusBar, ModalWrapper, Dialog  } from "../../components";
-
+import { StatusBar, ModalWrapper, Dialog } from "../../components";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("El nombre es obligatorio"),
@@ -67,11 +66,14 @@ const EditGoal = () => {
     const fetchGoal = async () => {
       try {
         const token = Cookies.get("token") || null;
-        const response = await axios.get(`http://localhost:3000/metas/${id}`, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        });
+        const response = await axios.get(
+          `https://back-fbch.onrender.com/metas/${id}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
 
         const goal = response.data;
         setValue("nombre", goal.nombre);
@@ -102,7 +104,7 @@ const EditGoal = () => {
     try {
       const token = Cookies.get("token") || null;
       await axios.put(
-        `http://localhost:3000/metas/${id}`,
+        `https://back-fbch.onrender.com/metas/${id}`,
         { ...data },
         {
           headers: {
@@ -122,12 +124,12 @@ const EditGoal = () => {
     setDeleting(true);
     try {
       const token = Cookies.get("token") || null;
-      await axios.delete(`http://localhost:3000/metas/${id}`, {
+      await axios.delete(`https://back-fbch.onrender.com/metas/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
       });
-      
+
       navigate("/goals");
     } catch (error) {
       setError("Error al eliminar la meta.");
@@ -268,18 +270,16 @@ const EditGoal = () => {
 
       {/* Modal de confirmación para eliminar */}
       {showDeleteModal && (
-          <ModalWrapper small={true}>
-            <Dialog 
-              title="Confirmar eliminación"
-              text="¿Estás seguro de que deseas eliminar esta meta?"
-              onClick1={handleDelete}
-              onClick2={closeDeleteModal}
-              option1= "Eliminar"
-              option2="Cancelar"
-            />
-          </ModalWrapper>
-        
-        
+        <ModalWrapper small={true}>
+          <Dialog
+            title="Confirmar eliminación"
+            text="¿Estás seguro de que deseas eliminar esta meta?"
+            onClick1={handleDelete}
+            onClick2={closeDeleteModal}
+            option1="Eliminar"
+            option2="Cancelar"
+          />
+        </ModalWrapper>
       )}
     </>
   );

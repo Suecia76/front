@@ -1,12 +1,11 @@
 import { GoalsCard } from "../../components/Goals/GoalsCard";
-import {StatusBar} from "../../components/StatusBar"
+import { StatusBar } from "../../components/StatusBar";
 import { useEffect, useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 
 const Goals = () => {
-
   const { user } = useContext(AuthContext);
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,11 +15,11 @@ const Goals = () => {
     const fetchGoals = async () => {
       if (!user) return;
       setLoading(true);
-      
+
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/metas/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -29,7 +28,7 @@ const Goals = () => {
         );
 
         setGoals(response.data);
-        console.log('goals', goals)
+        console.log("goals", goals);
       } catch (error) {
         console.error("Error al obtener las metas:", error.response?.data);
         setError("Error al cargar las metas.");
@@ -43,7 +42,7 @@ const Goals = () => {
 
   if (loading) return <p>Cargando metas...</p>;
 
-/* if (error) {
+  /* if (error) {
   return (
     <div className="error-container">
       <p className="error-message">{error}</p>
@@ -52,30 +51,34 @@ const Goals = () => {
 } */
   return (
     <div className="goals">
-      <StatusBar label="Mis metas"/>
+      <StatusBar label="Mis metas" />
 
-     {goals.length > 0 ? (
+      {goals.length > 0 ? (
         <div className="goals-list">
           {goals.map((goal) => (
-            <GoalsCard key={goal._id} title={goal.nombre} progress={goal.progreso} amount={goal.objetivo} id={goal._id} />
+            <GoalsCard
+              key={goal._id}
+              title={goal.nombre}
+              progress={goal.progreso}
+              amount={goal.objetivo}
+              id={goal._id}
+            />
           ))}
         </div>
       ) : (
         <div className="no-goals-message">
           <p>No tienes metas registradas aún.</p>
         </div>
-      )}  
+      )}
 
-       <button
-            className="btn btn--filled-blue"
-            onClick={() => window.location.href = "/goals/add"}
-          >
-            Crear nueva meta
-          </button>
-
+      <button
+        className="btn btn--filled-blue"
+        onClick={() => (window.location.href = "/goals/add")}
+      >
+        Crear nueva meta
+      </button>
     </div>
   );
 };
 
-
-export {Goals}
+export { Goals };

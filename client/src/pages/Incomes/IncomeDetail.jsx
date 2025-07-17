@@ -91,11 +91,14 @@ const IncomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
 
-        const res = await axios.get(`http://localhost:3000/ingresos/${id}`, {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        });
+        const res = await axios.get(
+          `https://back-fbch.onrender.com/ingresos/${id}`,
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
 
         setIncome(res.data);
 
@@ -129,7 +132,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.put(`http://localhost:3000/ingresos/${id}`, data, {
+      await axios.put(`https://back-fbch.onrender.com/ingresos/${id}`, data, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -153,7 +156,7 @@ const IncomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/categorias/${id}`,
+          `https://back-fbch.onrender.com/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -196,7 +199,7 @@ const IncomeDetail = () => {
       console.log(token);
 
       const res = await axios.post(
-        `http://localhost:3000/ingresos/${id}/confirmar`,
+        `https://back-fbch.onrender.com/ingresos/${id}/confirmar`,
         {},
         /* {
             // ...getValues(), 
@@ -217,7 +220,7 @@ const IncomeDetail = () => {
     }
   };
 
-  const url = "http://localhost:3000/uploads/";
+  const url = "https://back-fbch.onrender.com/uploads/";
 
   const cuotas = watch("cuotas");
 
@@ -227,7 +230,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.delete(`http://localhost:3000/ingresos/${id}`, {
+      await axios.delete(`https://back-fbch.onrender.com/ingresos/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -288,7 +291,7 @@ const IncomeDetail = () => {
               error={errors.nombre?.message}
             />
             <InputDetail
-            typeCantidad="true"
+              typeCantidad="true"
               label="Monto"
               {...register("cantidad")}
               error={errors.cantidad?.message}
@@ -346,7 +349,7 @@ const IncomeDetail = () => {
                       className="data-card__icon"
                       src={
                         category?.imagen
-                          ? `http://localhost:3000/uploads/${category.imagen}`
+                          ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
                           : "/assets/icons/default.svg"
                       }
                       alt={category?.nombre || "icono"}

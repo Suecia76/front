@@ -16,13 +16,12 @@ const Confirmaciones = () => {
   const [loading, setLoading] = useState(true);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
-  
   useEffect(() => {
     const fetchPendientes = async () => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `http://localhost:3000/usuarios/pendientes/${user.id}`,
+          `https://back-fbch.onrender.com/usuarios/pendientes/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setPendientes(res.data);
@@ -38,20 +37,20 @@ const Confirmaciones = () => {
   const handleConfirm = async (type, id) => {
     try {
       const token = Cookies.get("token");
-      let url
+      let url;
 
-      if (type === "ingreso" && id){
-         url = `http://localhost:3000/ingresos/${id}/confirmar`;
+      if (type === "ingreso" && id) {
+        url = `https://back-fbch.onrender.com/ingresos/${id}/confirmar`;
       } else if (type === "gasto" && id) {
-         url = `http://localhost:3000/gastos/${id}/confirmar`;
+        url = `https://back-fbch.onrender.com/gastos/${id}/confirmar`;
       }
-      
+
       await axios.post(
         url,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-     
+
       setPendientes((prev) => ({
         ...prev,
         [`${type}sPendientes`]: prev[`${type}sPendientes`].filter(
@@ -96,27 +95,31 @@ const Confirmaciones = () => {
       {selectedTab === "ingresos" && (
         <>
           <div>
-          <h2>Ingresos a confirmar</h2>
+            <h2>Ingresos a confirmar</h2>
 
-          {pendientes.ingresosPendientes.length === 0 ? (
-            <p>No hay ingresos pendientes.</p>
-          ) : (
-            pendientes.ingresosPendientes.map((ingreso) => (
-             <>
-             
-           
-
-           <ConfirmTransactionCard _id={ingreso._id} key={ingreso._id} title={ingreso.nombre} amount={ingreso.cantidad} type="income" onConfirm={()=> setSelectedTransaction({ type: "ingreso", id: ingreso._id })} />
-          </>
-            
-             
-              
-            ))
-          )}
-        </div>
-
-       
-          </>
+            {pendientes.ingresosPendientes.length === 0 ? (
+              <p>No hay ingresos pendientes.</p>
+            ) : (
+              pendientes.ingresosPendientes.map((ingreso) => (
+                <>
+                  <ConfirmTransactionCard
+                    _id={ingreso._id}
+                    key={ingreso._id}
+                    title={ingreso.nombre}
+                    amount={ingreso.cantidad}
+                    type="income"
+                    onConfirm={() =>
+                      setSelectedTransaction({
+                        type: "ingreso",
+                        id: ingreso._id,
+                      })
+                    }
+                  />
+                </>
+              ))
+            )}
+          </div>
+        </>
       )}
 
       {selectedTab === "gastos" && (
@@ -129,34 +132,45 @@ const Confirmaciones = () => {
             ) : (
               pendientes.gastosPendientes.map((gasto) => (
                 <>
-                  <ConfirmTransactionCard _id={gasto._id} key={gasto._id} title={gasto.nombre} amount={gasto.cantidad} type="outcome" onConfirm={()=> {setSelectedTransaction({ type: "gasto", id: gasto._id})
-                  }} />
+                  <ConfirmTransactionCard
+                    _id={gasto._id}
+                    key={gasto._id}
+                    title={gasto.nombre}
+                    amount={gasto.cantidad}
+                    type="outcome"
+                    onConfirm={() => {
+                      setSelectedTransaction({ type: "gasto", id: gasto._id });
+                    }}
+                  />
                 </>
-              
               ))
             )}
           </div>
         </>
       )}
 
-      {
-                  selectedTransaction && (
-                    <ModalWrapper small={true} onClose={() => setSelectedTransaction(null)}>
-                         <Dialog
-                        title={`Confirmando ${selectedTransaction.type === "ingreso" ? "Ingreso" : "Gasto"}`}
-                        text={ selectedTransaction.type === "ingreso" ?
-                          "Si lo confirmas, sumaremos el dinero a tu balance y marcaremos el ingreso como cobrado" :
-                          "Si lo confirmas, restaremos el dinero de tu balance y marcaremos el gasto como abonado"}
-                        option1="Confirmar"
-                        option2="Cancelar"
-                        onClick1={()=>handleConfirm(selectedTransaction.type, selectedTransaction.id)}
-                        onClick2={()=> {setSelectedTransaction(null) 
-                        }}
-                      />
-                     
-                    </ModalWrapper>
-                  )
-                }
+      {selectedTransaction && (
+        <ModalWrapper small={true} onClose={() => setSelectedTransaction(null)}>
+          <Dialog
+            title={`Confirmando ${
+              selectedTransaction.type === "ingreso" ? "Ingreso" : "Gasto"
+            }`}
+            text={
+              selectedTransaction.type === "ingreso"
+                ? "Si lo confirmas, sumaremos el dinero a tu balance y marcaremos el ingreso como cobrado"
+                : "Si lo confirmas, restaremos el dinero de tu balance y marcaremos el gasto como abonado"
+            }
+            option1="Confirmar"
+            option2="Cancelar"
+            onClick1={() =>
+              handleConfirm(selectedTransaction.type, selectedTransaction.id)
+            }
+            onClick2={() => {
+              setSelectedTransaction(null);
+            }}
+          />
+        </ModalWrapper>
+      )}
     </div>
   );
 };
