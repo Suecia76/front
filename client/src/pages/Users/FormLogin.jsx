@@ -1,5 +1,4 @@
-import { useState, useContext } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Input } from "../../components/Forms/Input.jsx";
 import { Button } from "../../components/Button.jsx";
 import { useNavigate } from "react-router-dom";
@@ -26,17 +25,19 @@ const FormLogin = () => {
   const navigate = useNavigate();
   const { setUser, user } = useContext(AuthContext);
 
-  if (user) {
-    navigate("/");
-  }
+  // Navegar a home si ya está logueado
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const [showPassword, setShowPassword] = useState(false);
-  const [loginError, setLoginError] = useState(""); // Nuevo estado
+  const [loginError, setLoginError] = useState(""); // Estado para mostrar error
 
   const navigateRegister = (e) => {
     e.preventDefault();
     navigate("/users/register");
-    console.log("Going to register");
   };
 
   const {
@@ -49,9 +50,9 @@ const FormLogin = () => {
 
   const handleLogin = async (data) => {
     try {
-      setLoginError(""); // Limpia error anterior
+      setLoginError(""); // Limpiar error previo
       const response = await axios.post(
-        "https://back-1-1j7o.onrender.com/usuarios/login",
+        "http://localhost:3000/usuarios/login",
         data
       );
 
@@ -64,7 +65,7 @@ const FormLogin = () => {
 
       navigate("/");
     } catch (error) {
-      setLoginError("Email o contraseña incorrectos"); // Mensaje amigable
+      setLoginError("Email o contraseña incorrectos");
     }
   };
 

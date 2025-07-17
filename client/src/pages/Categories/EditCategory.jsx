@@ -37,7 +37,7 @@ const EditCategory = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-1-1j7o.onrender.com/categorias/${id}`,
+          `http://localhost:3000/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -74,7 +74,7 @@ const EditCategory = () => {
       }
 
       const response = await axios.put(
-        `https://back-1-1j7o.onrender.com/categorias/${id}`,
+        `http://localhost:3000/categorias/${id}`,
         formData,
         {
           headers: {
@@ -116,23 +116,13 @@ const EditCategory = () => {
           <p className="error-message">{errors.nombre.message}</p>
         )}
 
-        <Input
-          label="Subir imágen"
-          id="imagen"
-          type="file"
-          name="imagen"
-          {...register("imagen")}
-        />
+        <Input  label="Subir imágen" id="imagen" type="file" name="imagen" {...register("imagen")} />
         {errors.imagen && (
           <p className="error-message">{errors.imagen.message}</p>
         )}
 
         <div className="form-actions">
-          <Button
-            type="submit"
-            label="Guardar cambios"
-            className="btn btn--filled-blue"
-          />
+          <Button type="submit" label="Guardar cambios" className="btn btn--filled-blue" />
           <Button
             type="button"
             label="Cancelar"
@@ -140,6 +130,7 @@ const EditCategory = () => {
             onClick={() => navigate("/categories/add")}
           />
         </div>
+
       </form>
     </div>
   );

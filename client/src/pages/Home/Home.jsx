@@ -12,22 +12,22 @@ const Home = () => {
   const navCards = [
     {
       label: "Ingresos",
-      img: "/assets/icons/Incomes.svg",
+      img: "./src/assets/icons/Incomes.svg",
       link: "/incomes",
     },
     {
       label: "Gastos",
-      img: "/assets/icons/Gastos.svg",
+      img: "./src/assets/icons/Gastos.svg",
       link: "/outcomes",
     },
     {
       label: "Metas",
-      img: "/assets/icons/Ahorro.svg",
+      img: "./src/assets/icons/Ahorro.svg",
       link: "/goals",
     },
     {
       label: "Categorias",
-      img: "/assets/icons/Categorias.svg",
+      img: "./src/assets/icons/Categorias.svg",
       link: "/categories",
     },
   ];
@@ -45,7 +45,6 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Obtener el saldo del usuario desde el backend
     const fetchSaldo = async () => {
       if (!user || !user.id) {
         console.error("El usuario no está definido o no tiene un ID.");
@@ -53,11 +52,10 @@ const Home = () => {
       }
 
       try {
-        user.id = user.id; // Asegurarse de que el ID sea una cadena
-        console.log("ID del usuario:", user.id); // Verificar el ID del usuario
+        console.log("ID del usuario:", user.id); // Verificar ID
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-1-1j7o.onrender.com/usuarios/saldo/${user.id}`,
+          `http://localhost:3000/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -70,7 +68,9 @@ const Home = () => {
       }
     };
 
-    fetchSaldo();
+    if (user && user.id) {
+      fetchSaldo();
+    }
   }, [user]);
 
   const resumenMensual = async () => {
@@ -81,7 +81,7 @@ const Home = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.get(
-        `https://back-1-1j7o.onrender.com/usuarios/${user.id}/resumen-mensual
+        `http://localhost:3000/usuarios/${user.id}/resumen-mensual
       `,
         {
           headers: {
@@ -103,7 +103,9 @@ const Home = () => {
         {/* <h1>Bienvenido, Usuario</h1> */}
 
         {/* Mostrar el saldo del usuario */}
-        <TotalBalance saldo={saldo} /* options={options}  */ />
+        <TotalBalance
+          saldo={parseFloat(saldo.toFixed(2))} /* options={options}  */
+        />
 
         {/*   <section className="carousel">
         <motion.div
@@ -139,7 +141,6 @@ const Home = () => {
 totalIngresosMes
 totalGastosMes
 disponible */}
-
         <section className="section-info" id="balance-status">
           <div className="card">
             <h2>Resumen Mensual</h2>

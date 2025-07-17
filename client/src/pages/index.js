@@ -17,6 +17,9 @@ export { Profile } from "./Users/Profile.jsx";
 export { Group } from "./Group/Group.jsx";
 export { Confirmaciones } from "./Users/Confirmaciones.jsx";
 export { CalendarPage } from "./Calendar/Calendar.jsx";
-export { IncomeDetail } from "./Incomes/IncomeDetail.jsx"
-export { OutcomeDetail } from "./Outcomes/OutcomeDetail.jsx"
-export {Categories} from "./Categories/Categories.jsx"
+export { IncomeDetail } from "./Incomes/IncomeDetail.jsx";
+export { OutcomeDetail } from "./Outcomes/OutcomeDetail.jsx";
+export { Categories } from "./Categories/Categories.jsx";
+export { FilterBar } from "../components/Buttons/FilterBar.jsx";
+export { Instalar } from "./Users/Instalar.jsx";
+// export { InstallPage } from "../components/InstallPage.jsx";

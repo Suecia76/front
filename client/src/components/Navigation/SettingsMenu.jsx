@@ -15,13 +15,23 @@ const SettingsMenu = ({ open }) => {
       link: "/profile",
     },
     {
-      label: "Agregar categorías",
-      link: "/categories/add",
+      label: "Mis categorías",
+      link: "/categories",
     },
 
     {
-      label: "Agregar metas",
-      link: "/goals/add",
+      label: "Mis metas",
+      link: "/goals",
+    },
+
+    {
+      label: "Mis gastos",
+      link: "/outcomes",
+    },
+
+    {
+      label: "Mis ingresos",
+      link: "/incomes",
     },
   ];
 
@@ -33,13 +43,7 @@ const SettingsMenu = ({ open }) => {
             <ul className="menu__list">
               <Dropdown label="Cuenta" options={options} />
 
-              <li className="menu__item">
-                <a href="/outcomes">Mis gastos</a>
-              </li>
-
-              <li className="menu__item">
-                <a href="/incomes">Mis ingresos</a>
-              </li>
+             
 
               <li className="menu__item">
                 <a href="/confirmaciones">Gastos y ingresos a confirmar</a>

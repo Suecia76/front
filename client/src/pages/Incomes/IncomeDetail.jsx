@@ -91,14 +91,11 @@ const IncomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
 
-        const res = await axios.get(
-          `https://back-1-1j7o.onrender.com/ingresos/${id}`,
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
+        const res = await axios.get(`http://localhost:3000/ingresos/${id}`, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        });
 
         setIncome(res.data);
 
@@ -132,7 +129,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.put(`https://back-1-1j7o.onrender.com/ingresos/${id}`, data, {
+      await axios.put(`http://localhost:3000/ingresos/${id}`, data, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -156,7 +153,7 @@ const IncomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-1-1j7o.onrender.com/categorias/${id}`,
+          `http://localhost:3000/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -199,7 +196,7 @@ const IncomeDetail = () => {
       console.log(token);
 
       const res = await axios.post(
-        `https://back-1-1j7o.onrender.com/ingresos/${id}/confirmar`,
+        `http://localhost:3000/ingresos/${id}/confirmar`,
         {},
         /* {
             // ...getValues(), 
@@ -220,7 +217,7 @@ const IncomeDetail = () => {
     }
   };
 
-  const url = "https://back-1-1j7o.onrender.com/uploads/";
+  const url = "http://localhost:3000/uploads/";
 
   const cuotas = watch("cuotas");
 
@@ -230,7 +227,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.delete(`https://back-1-1j7o.onrender.com/ingresos/${id}`, {
+      await axios.delete(`http://localhost:3000/ingresos/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -291,6 +288,7 @@ const IncomeDetail = () => {
               error={errors.nombre?.message}
             />
             <InputDetail
+            typeCantidad="true"
               label="Monto"
               {...register("cantidad")}
               error={errors.cantidad?.message}
@@ -333,11 +331,28 @@ const IncomeDetail = () => {
                       className="data-card__btn"
                     />
                   </div>
-                  <img
-                    className="data-card__icon"
-                    src={`/assets/icons/${category.imagen}.png`}
-                    alt={category.nombre}
-                  />
+                  {category?.predeterminada === true ? (
+                    <img
+                      className="data-card__icon"
+                      src={
+                        category?.imagen
+                          ? `/assets/icons/${category.imagen}.png`
+                          : "/assets/icons/default.svg"
+                      }
+                      alt={category?.nombre || "icono"}
+                    />
+                  ) : (
+                    <img
+                      className="data-card__icon"
+                      src={
+                        category?.imagen
+                          ? `http://localhost:3000/uploads/${category.imagen}`
+                          : "/assets/icons/default.svg"
+                      }
+                      alt={category?.nombre || "icono"}
+                    />
+                  )}
+
                   <p className="data-card__text data-card__text--small">
                     {category.nombre}
                   </p>

@@ -21,7 +21,8 @@ import {
   Group,
   Confirmaciones,
   IncomeDetail,
-  OutcomeDetail
+  OutcomeDetail,
+  Instalar,
 } from "./pages";
 import { useState, useEffect } from "react";
 import Loader from "./components/Animations/Loader";
@@ -57,8 +58,13 @@ function App() {
       {!loading && (
         <Routes>
           {/* User */}
+
+          <Route path="/users/instalar" element={<Instalar />} />
+
           <Route path="/users/login" element={<FormLogin />} />
+
           <Route path="/users/register" element={<FormRegister />} />
+
           <Route
             path="/"
             element={
@@ -89,7 +95,6 @@ function App() {
             }
           />
 
-           
           <Route
             path="/categories/edit/:id"
             element={
@@ -99,7 +104,7 @@ function App() {
               </PrivateRoute>
             }
           />
-          
+
           {/* Incomes */}
           <Route
             path="/incomes"
@@ -148,7 +153,7 @@ function App() {
             }
           />
 
-           <Route
+          <Route
             path="/outcomes/:id"
             element={
               <PrivateRoute>
@@ -179,7 +184,7 @@ function App() {
             element={
               <PrivateRoute>
                 {" "}
-                <Goals />
+                <Goals />{" "}
               </PrivateRoute>
             }
           />
@@ -188,7 +193,7 @@ function App() {
             element={
               <PrivateRoute>
                 {" "}
-                <NewGoal />
+                <NewGoal />{" "}
               </PrivateRoute>
             }
           />
@@ -197,7 +202,7 @@ function App() {
             element={
               <PrivateRoute>
                 {" "}
-                <EditGoal />
+                <EditGoal />{" "}
               </PrivateRoute>
             }
           />
@@ -207,7 +212,7 @@ function App() {
             element={
               <PrivateRoute>
                 {" "}
-                <CalendarPage />
+                <CalendarPage />{" "}
               </PrivateRoute>
             }
           />
@@ -229,15 +234,17 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route
             path="/profile"
             element={
               <PrivateRoute>
                 {" "}
-                <Profile />
+                <Profile />{" "}
               </PrivateRoute>
             }
           />
+
           <Route
             path="/profile/edit/:id"
             element={

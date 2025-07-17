@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { AuthContext } from "../../context/AuthContext";
 import { Input } from "../../components/Forms/Input";
 import { Button } from "../../components/Button";
+import { Select } from "../../components";
 import { Textarea } from "../../components/Forms/Textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -27,6 +28,17 @@ const schema = yup.object().shape({
     .positive("El monto debe ser positivo")
     .notRequired()
     .default(0),
+  tipo: yup
+    .string()
+    .oneOf(["montoMensual", "porcentajeMensual"], "Tipo de meta inválido"),
+  porcentajeMensual: yup
+    .number()
+    .typeError("Debe ser un número")
+    .positive("El porcentaje debe ser positivo"),
+  montoMensual: yup
+    .number()
+    .typeError("Debe ser un número")
+    .positive("El monto debe ser positivo"),
 });
 
 // Esquema de validación para el formulario de avances
@@ -47,6 +59,7 @@ const NewGoal = () => {
   const [goalToDelete, setGoalToDelete] = useState(null); // Meta seleccionada para eliminar
   const [goalToUpdate, setGoalToUpdate] = useState(null); // Meta seleccionada para agregar avance
   const [showAdvanceModal, setShowAdvanceModal] = useState(false); // Modal para agregar avance
+  const [type, setType] = useState(""); // Tipo de meta seleccionado
 
   // Formulario para crear metas
   const {
@@ -58,9 +71,9 @@ const NewGoal = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       nombre: "",
-      objetivo: 0,
+      objetivo: null,
       descripcion: "",
-      progreso: 0,
+      progreso: null,
     },
   });
 
@@ -83,7 +96,7 @@ const NewGoal = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-1-1j7o.onrender.com/metas/usuario/${user.id}`,
+          `http://localhost:3000/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -103,7 +116,7 @@ const NewGoal = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.post(
-        "https://back-1-1j7o.onrender.com/metas",
+        "http://localhost:3000/metas",
         {
           ...data,
           user_fk: user.id,
@@ -128,14 +141,11 @@ const NewGoal = () => {
     if (!goalToDelete) return;
     try {
       const token = Cookies.get("token") || null;
-      await axios.delete(
-        `https://back-1-1j7o.onrender.com/metas/${goalToDelete._id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+      await axios.delete(`http://localhost:3000/metas/${goalToDelete._id}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
       // Actualizar la lista de metas después de eliminar
       setGoals(goals.filter((goal) => goal._id !== goalToDelete._id));
       setShowModal(false); // Cerrar el modal
@@ -152,7 +162,7 @@ const NewGoal = () => {
       const token = Cookies.get("token") || null;
       const updatedProgreso = goalToUpdate.progreso + parseFloat(data.avance);
       const response = await axios.put(
-        `https://back-1-1j7o.onrender.com/metas/${goalToUpdate._id}`,
+        `http://localhost:3000/metas/${goalToUpdate._id}`,
         {
           progreso: updatedProgreso,
         },
@@ -204,7 +214,7 @@ const NewGoal = () => {
     <>
       <StatusBar label="Nueva meta" />
 
-      <div id="newIncome">
+      <div id="new-goal">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Input
             name="nombre"
@@ -217,6 +227,7 @@ const NewGoal = () => {
             <p className="error-message">{errors.nombre.message}</p>
           )}
           <Input
+            sign="$"
             name="objetivo"
             label="Objetivo"
             type="number"
@@ -232,6 +243,51 @@ const NewGoal = () => {
             placeholder="Descripción de la meta"
             {...register("descripcion")}
           />
+
+          <Select
+            labelField="tipo de meta"
+            register={register("tipo")}
+            options={[
+              {
+                value: null,
+                label: "quiero agregar avances manuales",
+                selected: true,
+              },
+              { value: "montoMensual", label: "Monto Mensual" },
+              { value: "porcentajeMensual", label: "Porcentaje Mensual" },
+            ]}
+            onChange={(e) => setType(e.target.value)}
+          />
+          {errors.tipo && (
+            <p className="error-message">{errors.tipo.message}</p>
+          )}
+
+          {type === "porcentajeMensual" && (
+            <Input
+              name="porcentajeMensual"
+              label="Porcentaje Mensual"
+              type="number"
+              {...register("porcentajeMensual")}
+            />
+          )}
+
+          {errors.porcentajeMensual && (
+            <p className="error-message">{errors.porcentajeMensual.message}</p>
+          )}
+
+          {type === "montoMensual" && (
+            <Input
+              name="montoMensual"
+              label="Monto Mensual"
+              type="number"
+              {...register("montoMensual")}
+            />
+          )}
+
+          {errors.montoMensual && (
+            <p className="error-message">{errors.montoMensual.message}</p>
+          )}
+
           <Input
             name="progreso"
             label="Progreso"

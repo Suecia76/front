@@ -1,17 +1,28 @@
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { Navigate, useLocation } from "react-router-dom";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 export function PrivateRoute({ children }) {
-    const { user, loading } = useContext(AuthContext);
+  const location = useLocation();
 
-    if (loading) return <p>Cargando autenticación...</p>;
+  const token = Cookies.get("token");
 
-    // 👇 Asegúrate que user esté bien formado
-    if (!user || !user.id || !user.email) {
-        console.warn("PrivateRoute → usuario inválido. Redirigiendo al login");
-        return <Navigate to="/users/login" replace />;
-    }
+  if (!token) {
+    // No hay token → redirige a login
+    return <Navigate to="/users/login" state={{ from: location }} replace />;
+  }
 
+  try {
+    const decoded = jwtDecode(token);
+
+    // Aquí podés agregar más validaciones, por ejemplo:
+    // - chequear expiración (decoded.exp)
+    // - otros campos del payload
+
+    // Si todo OK, muestra children
     return children;
+  } catch (error) {
+    // Token inválido o mal formado
+    return <Navigate to="/users/login" state={{ from: location }} replace />;
+  }
 }

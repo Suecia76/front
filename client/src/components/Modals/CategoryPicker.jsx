@@ -14,7 +14,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
   const [userCategories, setUserCategories] = useState([]);
   const [error, setError] = useState(null);
 
-  const url = "https://back-1-1j7o.onrender.com/uploads/";
+  const url = "http://localhost:3000/uploads/";
   // const extension = ".png";
 
   useEffect(() => {
@@ -28,13 +28,13 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
 
       try {
         const defaultResponse = await axios.get(
-          "https://back-1-1j7o.onrender.com/categorias"
+          "http://localhost:3000/categorias"
         );
 
         setDefaultCategories(defaultResponse.data);
 
         const userResponse = await axios.get(
-          `https://back-1-1j7o.onrender.com/categorias/usuario/${user.id}`,
+          `http://localhost:3000/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${Cookies.get("token")}`,

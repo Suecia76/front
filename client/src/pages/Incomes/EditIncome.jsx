@@ -74,7 +74,7 @@ const EditIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-1-1j7o.onrender.com/ingresos/${id}`,
+          `http://localhost:3000/ingresos/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -83,7 +83,7 @@ const EditIncome = () => {
         );
 
         const income = response.data;
-
+        
         // Cargar los valores del ingreso en el formulario
         setValue("cantidad", income.cantidad);
         setValue("descripcion", income.descripcion);
@@ -114,7 +114,7 @@ const EditIncome = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.put(
-        `https://back-1-1j7o.onrender.com/ingresos/${id}`,
+        `http://localhost:3000/ingresos/${id}`,
         {
           ...data,
         },

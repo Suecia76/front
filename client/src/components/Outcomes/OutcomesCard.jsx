@@ -23,7 +23,7 @@ const OutcomesCard = ({
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.get(
-        `https://back-1-1j7o.onrender.com/categorias/${id}`,
+        `http://localhost:3000/categorias/${id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -45,15 +45,27 @@ const OutcomesCard = ({
     <article key={_id} className="transaction-card">
       <a className="transaction-card__link" href={`outcomes/${_id}`}>
         <figure className="transaction-card__icon-container">
-          <img
-            className="transaction-card__icon"
-            src={
-              category?.imagen
-                ? `assets/icons/${category.imagen}.png`
-                : "/assets/icons/default.svg"
-            }
-            alt={category?.nombre || "icono"}
-          />
+          {category?.predeterminada === true ? (
+            <img
+              className="transaction-card__icon"
+              src={
+                category?.imagen
+                  ? `assets/icons/${category.imagen}.png`
+                  : "/assets/icons/default.svg"
+              }
+              alt={category?.nombre || "icono"}
+            />
+          ) : (
+            <img
+              className="transaction-card__icon"
+              src={
+                category?.imagen
+                  ? `http://localhost:3000/uploads/${category.imagen}`
+                  : "/assets/icons/default.svg"
+              }
+              alt={category?.nombre || "icono"}
+            />
+          )}
         </figure>
 
         <div className="transaction-card__info">

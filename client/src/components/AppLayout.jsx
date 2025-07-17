@@ -7,15 +7,11 @@ const AppLayout = ({children}) => {
   const hideNavBarRoutes = [
     "/users/login",
     "/users/register",
-    "/profile",
-    "/profile/edit/:id",
   ];
 
   const hideTopBarRoutes = [
     "/users/login",
     "/users/register",
-    "/profile",
-    "/profile/edit/:id",
   ];
 
   return (

@@ -83,7 +83,7 @@ const NewOutcome = () => {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      cantidad: 0,
+      cantidad: null,
       descripcion: "",
       nombre: "",
       tipo: "variable",
@@ -101,7 +101,7 @@ const NewOutcome = () => {
       if (!user) return;
       try {
         const response = await axios.get(
-          `https://back-1-1j7o.onrender.com/gastos/usuario/${user.id}`
+          `http://localhost:3000/gastos/usuario/${user.id}`
         );
         setGastos(response.data);
       } catch (error) {
@@ -116,6 +116,11 @@ const NewOutcome = () => {
     try {
       setLoading(true);
       setError(null);
+
+      if (data.cantidad == null || data.cantidad === "") {
+        data.cantidad = 0;
+      }
+
       console.log("Datos del formulario:", data); // Depuración
       const token = Cookies.get("token") || null;
 
@@ -123,7 +128,7 @@ const NewOutcome = () => {
       const estado = data.acreditado ? "pagado" : "pendiente";
 
       const response = await axios.post(
-        "https://back-1-1j7o.onrender.com/gastos",
+        "http://localhost:3000/gastos",
         {
           ...data,
           user_fk: user.id,
@@ -180,6 +185,15 @@ const NewOutcome = () => {
             error={errors.descripcion && errors.descripcion.message}
           />
 
+          {/* Campo para la fecha de inicio */}
+          <Input
+            type="date"
+            label="Fecha de inicio"
+            name="fechaInicio"
+            {...register("fechaInicio")}
+            error={errors.fechaInicio && errors.fechaInicio.message}
+          />
+
           {/* Componente CategoryPicker */}
           <CategoryInput
             onCategorySelect={(category) => {
@@ -192,19 +206,17 @@ const NewOutcome = () => {
             <p className="input-error">{errors.categoria_fk.message}</p>
           )}
 
-          {/* Cobrado o pendiente */}
-          <div className="toggle-container">
-            <Toggle
-              label="Gasto ya abonado"
-              defaultChecked={false}
-              {...register("acreditado")}
-            />
-
-            <p className="toggle-container__message">
-              Marcá esta opción si ya pagaste
-              {toggleCuotasActivo && "la primera cuota"}
-            </p>
-          </div>
+          {/* Mostrar la imagen de la categoría seleccionada */}
+          {selectedCategoryImage && (
+            <div className="selected-category-image">
+              <p>Categoria seleccionada:</p>
+              <img
+                src={selectedCategoryImage}
+                alt="Categoría seleccionada"
+                style={{ width: "100px", height: "100px", marginTop: "10px" }}
+              />
+            </div>
+          )}
 
           {/* Tipo de gasto*/}
           {toggleFrecuenciaActivo ? (
@@ -225,15 +237,6 @@ const NewOutcome = () => {
               {errors.frecuencia && (
                 <p className="input-error">{errors.frecuencia.message}</p>
               )}
-
-              {/* Campo para la fecha de inicio */}
-              <Input
-                type="date"
-                label="Fecha de inicio"
-                name="fechaInicio"
-                {...register("fechaInicio")}
-                error={errors.fechaInicio && errors.fechaInicio.message}
-              />
             </div>
           ) : (
             <div className="toggle-container">
@@ -287,31 +290,37 @@ const NewOutcome = () => {
             <p className="input-error">{errors.cuotas.message}</p>
           )}
 
-          {/* Mostrar la imagen de la categoría seleccionada */}
-          {selectedCategoryImage && (
-            <div className="selected-category-image">
-              <p>Categoria seleccionada:</p>
-              <img
-                src={selectedCategoryImage}
-                alt="Categoría seleccionada"
-                style={{ width: "100px", height: "100px", marginTop: "10px" }}
+          {/* Cobrado o pendiente */}
+          {!toggleCuotasActivo && !toggleFrecuenciaActivo && (
+            <div className="toggle-container">
+              <Toggle
+                label="Gasto ya abonado"
+                defaultChecked={false}
+                {...register("acreditado")}
               />
+
+              <p className="toggle-container__message">
+                Marcá esta opción si ya pagaste
+                {toggleCuotasActivo && "la primera cuota"}
+              </p>
             </div>
           )}
 
-          <div className="toggle-container">
-            <Toggle
-              label="Pago automático"
-              name="cuotasAutomaticas"
-              {...register("cuotasAutomaticas")}
-              // defaultChecked={true}
-            />
+          {(toggleCuotasActivo || toggleFrecuenciaActivo) && (
+            <div className="toggle-container">
+              <Toggle
+                label="Pago automático"
+                name="cuotasAutomaticas"
+                {...register("cuotasAutomaticas")}
+                // defaultChecked={true}
+              />
 
-            <p className="toggle-container__message">
-              Activá esta función si querés que el gasto se marque como pagado
-              automáticamente
-            </p>
-          </div>
+              <p className="toggle-container__message">
+                Activá esta función si querés que el gasto se marque como pagado
+                automáticamente
+              </p>
+            </div>
+          )}
 
           <Button
             type="submit"

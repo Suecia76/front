@@ -2,8 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import Cookies from "js-cookie";
-import { ConfirmationCard } from "../../components/ConfirmationCard";
 import { Tab } from "../../components/Buttons/Tab";
+import { ModalWrapper, Dialog, ConfirmTransactionCard } from "../../components";
 
 const Confirmaciones = () => {
   const { user } = useContext(AuthContext);
@@ -12,15 +12,17 @@ const Confirmaciones = () => {
     gastosPendientes: [],
   });
   const [selectedTab, setSelectedTab] = useState("gastos");
-
+  // const [confirmationModalOpened, setConfirmationModalOpened] =useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
+  
   useEffect(() => {
     const fetchPendientes = async () => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `https://back-1-1j7o.onrender.com/usuarios/pendientes/${user.id}`,
+          `http://localhost:3000/usuarios/pendientes/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setPendientes(res.data);
@@ -33,24 +35,32 @@ const Confirmaciones = () => {
     if (user && user.id) fetchPendientes();
   }, [user]);
 
-  const confirmar = async (tipo, id) => {
+  const handleConfirm = async (type, id) => {
     try {
       const token = Cookies.get("token");
-      const url =
-        tipo === "ingreso"
-          ? `https://back-1-1j7o.onrender.com/ingresos/${id}/confirmar`
-          : `https://back-1-1j7o.onrender.com/gastos/${id}/confirmar`;
+      let url
+
+      if (type === "ingreso" && id){
+         url = `http://localhost:3000/ingresos/${id}/confirmar`;
+      } else if (type === "gasto" && id) {
+         url = `http://localhost:3000/gastos/${id}/confirmar`;
+      }
+      
       await axios.post(
         url,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
+     
       setPendientes((prev) => ({
         ...prev,
-        [`${tipo}sPendientes`]: prev[`${tipo}sPendientes`].filter(
+        [`${type}sPendientes`]: prev[`${type}sPendientes`].filter(
           (item) => item._id !== id
         ),
       }));
+
+      setSelectedTransaction(null);
+      // setConfirmationModalOpened(false);
     } catch (err) {
       console.error("Error al confirmar:", err);
     }
@@ -70,10 +80,6 @@ const Confirmaciones = () => {
     },
   ];
 
-  function confirmTransaction() {
-    console.log("confirming");
-  }
-
   return (
     <div>
       <div className="tabs">
@@ -88,60 +94,69 @@ const Confirmaciones = () => {
       </div>
 
       {selectedTab === "ingresos" && (
-        <div>
+        <>
+          <div>
           <h2>Ingresos a confirmar</h2>
 
           {pendientes.ingresosPendientes.length === 0 ? (
             <p>No hay ingresos pendientes.</p>
           ) : (
             pendientes.ingresosPendientes.map((ingreso) => (
-              <div
-                key={ingreso._id}
-                style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}
-              >
-                <strong>{ingreso.nombre}</strong> – ${ingreso.cantidad}
-                <button
-                  onClick={() => confirmar("ingreso", ingreso._id)}
-                  style={{ marginLeft: 10 }}
-                >
-                  Confirmar
-                </button>
-              </div>
+             <>
+             
+           
+
+           <ConfirmTransactionCard _id={ingreso._id} key={ingreso._id} title={ingreso.nombre} amount={ingreso.cantidad} type="income" onConfirm={()=> setSelectedTransaction({ type: "ingreso", id: ingreso._id })} />
+          </>
+            
+             
+              
             ))
           )}
         </div>
+
+       
+          </>
       )}
 
       {selectedTab === "gastos" && (
-        <div>
-          <h2>Gastos a confirmar</h2>
+        <>
+          <div>
+            <h2>Gastos a confirmar</h2>
 
-          {pendientes.gastosPendientes.length === 0 ? (
-            <p>No hay gastos pendientes.</p>
-          ) : (
-            pendientes.gastosPendientes.map((gasto) => (
-              <div
-                key={gasto._id}
-                style={{ border: "1px solid #ccc", margin: 8, padding: 8 }}
-              >
-                <strong>{gasto.nombre}</strong> – ${gasto.cantidad}
-                <button
-                  onClick={() => confirmar("gasto", gasto._id)}
-                  style={{ marginLeft: 10 }}
-                >
-                  Confirmar
-                </button>
-              </div>
-            ))
-          )}
-        </div>
+            {pendientes.gastosPendientes.length === 0 ? (
+              <p>No hay gastos pendientes.</p>
+            ) : (
+              pendientes.gastosPendientes.map((gasto) => (
+                <>
+                  <ConfirmTransactionCard _id={gasto._id} key={gasto._id} title={gasto.nombre} amount={gasto.cantidad} type="outcome" onConfirm={()=> {setSelectedTransaction({ type: "gasto", id: gasto._id})
+                  }} />
+                </>
+              
+              ))
+            )}
+          </div>
+        </>
       )}
 
-      {/* <ConfirmationCard
-        title="Trial"
-        amount={352}
-        confirmFunction={confirmTransaction}
-      /> */}
+      {
+                  selectedTransaction && (
+                    <ModalWrapper small={true} onClose={() => setSelectedTransaction(null)}>
+                         <Dialog
+                        title={`Confirmando ${selectedTransaction.type === "ingreso" ? "Ingreso" : "Gasto"}`}
+                        text={ selectedTransaction.type === "ingreso" ?
+                          "Si lo confirmas, sumaremos el dinero a tu balance y marcaremos el ingreso como cobrado" :
+                          "Si lo confirmas, restaremos el dinero de tu balance y marcaremos el gasto como abonado"}
+                        option1="Confirmar"
+                        option2="Cancelar"
+                        onClick1={()=>handleConfirm(selectedTransaction.type, selectedTransaction.id)}
+                        onClick2={()=> {setSelectedTransaction(null) 
+                        }}
+                      />
+                     
+                    </ModalWrapper>
+                  )
+                }
     </div>
   );
 };

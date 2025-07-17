@@ -9,17 +9,19 @@ import { addMonths, subMonths, format } from "date-fns";
 import { es } from "date-fns/locale"; // para mostrarlo en español
 import TransactionsModal from "../../components/Modals/TransactionsModal";
 
+
 const CalendarPage = () => {
   const { user } = useContext(AuthContext);
   const [movimientos, setMovimientos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibleDate, setVisibleDate] = useState(new Date());
+  const [movimientosPorTipo, setMovimientosPorTipo] = useState([]);
 
   useEffect(() => {
     const fetchMovimientos = async () => {
       const token = Cookies.get("token");
       const res = await axios.get(
-        `https://back-1-1j7o.onrender.com/usuarios/calendario/${user.id}`,
+        `http://localhost:3000/usuarios/calendario/${user.id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMovimientos(res.data);
@@ -41,24 +43,22 @@ const CalendarPage = () => {
     if (movimientosPorFecha[fecha]) {
       const items = movimientosPorFecha[fecha];
 
+      const incomesExist = items.some((mov) => mov.tipoMovimiento === "ingreso");
+      const outcomesExist = items.some((mov) => mov.tipoMovimiento === "gasto");
+  
+  //Limita a dos movimientos por fecha
+    //Dentro de cada fecha buscar si hay ingresos
+
       return (
-        <ul
-          className="calendar"
-          style={{ listStyle: "none", padding: 0, margin: 0 }}
-        >
-          {items.slice(0, 2).map((mov, index) => (
-            <li
-              key={index}
-              className={`calendar__date calendar__date--${
-                mov.tipoMovimiento === "ingreso" ? "income" : "outcome"
-              }`}
-            >
-              ●
-            </li>
-          ))}
-          {items.length > 2 && (
-            <li style={{ fontSize: "0.8em" }}>+{items.length - 2} más</li>
+        <ul className="calendar">
+          {incomesExist && (
+            <li className="calendar__date calendar__date--income">●</li>
           )}
+
+          {outcomesExist && (
+            <li className="calendar__date calendar__date--outcome">●</li>
+            )}
+
         </ul>
       );
     }
@@ -98,28 +98,36 @@ const CalendarPage = () => {
       {selectedTab === "mes" && (
         <>
           <div className="month-picker">
-            <h3 className="month-picker__title">
-              {format(visibleDate, "MMMM yyyy", { locale: es })}
-            </h3>
-            <div className="month-picker__nav">
               <button
                 onClick={() => {
                   setSelectedDate(null); // Limpiar la selección
                   setVisibleDate((prev) => subMonths(prev, 1));
                 }}
+                className="month-picker__button"
               >
-                Mes anterior
+                <img src="/assets/icons/arrow-left-light.svg" alt="Mes anterior" />
               </button>
 
+              <div className="month-picker__info">
+                  <h3 className="month-picker__month">
+                    {format(visibleDate, "MMMM", { locale: es })}
+                  </h3>
+                  <p className="month-picker__year">  {format(visibleDate, " yyyy", { locale: es })}</p>
+              </div>
+           
+
+            {/* <div className="month-picker__nav"> */}
+          
               <button
                 onClick={() => {
                   setSelectedDate(null); // Limpiar la selección
                   setVisibleDate((prev) => addMonths(prev, 1));
                 }}
+                className="month-picker__button"
               >
-                Mes siguiente
+                <img src="/assets/icons/arrow-right-light.svg" alt="" />
               </button>
-            </div>
+            {/* </div> */}
           </div>
 
           <Calendar

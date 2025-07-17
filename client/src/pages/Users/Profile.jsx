@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext.jsx";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { StatusBar } from "../../components/StatusBar";
+import {Input} from "../../components";
 
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext); // Obtener el usuario del contexto
@@ -16,6 +17,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [openModalPassword, setOpenModalPassword] = useState(false);
 
   // Manejar cambios en los campos del formulario
   const handleInputChange = (e) => {
@@ -53,7 +55,7 @@ const Profile = () => {
       }
 
       const response = await axios.put(
-        `https://back-1-1j7o.onrender.com/usuarios/${user.id}`,
+        `http://localhost:3000/usuarios/${user.id}`,
         formDataToSend,
         {
           headers: {
@@ -67,7 +69,7 @@ const Profile = () => {
       console.log("Usuario actualizado:", response.data.user);
 
       setPreviewImage(
-        `https://back-1-1j7o.onrender.com/uploads/imagenes_perfil/${response.data.user.image}`
+        `http://localhost:3000/uploads/imagenes_perfil/${response.data.user.image}`
       ); // Actualizar la vista previa de la imagen
       setSuccess("Perfil actualizado correctamente.");
     } catch (err) {
@@ -81,7 +83,7 @@ const Profile = () => {
   return (
     <div className="profile">
       <StatusBar label="Mi perfil" />
-
+      
       <form onSubmit={handleSubmit} className="profile-form">
         {/* <div className="form-group">
           <label htmlFor="profileImage">Foto de perfil</label>
@@ -102,44 +104,16 @@ const Profile = () => {
           )}
         </div> */}
 
-        <div className="form-group">
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
+        <Input label="Nombre" id="name" name="name" value={formData.name} onChange={handleInputChange}/>
 
-        <div className="form-group">
-          <label htmlFor="email">Correo electrónico</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Nueva contraseña</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder="Deja en blanco para no cambiarla"
-          />
-        </div>
+        <Input label="Email" type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} required/>
+       
+        <Input label="Nueva Contraseña" type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} />
 
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
+
+          
 
         <button
           type="submit"
