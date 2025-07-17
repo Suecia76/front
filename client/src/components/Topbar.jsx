@@ -21,14 +21,14 @@ const TopBar = () => {
           className="topbar__button"
           onClick={() => toggleMenu("settings")}
         >
-          <img src=".assets/icons/settings.svg" alt="" />
+          <img src="../assets/icons/settings.svg" alt="" />
         </button>
 
         <button
           className="topbar__button"
           onClick={() => toggleMenu("notifications")}
         >
-          <img src=".assets/icons/bell.svg" alt="Notificaciones" />
+          <img src="../assets/icons/bell.svg" alt="Notificaciones" />
         </button>
       </div>
 

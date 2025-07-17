@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../../assets/logo.png"; // Ajusta la ruta
+import logo from "../.././assets/logo.png"; // Ajusta la ruta
 
 const Loader = ({ isLoading }) => (
   <AnimatePresence>

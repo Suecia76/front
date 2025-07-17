@@ -106,7 +106,7 @@ const CalendarPage = () => {
               className="month-picker__button"
             >
               <img
-                src="/assets/icons/arrow-left-light.svg"
+                src="/./assets/icons/arrow-left-light.svg"
                 alt="Mes anterior"
               />
             </button>
@@ -130,7 +130,7 @@ const CalendarPage = () => {
               }}
               className="month-picker__button"
             >
-              <img src="/assets/icons/arrow-right-light.svg" alt="" />
+              <img src="/./assets/icons/arrow-right-light.svg" alt="" />
             </button>
             {/* </div> */}
           </div>

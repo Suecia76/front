@@ -13,23 +13,29 @@ const FilterBar = ({
 }) => (
   <div className="filters">
     <div className="filters__searchbar">
-      <img className="filters__icon" src="/assets/icons/search.svg" alt="" />
+      <img className="filters__icon" src="/./assets/icons/search.svg" alt="" />
       <Input
         className="filters__searchbar-input"
-          type="text"
-          placeholder={placeholder}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        ></Input>
+        type="text"
+        placeholder={placeholder}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      ></Input>
     </div>
-  
 
-<div className="filters__options">
-  <img className="filters__icon" src="/assets/icons/sort.svg" alt="filtros" />
-  <Select label="Filtrar por" value={sort} onChange={(e) => setSort(e.target.value)} options={sortOptions}/>
-
-</div>
-  
+    <div className="filters__options">
+      <img
+        className="filters__icon"
+        src="/./assets/icons/sort.svg"
+        alt="filtros"
+      />
+      <Select
+        label="Filtrar por"
+        value={sort}
+        onChange={(e) => setSort(e.target.value)}
+        options={sortOptions}
+      />
+    </div>
   </div>
 );
 

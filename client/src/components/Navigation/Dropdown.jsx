@@ -14,7 +14,7 @@ const Dropdown = ({ options, label }) => {
         <span className="dropdown__label">{label}</span>
         {openDropdown ? (
           <span className="dropdown__arrow dropdown__arrow--up">
-            {/*   <img src="assets/icons/arrow.svg" alt="Cerrar" /> */}
+            {/*   <img src="./assets/icons/arrow.svg" alt="Cerrar" /> */}
             <svg
               className="dropdown__arrow-svg"
               viewBox="0 0 41 70"
@@ -29,7 +29,7 @@ const Dropdown = ({ options, label }) => {
           </span>
         ) : (
           <span className="dropdown__arrow dropdown__arrow--down">
-            {/* <img src="assets/icons/arrow.svg" alt="Abrir" /> */}
+            {/* <img src="./assets/icons/arrow.svg" alt="Abrir" /> */}
             <svg
               className="dropdown__arrow-svg"
               viewBox="0 0 41 70"

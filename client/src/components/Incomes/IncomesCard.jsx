@@ -46,8 +46,8 @@ const IncomesCard = ({
               className="transaction-card__icon"
               src={
                 category?.imagen
-                  ? `assets/icons/${category.imagen}.png`
-                  : "/assets/icons/default.svg"
+                  ? `./assets/icons/${category.imagen}.png`
+                  : "/./assets/icons/default.svg"
               }
               alt={category?.nombre || "icono"}
             />
@@ -57,7 +57,7 @@ const IncomesCard = ({
               src={
                 category?.imagen
                   ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
-                  : "/assets/icons/default.svg"
+                  : "/./assets/icons/default.svg"
               }
               alt={category?.nombre || "icono"}
             />

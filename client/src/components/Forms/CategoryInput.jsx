@@ -37,7 +37,7 @@ const CategoryInput = forwardRef(
             <div className="selected-category">
               <img
                 className="selected-category__icon"
-                src={`/assets/icons/${selectedCategory.imagen}.png`}
+                src={`/./assets/icons/${selectedCategory.imagen}.png`}
                 alt={selectedCategory.nombre}
               />
 
@@ -48,7 +48,7 @@ const CategoryInput = forwardRef(
               Seleccionar categoría
               <img
                 className="arrow-down"
-                src="/assets/icons/arrow-left-light.svg"
+                src="/./assets/icons/arrow-left-light.svg"
                 alt="Seleccionar categoría"
               />
             </>
