@@ -12,22 +12,22 @@ const Home = () => {
   const navCards = [
     {
       label: "Ingresos",
-      img: "./src/assets/icons/Incomes.svg",
+      img: "icons/Incomes.svg",
       link: "/incomes",
     },
     {
       label: "Gastos",
-      img: "./src/assets/icons/Gastos.svg",
+      img: "icons/Gastos.svg",
       link: "/outcomes",
     },
     {
       label: "Metas",
-      img: "./src/assets/icons/Ahorro.svg",
+      img: "icons/Ahorro.svg",
       link: "/goals",
     },
     {
       label: "Categorias",
-      img: "./src/assets/icons/Categorias.svg",
+      img: "icons/Categorias.svg",
       link: "/categories",
     },
   ];
