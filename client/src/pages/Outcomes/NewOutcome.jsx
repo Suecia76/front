@@ -131,7 +131,7 @@ const NewOutcome = () => {
       const estado = data.acreditado ? "pagado" : "pendiente";
 
       const response = await axios.post(
-        "http://localhost:3000/gastos",
+        "https://back-fbch.onrender.comgastos",
         {
           ...data,
           user_fk: user.id,

@@ -9,7 +9,6 @@ import { addMonths, subMonths, format } from "date-fns";
 import { es } from "date-fns/locale"; // para mostrarlo en español
 import TransactionsModal from "../../components/Modals/TransactionsModal";
 
-
 const CalendarPage = () => {
   const { user } = useContext(AuthContext);
   const [movimientos, setMovimientos] = useState([]);
@@ -21,7 +20,7 @@ const CalendarPage = () => {
     const fetchMovimientos = async () => {
       const token = Cookies.get("token");
       const res = await axios.get(
-        `http://localhost:3000/usuarios/calendario/${user.id}`,
+        `https://back-fbch.onrender.comusuarios/calendario/${user.id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMovimientos(res.data);
@@ -43,11 +42,13 @@ const CalendarPage = () => {
     if (movimientosPorFecha[fecha]) {
       const items = movimientosPorFecha[fecha];
 
-      const incomesExist = items.some((mov) => mov.tipoMovimiento === "ingreso");
+      const incomesExist = items.some(
+        (mov) => mov.tipoMovimiento === "ingreso"
+      );
       const outcomesExist = items.some((mov) => mov.tipoMovimiento === "gasto");
-  
-  //Limita a dos movimientos por fecha
-    //Dentro de cada fecha buscar si hay ingresos
+
+      //Limita a dos movimientos por fecha
+      //Dentro de cada fecha buscar si hay ingresos
 
       return (
         <ul className="calendar">
@@ -57,8 +58,7 @@ const CalendarPage = () => {
 
           {outcomesExist && (
             <li className="calendar__date calendar__date--outcome">●</li>
-            )}
-
+          )}
         </ul>
       );
     }
@@ -98,35 +98,40 @@ const CalendarPage = () => {
       {selectedTab === "mes" && (
         <>
           <div className="month-picker">
-              <button
-                onClick={() => {
-                  setSelectedDate(null); // Limpiar la selección
-                  setVisibleDate((prev) => subMonths(prev, 1));
-                }}
-                className="month-picker__button"
-              >
-                <img src="/assets/icons/arrow-left-light.svg" alt="Mes anterior" />
-              </button>
+            <button
+              onClick={() => {
+                setSelectedDate(null); // Limpiar la selección
+                setVisibleDate((prev) => subMonths(prev, 1));
+              }}
+              className="month-picker__button"
+            >
+              <img
+                src="/assets/icons/arrow-left-light.svg"
+                alt="Mes anterior"
+              />
+            </button>
 
-              <div className="month-picker__info">
-                  <h3 className="month-picker__month">
-                    {format(visibleDate, "MMMM", { locale: es })}
-                  </h3>
-                  <p className="month-picker__year">  {format(visibleDate, " yyyy", { locale: es })}</p>
-              </div>
-           
+            <div className="month-picker__info">
+              <h3 className="month-picker__month">
+                {format(visibleDate, "MMMM", { locale: es })}
+              </h3>
+              <p className="month-picker__year">
+                {" "}
+                {format(visibleDate, " yyyy", { locale: es })}
+              </p>
+            </div>
 
             {/* <div className="month-picker__nav"> */}
-          
-              <button
-                onClick={() => {
-                  setSelectedDate(null); // Limpiar la selección
-                  setVisibleDate((prev) => addMonths(prev, 1));
-                }}
-                className="month-picker__button"
-              >
-                <img src="/assets/icons/arrow-right-light.svg" alt="" />
-              </button>
+
+            <button
+              onClick={() => {
+                setSelectedDate(null); // Limpiar la selección
+                setVisibleDate((prev) => addMonths(prev, 1));
+              }}
+              className="month-picker__button"
+            >
+              <img src="/assets/icons/arrow-right-light.svg" alt="" />
+            </button>
             {/* </div> */}
           </div>
 

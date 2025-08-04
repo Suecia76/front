@@ -19,7 +19,7 @@ const CategoryExpenseChart = () => {
 
         // Obtener los gastos agrupados por categoría
         const response = await axios.get(
-          `http://localhost:3000/gastos/usuario/${user.id}/categorias`,
+          `https://back-fbch.onrender.comgastos/usuario/${user.id}/categorias`,
           {
             headers: { Authorization: token ? `Bearer ${token}` : "" },
           }

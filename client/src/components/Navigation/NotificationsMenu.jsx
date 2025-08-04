@@ -14,7 +14,7 @@ const NotificationsMenu = ({ open }) => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `http://localhost:3000/notificaciones/${user.id}`,
+          `https://back-fbch.onrender.comnotificaciones/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setNotifications(res.data);
@@ -28,7 +28,7 @@ const NotificationsMenu = ({ open }) => {
   const handleDelete = async (id) => {
     try {
       const token = Cookies.get("token");
-      await axios.delete(`http://localhost:3000/notificaciones/${id}`, {
+      await axios.delete(`https://back-fbch.onrender.comnotificaciones/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications((prev) => prev.filter((n) => n._id !== id));

@@ -21,7 +21,7 @@ const Confirmaciones = () => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `http://localhost:3000/usuarios/pendientes/${user.id}`,
+          `https://back-fbch.onrender.comusuarios/pendientes/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setPendientes(res.data);
@@ -41,9 +41,9 @@ const Confirmaciones = () => {
       let url;
 
       if (type === "ingreso" && id) {
-        url = `http://localhost:3000/ingresos/${id}/confirmar`;
+        url = `https://back-fbch.onrender.comingresos/${id}/confirmar`;
       } else if (type === "gasto" && id) {
-        url = `http://localhost:3000/gastos/${id}/confirmar`;
+        url = `https://back-fbch.onrender.comgastos/${id}/confirmar`;
       }
 
       await axios.post(

@@ -61,9 +61,12 @@ const AddProgress = () => {
     const fetchGoal = async () => {
       try {
         const token = Cookies.get("token") || "";
-        const response = await axios.get(`http://localhost:3000/metas/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `https://back-fbch.onrender.commetas/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         const goal = response.data.goal ?? response.data;
 
@@ -110,7 +113,7 @@ const AddProgress = () => {
         payload.progreso = Number(data.progreso);
       }
 
-      await axios.put(`http://localhost:3000/metas/${id}`, payload, {
+      await axios.put(`https://back-fbch.onrender.commetas/${id}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

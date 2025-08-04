@@ -90,7 +90,7 @@ const NewIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/ingresos/usuario/${user.id}`,
+          `https://back-fbch.onrender.comingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -131,7 +131,7 @@ const NewIncome = () => {
       const estado = data.acreditado ? "pagado" : "pendiente";
 
       const response = await axios.post(
-        "http://localhost:3000/ingresos",
+        "https://back-fbch.onrender.comingresos",
         {
           ...data,
           user_fk: user.id,

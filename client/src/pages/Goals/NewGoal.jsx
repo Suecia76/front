@@ -138,7 +138,7 @@ const NewGoal = () => {
 
       const token = Cookies.get("token") || "";
       const response = await axios.post(
-        "http://localhost:3000/metas",
+        "https://back-fbch.onrender.commetas",
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },

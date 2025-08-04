@@ -52,13 +52,16 @@ const FormRegister = () => {
   const navigateLogin = (e) => {
     e.preventDefault();
     navigate("/users/login");
-  }
-  
+  };
+
   const onSubmit = async (data) => {
     try {
       // Elimina confirmPassword antes de enviar al backend
       const { confirmPassword, ...userData } = data;
-      const response = await axios.post("http://localhost:3000/usuarios", userData);
+      const response = await axios.post(
+        "https://back-fbch.onrender.comusuarios",
+        userData
+      );
       console.log("Registro exitoso", response.data);
       navigate("/users/login");
     } catch (error) {
@@ -67,9 +70,8 @@ const FormRegister = () => {
   };
 
   return (
-    <>      
+    <>
       <div id="register" className="autolayout-2">
-
         <h1>Registro</h1>
         <form className="autolayout-1" onSubmit={handleSubmit(onSubmit)}>
           <Input
@@ -112,7 +114,6 @@ const FormRegister = () => {
           />
 
           <div className="password">
-
             <Input
               type={showPassword ? "text" : "password"}
               label="Contraseña"
@@ -127,11 +128,19 @@ const FormRegister = () => {
               tabIndex={-1}
               onClick={() => setShowPassword((v) => !v)}
             >
-               {showPassword ? (
-              <img  className="password__icon" src="/assets/icons/hide-password.svg" alt="Ocultar contraseña" />
-            ) : (
-              <img className="password__icon"  src="/assets/icons/show-password.svg" alt="Mostrar contraseña" />
-            )}
+              {showPassword ? (
+                <img
+                  className="password__icon"
+                  src="/assets/icons/hide-password.svg"
+                  alt="Ocultar contraseña"
+                />
+              ) : (
+                <img
+                  className="password__icon"
+                  src="/assets/icons/show-password.svg"
+                  alt="Mostrar contraseña"
+                />
+              )}
             </button>
           </div>
 
@@ -151,25 +160,40 @@ const FormRegister = () => {
               tabIndex={-1}
               onClick={() => setShowConfirm((v) => !v)}
             >
-              
               {showConfirm ? (
-                  <img  className="password__icon" src="/assets/icons/hide-password.svg" alt="Ocultar contraseña" />
-                ) : (
-                  <img className="password__icon"  src="/assets/icons/show-password.svg" alt="Mostrar contraseña" />
-                )}
+                <img
+                  className="password__icon"
+                  src="/assets/icons/hide-password.svg"
+                  alt="Ocultar contraseña"
+                />
+              ) : (
+                <img
+                  className="password__icon"
+                  src="/assets/icons/show-password.svg"
+                  alt="Mostrar contraseña"
+                />
+              )}
             </button>
           </div>
 
-          <Button className="btn btn--filled-blue" type="submit" label="Registrarse" />
-        
+          <Button
+            className="btn btn--filled-blue"
+            type="submit"
+            label="Registrarse"
+          />
+
           <div className="margin-top-2">
             <p className="black-text">¿Ya tenés una cuenta?</p>
-            <Button className="btn-text-blue" type="button" label="Iniciá sesión" onClick={navigateLogin}/>
+            <Button
+              className="btn-text-blue"
+              type="button"
+              label="Iniciá sesión"
+              onClick={navigateLogin}
+            />
           </div>
         </form>
       </div>
     </>
-    
   );
 };
 

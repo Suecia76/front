@@ -88,9 +88,12 @@ const EditGoal = () => {
     const fetchGoal = async () => {
       try {
         const token = Cookies.get("token") || "";
-        const response = await axios.get(`http://localhost:3000/metas/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `https://back-fbch.onrender.commetas/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         const goal = response.data.goal ?? response.data;
 
@@ -144,7 +147,7 @@ const EditGoal = () => {
           : null,
       };
 
-      await axios.put(`http://localhost:3000/metas/${id}`, payload, {
+      await axios.put(`https://back-fbch.onrender.commetas/${id}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -160,7 +163,7 @@ const EditGoal = () => {
     setDeleting(true);
     try {
       const token = Cookies.get("token") || "";
-      await axios.delete(`http://localhost:3000/metas/${id}`, {
+      await axios.delete(`https://back-fbch.onrender.commetas/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/goals");

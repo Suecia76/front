@@ -47,7 +47,7 @@ const CategoryCreate = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/categorias/usuario/${user.id}`,
+          `https://back-fbch.onrender.comcategorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -55,7 +55,7 @@ const CategoryCreate = () => {
           }
         );
         setCategorias(response.data);
-        navigate("/categories/add")
+        navigate("/categories/add");
       } catch (error) {
         console.error("Error al obtener las categorías:", error.response?.data);
         setError("Error al cargar las categorías.");
@@ -96,7 +96,7 @@ const CategoryCreate = () => {
       });
 
       const response = await axios.post(
-        "http://localhost:3000/categorias",
+        "https://back-fbch.onrender.comcategorias",
         formData,
         {
           headers: {
@@ -133,7 +133,7 @@ const CategoryCreate = () => {
     try {
       const token = Cookies.get("token") || null;
       await axios.delete(
-        `http://localhost:3000/categorias/${categoryToDelete._id}`,
+        `https://back-fbch.onrender.comcategorias/${categoryToDelete._id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -160,55 +160,55 @@ const CategoryCreate = () => {
     setCategoryToDelete(null);
   }; */
 
-  let url = "http://localhost:3000/uploads/";
+  let url = "https://back-fbch.onrender.comuploads/";
 
   return (
     <>
-      <StatusBar label="Agregar categoría"/>
-        <form
-          method="POST"
-          onSubmit={handleSubmit(onSubmit)}
-          className="autolayout-1 display-flex flex-start"
-          encType="multipart/form-data" // Importante para enviar archivos
-        >
-          <Input
-            type="text"
-            label="Nombre"
-            placeholder="Nombre de la categoría"
-            name="nombre"
-            {...register("nombre")}
-          />
-          {errors.nombre && (
-            <p className="error-message">{errors.nombre.message}</p>
-          )}
+      <StatusBar label="Agregar categoría" />
+      <form
+        method="POST"
+        onSubmit={handleSubmit(onSubmit)}
+        className="autolayout-1 display-flex flex-start"
+        encType="multipart/form-data" // Importante para enviar archivos
+      >
+        <Input
+          type="text"
+          label="Nombre"
+          placeholder="Nombre de la categoría"
+          name="nombre"
+          {...register("nombre")}
+        />
+        {errors.nombre && (
+          <p className="error-message">{errors.nombre.message}</p>
+        )}
 
-          {/* Campo para subir imagen */}
-          <Input
-            id="imagen"
-            type="file"
-            onChange={handleImageChange} // Guardamos la imagen en el estado
-            name="imagen"
-            {...register("imagen")}
-          />
-          {errors.imagen && (
-            <p className="error-message">{errors.imagen.message}</p>
-          )}
+        {/* Campo para subir imagen */}
+        <Input
+          id="imagen"
+          type="file"
+          onChange={handleImageChange} // Guardamos la imagen en el estado
+          name="imagen"
+          {...register("imagen")}
+        />
+        {errors.imagen && (
+          <p className="error-message">{errors.imagen.message}</p>
+        )}
 
-          <div className="form-actions">
+        <div className="form-actions">
           <Button
-                    type="submit"
-                    label={loading ? "Creando..." : "Agregar Categoría"}
-                    className="btn btn--filled-blue"
-                    disabled={loading}
-                />
+            type="submit"
+            label={loading ? "Creando..." : "Agregar Categoría"}
+            className="btn btn--filled-blue"
+            disabled={loading}
+          />
 
-                <Button label="Cancelar"
-                className="btn btn--text"
-              onClick={() => navigate("/categories")}
-                />
-          </div>
-        
-        </form>
+          <Button
+            label="Cancelar"
+            className="btn btn--text"
+            onClick={() => navigate("/categories")}
+          />
+        </div>
+      </form>
     </>
   );
 };

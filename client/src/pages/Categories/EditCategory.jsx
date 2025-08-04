@@ -41,7 +41,7 @@ const EditCategory = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `http://localhost:3000/categorias/${id}`,
+          `https://back-fbch.onrender.comcategorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -76,7 +76,7 @@ const EditCategory = () => {
       }
 
       const response = await axios.put(
-        `http://localhost:3000/categorias/${id}`,
+        `https://back-fbch.onrender.comcategorias/${id}`,
         formData,
         {
           headers: {
@@ -100,7 +100,7 @@ const EditCategory = () => {
     try {
       setLoading(true);
       const token = Cookies.get("token") || null;
-      await axios.delete(`http://localhost:3000/categorias/${id}`, {
+      await axios.delete(`https://back-fbch.onrender.comcategorias/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
