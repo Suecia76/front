@@ -90,7 +90,7 @@ const NewIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `http://localhost:3000/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -131,7 +131,7 @@ const NewIncome = () => {
       const estado = data.acreditado ? "pagado" : "pendiente";
 
       const response = await axios.post(
-        "https://back-fbch.onrender.com/ingresos",
+        "http://localhost:3000/ingresos",
         {
           ...data,
           user_fk: user.id,
@@ -185,6 +185,7 @@ const NewIncome = () => {
             name="cantidad"
             {...register("cantidad")}
             error={errors.cantidad && errors.cantidad.message}
+            setValue={setValue}
           />
 
           {/* Nombre */}
@@ -229,7 +230,7 @@ const NewIncome = () => {
               />
 
               <Select
-                labelField="Frecuencia del gasto"
+                labelField="Frecuencia del ingreso"
                 options={optionsFrecuencia}
               />
             </div>
@@ -253,33 +254,37 @@ const NewIncome = () => {
           {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
 
           {/* Campo para las cuotas */}
-          {toggleCuotasActivo ? (
-            <div className="toggle-container toggle-container--active">
-              <Toggle
-                label="Ingreso en cuotas"
-                onChange={setToggleCuotasActivo}
-                defaultChecked={toggleCuotasActivo}
-              />
-
-              <Select
-                labelField="Cantidad de cuotas"
-                options={optionsCuotas}
-                {...register("cuotas")}
-              />
-            </div>
-          ) : (
-            <div className="toggle-container">
-              <Toggle
-                label="Ingreso en cuotas"
-                onChange={setToggleCuotasActivo}
-                defaultChecked={toggleCuotasActivo}
-              />
-
-              <p className="toggle-container__message">
-                Marcá esta opción si vas a cobrar este total en varias cuotas
-              </p>
-            </div>
-          )}
+          {!toggleFrecuenciaActivo &&
+            (toggleCuotasActivo ? (
+              <div className="toggle-container toggle-container--active">
+                <Toggle
+                  label="Ingreso en cuotas"
+                  onChange={(val) => {
+                    setToggleCuotasActivo(val);
+                    if (!val) {
+                      setValue("cuotas", 1);
+                    }
+                  }}
+                  defaultChecked={toggleCuotasActivo}
+                />
+                <Select
+                  labelField="Cantidad de cuotas"
+                  options={optionsCuotas}
+                  {...register("cuotas")}
+                />
+              </div>
+            ) : (
+              <div className="toggle-container">
+                <Toggle
+                  label="Ingreso en cuotas"
+                  onChange={setToggleCuotasActivo}
+                  defaultChecked={toggleCuotasActivo}
+                />
+                <p className="toggle-container__message">
+                  Marcá esta opción si vas a cobrar este total en varias cuotas
+                </p>
+              </div>
+            ))}
 
           {(toggleFrecuenciaActivo || toggleCuotasActivo) && (
             <div className="toggle-container">

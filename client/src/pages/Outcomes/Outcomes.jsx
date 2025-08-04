@@ -19,7 +19,7 @@ const Outcomes = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`,
+          `http://localhost:3000/gastos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",

@@ -52,7 +52,7 @@ const FormLogin = () => {
     try {
       setLoginError(""); // Limpiar error previo
       const response = await axios.post(
-        "https://back-fbch.onrender.com/usuarios/login",
+        "http://localhost:3000/usuarios/login",
         data
       );
 
@@ -101,13 +101,13 @@ const FormLogin = () => {
             {showPassword ? (
               <img
                 className="password__icon"
-                src="/./assets/icons/hide-password.svg"
+                src="/assets/icons/hide-password.svg"
                 alt="Ocultar contraseña"
               />
             ) : (
               <img
                 className="password__icon"
-                src="/./assets/icons/show-password.svg"
+                src="/assets/icons/show-password.svg"
                 alt="Mostrar contraseña"
               />
             )}

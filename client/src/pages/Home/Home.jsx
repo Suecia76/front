@@ -12,22 +12,22 @@ const Home = () => {
   const navCards = [
     {
       label: "Ingresos",
-      img: "./assets/icons/Incomes.svg",
+      img: "./src/assets/icons/Incomes.svg",
       link: "/incomes",
     },
     {
       label: "Gastos",
-      img: "./assets/icons/Gastos.svg",
+      img: "./src/assets/icons/Gastos.svg",
       link: "/outcomes",
     },
     {
       label: "Metas",
-      img: "./assets/icons/Ahorro.svg",
+      img: "./src/assets/icons/Ahorro.svg",
       link: "/goals",
     },
     {
       label: "Categorias",
-      img: "./assets/icons/Categorias.svg",
+      img: "./src/assets/icons/Categorias.svg",
       link: "/categories",
     },
   ];
@@ -36,6 +36,7 @@ const Home = () => {
   const [width, setWidth] = useState(0);
   const [saldo, setSaldo] = useState(0); // Estado para almacenar el saldo del usuario
   const { user } = useContext(AuthContext);
+  const [summary, setSummary] = useState([]);
 
   useEffect(() => {
     const el = carouselRef.current;
@@ -55,7 +56,7 @@ const Home = () => {
         console.log("ID del usuario:", user.id); // Verificar ID
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/saldo/${user.id}`,
+          `http://localhost:3000/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -73,30 +74,36 @@ const Home = () => {
     }
   }, [user]);
 
-  const resumenMensual = async () => {
-    if (!user || !user.id) {
-      console.error("El usuario no está definido o no tiene un ID.");
-      return;
-    }
-    try {
-      const token = Cookies.get("token") || null;
-      const response = await axios.get(
-        `https://back-fbch.onrender.com/usuarios/${user.id}/resumen-mensual
+  useEffect(() => {
+    const resumenMensual = async () => {
+      if (!user || !user.id) {
+        console.error("El usuario no está definido o no tiene un ID.");
+        return;
+      }
+      try {
+        const token = Cookies.get("token") || null;
+        const response = await axios.get(
+          `http://localhost:3000/usuarios/${user.id}/resumen-mensual
       `,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
-          },
-        }
-      );
-      console.log("Resumen mensual:", response.data);
-    } catch (error) {
-      console.error("Error al obtener el resumen mensual:", error);
-    }
-  };
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
+            },
+          }
+        );
 
+        setSummary(response.data);
+        console.log("Resumen mensual:", response.data);
+      } catch (error) {
+        console.error("Error al obtener el resumen mensual:", error);
+      }
+    };
+
+    resumenMensual();
+  }, [setSummary, user]);
   // const options = ["Saldo total", "Saldo controlado", "Saldo disponible"];
 
+  console.log(summary);
   return (
     <>
       <div id="home" className="autolayout-2">
@@ -104,26 +111,8 @@ const Home = () => {
 
         {/* Mostrar el saldo del usuario */}
         <TotalBalance
-          saldo={parseFloat(saldo.toFixed(2))} /* options={options}  */
+          saldo={parseFloat(saldo.toFixed(2))} /* options={options} */
         />
-
-        {/*   <section className="carousel">
-        <motion.div
-          ref={carouselRef}
-          drag="x"
-          dragConstraints={{ right: 0, left: -width }}
-          className="carousel-inner"
-        >
-          {navCards.map((card) => (
-            <motion.div
-              className="carousel-item"
-              key={card.label}
-            >
-              <NavigationCard label={card.label} link={card.link} img={card.img} />
-            </motion.div>
-          ))}
-        </motion.div>
-      </section> */}
 
         <section className="navigation">
           {navCards.map((card) => (
@@ -138,23 +127,59 @@ const Home = () => {
         </section>
 
         {/* saldoActual
-totalIngresosMes
-totalGastosMes
-disponible */}
+        totalIngresosMes
+        totalGastosMes
+        disponible */}
         <section className="section-info" id="balance-status">
-          <div className="card">
-            <h2>Resumen Mensual</h2>
-            <button onClick={resumenMensual}>Obtener Resumen Mensual</button>
+          <h2>Resumen Mensual</h2>
+
+          <div className="summary">
+            <div className="summary__item">
+              <p className="summary__title">
+                Saldo actual:{" "}
+                <span className="summary__value">
+                  {summary.saldoActual !== undefined
+                    ? summary.saldoActual.toFixed(2)
+                    : "-"}
+                </span>
+              </p>
+            </div>
+            <div className="summary__item">
+              <p className="summary__title">
+                Ingresos del mes:{" "}
+                <span className="summary__value">
+                  {summary.totalIngresosMes !== undefined
+                    ? summary.totalIngresosMes.toFixed(2)
+                    : "-"}
+                </span>
+              </p>
+            </div>
+            <div className="summary__item">
+              <p className="summary__title">
+                Gastos del mes:{" "}
+                <span className="summary__value">
+                  {summary.totalGastosMes !== undefined
+                    ? summary.totalGastosMes.toFixed(2)
+                    : "-"}
+                </span>
+              </p>
+            </div>
+            <div className="summary__item">
+              <p className="summary__title">
+                Disponible:{" "}
+                <span className="summary__value">
+                  {summary.disponible !== undefined
+                    ? summary.disponible.toFixed(2)
+                    : "-"}
+                </span>
+              </p>
+            </div>
+
+            {/* <button onClick={s}>Obtener Resumen Mensual</button> */}
           </div>
           <div>
             <IncomeExpenseChart />
           </div>
-          <p>Mensaje</p>
-        </section>
-
-        <section className="section-info" id="goals-status">
-          <div>Card de meta</div>
-          {user && <NotificationPrompt userId={user.id} />}
         </section>
       </div>
     </>

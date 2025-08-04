@@ -1,12 +1,14 @@
-html, body, #root{
-margin: 0;
-padding: 0;
-height: 100%;
-overflow: hidden;
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 #root {
-  max-width: 475px;
+  /* max-width: 475px; */
   min-width: 320px;
   width: 100%;
   overflow: auto;

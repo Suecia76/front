@@ -36,17 +36,18 @@ export default function InstallPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>📲 Instala nuestra App</h1>
-      <p style={styles.text}>
-        Para disfrutar la mejor experiencia, instala la app en tu dispositivo.
+    <div className="download">
+      <img src="/assets/logo.png" alt="finz" />
+      <h1 className="download__title">Instalá nuestra App</h1>
+      <p className="download__text">
+        Para disfrutar la mejor experiencia, instalá la app en tu celular.
       </p>
       <button
         onClick={handleInstallClick}
         disabled={!isInstallable}
+        className="btn download__btn"
         style={{
-          ...styles.button,
-          backgroundColor: isInstallable ? "#ff5722" : "#aaa",
+          backgroundColor: isInstallable ? "#2057f2" : "#d9dae0",
           cursor: isInstallable ? "pointer" : "not-allowed",
         }}
       >
@@ -55,34 +56,3 @@ export default function InstallPage() {
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    background: "linear-gradient(135deg, #007bff, #00c6ff)",
-    color: "#fff",
-    textAlign: "center",
-    fontFamily: "Arial, sans-serif",
-    padding: "1rem",
-  },
-  title: {
-    fontSize: "2.5rem",
-    marginBottom: "1rem",
-  },
-  text: {
-    fontSize: "1.2rem",
-    marginBottom: "2rem",
-  },
-  button: {
-    fontSize: "1.5rem",
-    padding: "1rem 2rem",
-    border: "none",
-    borderRadius: "12px",
-    color: "#fff",
-    transition: "background-color 0.3s ease",
-  },
-};

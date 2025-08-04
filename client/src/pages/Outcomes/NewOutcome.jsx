@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom"; // <-- Importa useNavigate
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -53,7 +53,7 @@ const schema = yup.object().shape({
 const NewOutcome = () => {
   const { user } = useContext(AuthContext);
   const [gastos, setGastos] = useState([]);
-  const [selectedCategoryImage, setSelectedCategoryImage] = useState(null); // Estado para la imagen seleccionada
+  const [selectedCategoryImage, setSelectedCategoryImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [error, setError] = useState(null);
@@ -78,6 +78,7 @@ const NewOutcome = () => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
     reset,
   } = useForm({
@@ -93,24 +94,26 @@ const NewOutcome = () => {
       fechaInicio: new Date().toISOString().slice(0, 10),
       categoria_fk: "",
       cuotasAutomaticas: false,
+      acreditado: false,
     },
   });
 
+  // Forzar cuotas a 1 si toggleCuotasActivo está desactivado
   useEffect(() => {
-    const fetchGastos = async () => {
-      if (!user) return;
-      try {
-        const response = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`
-        );
-        setGastos(response.data);
-      } catch (error) {
-        console.error("Error al obtener los gastos:", error.response?.data);
-      }
-    };
+    if (!toggleCuotasActivo) {
+      setValue("cuotas", 1);
+    }
+  }, [toggleCuotasActivo, setValue]);
 
-    fetchGastos();
-  }, [user]);
+  // Para manejar el estado acreditado (ya pagado)
+  const acreditado = watch("acreditado");
+
+  useEffect(() => {
+    // Si el gasto es fijo o en cuotas, deshabilitar acreditado porque no tiene sentido
+    if (toggleCuotasActivo || toggleFrecuenciaActivo) {
+      setValue("acreditado", false);
+    }
+  }, [toggleCuotasActivo, toggleFrecuenciaActivo, setValue]);
 
   const onSubmit = async (data) => {
     try {
@@ -121,18 +124,18 @@ const NewOutcome = () => {
         data.cantidad = 0;
       }
 
-      console.log("Datos del formulario:", data); // Depuración
+      console.log("Datos del formulario:", data);
       const token = Cookies.get("token") || null;
 
-      //Si el toggle de acreditado esta marcado entonces lo acreditamos
+      // Si el toggle de acreditado está marcado entonces estado pagado, sino pendiente
       const estado = data.acreditado ? "pagado" : "pendiente";
 
       const response = await axios.post(
-        "https://back-fbch.onrender.com/gastos",
+        "http://localhost:3000/gastos",
         {
           ...data,
           user_fk: user.id,
-          estado: "pendiente",
+          estado,
           pendienteConfirmacion: !data.acreditado,
         },
         {
@@ -145,10 +148,13 @@ const NewOutcome = () => {
       setGastos([...gastos, response.data.gasto]);
       reset();
       setSelectedCategoryImage(null);
+      setToggleCuotasActivo(false);
+      setToggleFrecuenciaActivo(false);
 
       navigate("/outcomes");
     } catch (error) {
       console.error("Error al crear el gasto:", error.response?.data);
+      setError("Error al crear el gasto.");
     } finally {
       setLoading(false);
     }
@@ -185,7 +191,6 @@ const NewOutcome = () => {
             error={errors.descripcion && errors.descripcion.message}
           />
 
-          {/* Campo para la fecha de inicio */}
           <Input
             type="date"
             label="Fecha de inicio"
@@ -194,7 +199,6 @@ const NewOutcome = () => {
             error={errors.fechaInicio && errors.fechaInicio.message}
           />
 
-          {/* Componente CategoryPicker */}
           <CategoryInput
             onCategorySelect={(category) => {
               setValue("categoria_fk", category._id, { shouldValidate: true });
@@ -209,7 +213,7 @@ const NewOutcome = () => {
           {/* Mostrar la imagen de la categoría seleccionada */}
           {selectedCategoryImage && (
             <div className="selected-category-image">
-              <p>Categoria seleccionada:</p>
+              <p>Categoría seleccionada:</p>
               <img
                 src={selectedCategoryImage}
                 alt="Categoría seleccionada"
@@ -218,7 +222,7 @@ const NewOutcome = () => {
             </div>
           )}
 
-          {/* Tipo de gasto*/}
+          {/* Toggle y Select para gasto fijo */}
           {toggleFrecuenciaActivo ? (
             <div className="toggle-container toggle-container--active">
               <Toggle
@@ -226,14 +230,13 @@ const NewOutcome = () => {
                 onChange={() =>
                   setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)
                 }
-                defaultChecked={toggleFrecuenciaActivo}
+                checked={toggleFrecuenciaActivo}
               />
-
               <Select
                 labelField="Frecuencia del gasto"
                 options={optionsFrecuencia}
+                {...register("frecuencia")}
               />
-
               {errors.frecuencia && (
                 <p className="input-error">{errors.frecuencia.message}</p>
               )}
@@ -245,9 +248,8 @@ const NewOutcome = () => {
                 onChange={() =>
                   setToggleFrecuenciaActivo(!toggleFrecuenciaActivo)
                 }
-                defaultChecked={toggleFrecuenciaActivo}
+                checked={toggleFrecuenciaActivo}
               />
-
               <p className="toggle-container__message">
                 Marcá esta opción si este gasto es recurrente y querés que te
                 recordemos pagarlo
@@ -255,71 +257,67 @@ const NewOutcome = () => {
             </div>
           )}
 
-          {errors.tipo && <p className="input-error">{errors.tipo.message}</p>}
+          {/* Toggle y Select para cuotas */}
+          {!toggleFrecuenciaActivo &&
+            (toggleCuotasActivo ? (
+              <div className="toggle-container toggle-container--active">
+                <Toggle
+                  label="Gasto en cuotas"
+                  onChange={() => setToggleCuotasActivo(!toggleCuotasActivo)}
+                  checked={toggleCuotasActivo}
+                />
+                <Select
+                  labelField="Cantidad de cuotas"
+                  options={optionsCuotas}
+                  {...register("cuotas")}
+                />
+              </div>
+            ) : (
+              <div className="toggle-container">
+                <Toggle
+                  label="Gasto en cuotas"
+                  onChange={() => setToggleCuotasActivo(!toggleCuotasActivo)}
+                  checked={toggleCuotasActivo}
+                />
+                <p className="toggle-container__message">
+                  Marcá esta opción si vas a pagar este total en varias cuotas
+                </p>
+              </div>
+            ))}
 
-          {/* Campo para las cuotas */}
-          {toggleCuotasActivo ? (
-            <div className="toggle-container toggle-container--active">
-              <Toggle
-                label="Gasto en cuotas"
-                onChange={setToggleCuotasActivo}
-                defaultChecked={toggleCuotasActivo}
-              />
-
-              <Select
-                labelField="Cantidad de cuotas"
-                options={optionsCuotas}
-                {...register("cuotas")}
-              />
-            </div>
-          ) : (
+          {/* Mostrar toggle para pago automático si gasto fijo o en cuotas */}
+          {(toggleFrecuenciaActivo || toggleCuotasActivo) && (
             <div className="toggle-container">
               <Toggle
-                label="Gasto en cuotas"
-                onChange={setToggleCuotasActivo}
-                defaultChecked={toggleCuotasActivo}
+                label="Pago automático"
+                name="cuotasAutomaticas"
+                {...register("cuotasAutomaticas")}
               />
-
               <p className="toggle-container__message">
-                Marcá esta opción si vas a pagar este total en varias cuotas
+                Activá esta función si querés que el gasto se marque como pagado
+                automáticamente
+              </p>
+            </div>
+          )}
+
+          {/* Toggle para gasto ya abonado (solo si no es gasto fijo ni en cuotas) */}
+          {!toggleCuotasActivo && !toggleFrecuenciaActivo && (
+            <div className="toggle-container">
+              <Toggle
+                label="Gasto ya abonado"
+                {...register("acreditado")}
+                defaultChecked={false}
+                disabled={toggleCuotasActivo || toggleFrecuenciaActivo}
+              />
+              <p className="toggle-container__message">
+                Marcá esta opción si ya pagaste
+                {toggleCuotasActivo && " la primera cuota"}
               </p>
             </div>
           )}
 
           {errors.cuotas && (
             <p className="input-error">{errors.cuotas.message}</p>
-          )}
-
-          {/* Cobrado o pendiente */}
-          {!toggleCuotasActivo && !toggleFrecuenciaActivo && (
-            <div className="toggle-container">
-              <Toggle
-                label="Gasto ya abonado"
-                defaultChecked={false}
-                {...register("acreditado")}
-              />
-
-              <p className="toggle-container__message">
-                Marcá esta opción si ya pagaste
-                {toggleCuotasActivo && "la primera cuota"}
-              </p>
-            </div>
-          )}
-
-          {(toggleCuotasActivo || toggleFrecuenciaActivo) && (
-            <div className="toggle-container">
-              <Toggle
-                label="Pago automático"
-                name="cuotasAutomaticas"
-                {...register("cuotasAutomaticas")}
-                // defaultChecked={true}
-              />
-
-              <p className="toggle-container__message">
-                Activá esta función si querés que el gasto se marque como pagado
-                automáticamente
-              </p>
-            </div>
           )}
 
           <Button

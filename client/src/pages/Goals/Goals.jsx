@@ -19,7 +19,7 @@ const Goals = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/metas/usuario/${user.id}`,
+          `http://localhost:3000/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -28,7 +28,7 @@ const Goals = () => {
         );
 
         setGoals(response.data);
-        console.log("goals", goals);
+        console.log("Metas recibidas del backend:", response.data);
       } catch (error) {
         console.error("Error al obtener las metas:", error.response?.data);
         setError("Error al cargar las metas.");
@@ -59,9 +59,11 @@ const Goals = () => {
             <GoalsCard
               key={goal._id}
               title={goal.nombre}
-              progress={goal.progreso}
+              percentage={goal.porcentaje}
               amount={goal.objetivo}
               id={goal._id}
+              currency={goal.moneda_extranjera?.nombre || null}
+              sign={goal.moneda_extranjera?.simbolo || "$"}
             />
           ))}
         </div>

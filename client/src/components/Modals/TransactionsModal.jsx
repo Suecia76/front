@@ -126,7 +126,7 @@ const TransactionsModal = ({ onClose, selectedDate, movements }) => {
                 {/* No hay ingresos cargados */}
                 <p>No tenés gastos cargados esta fecha</p>
 
-                <a href="/outcomes/add" className="btn btn--filled-blue">Agregar gasto</a>
+                <a href="/outcome/add" className="btn btn--filled-blue">Agregar gasto</a>
               </>
               
               )}

@@ -17,6 +17,7 @@ import {
   CalendarPage,
   Balances,
   Goals,
+  AddProgress,
   Profile,
   Group,
   Confirmaciones,
@@ -26,6 +27,7 @@ import {
 } from "./pages";
 import { useState, useEffect } from "react";
 import Loader from "./components/Animations/Loader";
+import { PublicLayout } from "./components/PublicLayout";
 
 import "./App.css";
 import { NavBar, TopBar, PrivateRoute } from "./components";
@@ -57,10 +59,17 @@ function App() {
       <Loader isLoading={loading} />
       {!loading && (
         <Routes>
+          <Route
+            path="/instalar"
+            element={
+              <PublicLayout>
+                {" "}
+                <Instalar />{" "}
+              </PublicLayout>
+            }
+          />
+
           {/* User */}
-
-          <Route path="/users/instalar" element={<Instalar />} />
-
           <Route path="/users/login" element={<FormLogin />} />
 
           <Route path="/users/register" element={<FormRegister />} />
@@ -188,6 +197,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route
             path="/goals/add"
             element={
@@ -197,6 +207,7 @@ function App() {
               </PrivateRoute>
             }
           />
+
           <Route
             path="/goals/edit/:id"
             element={
@@ -206,6 +217,17 @@ function App() {
               </PrivateRoute>
             }
           />
+
+          <Route
+            path="/goals/progress/:id"
+            element={
+              <PrivateRoute>
+                {" "}
+                <AddProgress />{" "}
+              </PrivateRoute>
+            }
+          />
+
           <Route path="*" element={<NotFound />} />
           <Route
             path="/calendar"

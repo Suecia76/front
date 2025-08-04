@@ -7,17 +7,21 @@ import * as yup from "yup";
 import { Input } from "../../components/Forms/Input";
 import { Button } from "../../components/Button";
 import Cookies from "js-cookie";
+import { StatusBar } from "../../components/StatusBar";
+import { ModalWrapper } from "../../components/Modals/ModalWrapper";
+import { Dialog } from "../../components/Modals/Dialog";
 
 const schema = yup.object().shape({
   nombre: yup.string().required("El nombre es obligatorio"),
-  imagen: yup.mixed().notRequired(), // La imagen no es obligatoria para la edición
+  imagen: yup.mixed().notRequired(),
 });
 
 const EditCategory = () => {
-  const { id } = useParams(); // Obtener el ID de la categoría desde la URL
-  const navigate = useNavigate(); // Para redirigir al usuario después de editar
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const {
     register,
@@ -37,7 +41,7 @@ const EditCategory = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/categorias/${id}`,
+          `http://localhost:3000/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -46,7 +50,6 @@ const EditCategory = () => {
         );
 
         const category = response.data;
-        // Cargar los valores de la categoría en el formulario
         setValue("nombre", category.nombre);
       } catch (error) {
         console.error("Error al cargar la categoría:", error.response?.data);
@@ -67,14 +70,13 @@ const EditCategory = () => {
 
       formData.append("nombre", data.nombre);
 
-      // Si se seleccionó una nueva imagen, agregarla al FormData
       if (data.imagen && data.imagen.length > 0) {
         const file = data.imagen[0];
         formData.append("imagen", file);
       }
 
       const response = await axios.put(
-        `https://back-fbch.onrender.com/categorias/${id}`,
+        `http://localhost:3000/categorias/${id}`,
         formData,
         {
           headers: {
@@ -85,7 +87,7 @@ const EditCategory = () => {
       );
 
       console.log("Categoría actualizada:", response.data);
-      navigate("/categories/add"); // Redirigir a la lista de categorías
+      navigate("/categories/add");
     } catch (error) {
       console.error("Error al actualizar la categoría:", error.response?.data);
       setError("Error al actualizar la categoría.");
@@ -94,54 +96,87 @@ const EditCategory = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      const token = Cookies.get("token") || null;
+      await axios.delete(`http://localhost:3000/categorias/${id}`, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
+      navigate("/categories/add");
+    } catch (error) {
+      console.error("Error al eliminar la categoría:", error.response?.data);
+      setError("Error al eliminar la categoría.");
+    } finally {
+      setLoading(false);
+      setShowDeleteModal(false);
+    }
+  };
+
   if (loading) return <p>Cargando...</p>;
   if (error) return <p className="error-message">{error}</p>;
 
   return (
-    <div id="editCategory">
-      <h2>Editar Categoría</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="autolayout-1 display-flex flex-start"
-        encType="multipart/form-data"
-      >
-        <Input
-          type="text"
-          label="Nombre"
-          placeholder="Nombre de la categoría"
-          name="nombre"
-          {...register("nombre")}
-        />
-        {errors.nombre && (
-          <p className="error-message">{errors.nombre.message}</p>
-        )}
-
-        <Input
-          label="Subir imágen"
-          id="imagen"
-          type="file"
-          name="imagen"
-          {...register("imagen")}
-        />
-        {errors.imagen && (
-          <p className="error-message">{errors.imagen.message}</p>
-        )}
-
-        <div className="form-actions">
-          <Button
-            type="submit"
-            label="Guardar cambios"
-            className="btn btn--filled-blue"
+    <>
+      <StatusBar label="Editar Categoría" />
+      <div id="editCategory">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="autolayout-1 display-flex flex-start"
+          encType="multipart/form-data"
+        >
+          <Input
+            type="text"
+            label="Nombre"
+            placeholder="Nombre de la categoría"
+            name="nombre"
+            {...register("nombre")}
           />
-          <Button
-            type="button"
-            label="Cancelar"
-            className="btn btn-text"
-            onClick={() => navigate("/categories/add")}
+          {errors.nombre && (
+            <p className="error-message">{errors.nombre.message}</p>
+          )}
+
+          <Input
+            label="Subir imágen"
+            id="imagen"
+            type="file"
+            name="imagen"
+            {...register("imagen")}
           />
-        </div>
-      </form>
-    </div>
+          {errors.imagen && (
+            <p className="error-message">{errors.imagen.message}</p>
+          )}
+
+          <div className="form-actions">
+            <Button
+              type="submit"
+              label="Guardar cambios"
+              className="btn btn--filled-blue"
+            />
+            <Button
+              type="button"
+              label="Eliminar"
+              className="btn btn--filled-red"
+              onClick={() => setShowDeleteModal(true)}
+            />
+          </div>
+        </form>
+      </div>
+      {showDeleteModal && (
+        <ModalWrapper centered={true}>
+          <Dialog
+            title="Confirmar eliminación"
+            text="¿Estás seguro de que deseas eliminar esta categoría?"
+            option1={"Eliminar"}
+            option2={"Cancelar"}
+            onClick1={handleDelete}
+            onClick2={() => setShowDeleteModal(false)}
+          />
+        </ModalWrapper>
+      )}
+    </>
   );
 };
 

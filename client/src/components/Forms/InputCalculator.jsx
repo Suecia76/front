@@ -1,18 +1,19 @@
 import PropTypes from "prop-types";
 import { forwardRef } from "react";
 import { IconButton } from "../Buttons/IconButton";
-import { Button } from "../Button";
 import { useState } from "react";
 import { ModalWrapper } from "../Modals/ModalWrapper";
+import { Calculator } from "./Calculator";
 
 const InputCalculator = forwardRef(
-  ({ label, type = "number", name, value, onChange, ...moreProps }, ref) => {
-
+  (
+    { label, type = "number", name, value, onChange, setValue, ...moreProps },
+    ref
+  ) => {
     const [openedCalculator, setOpenedCalculator] = useState(false);
 
-
     return (
-      <div className="display-flex flex-start flex-column">
+      <div className="display-flex flex-start flex-column calculator-wrapper">
         {label && <label>{label}</label>}
 
         <div className="container-input-calculator">
@@ -30,15 +31,28 @@ const InputCalculator = forwardRef(
             {...moreProps}
           />
 
-          <IconButton label="" className="btn-calculator" icon="calculator-indigo" onClick={() => setOpenedCalculator(true)} />
+          <IconButton
+            label=""
+            className="btn-calculator"
+            icon="calculator-indigo"
+            onClick={() => setOpenedCalculator(true)}
+          />
 
-            {openedCalculator && (
-              <ModalWrapper onClose={() => setOpenedCalculator(false)}>
-                <div className="modal__content">
-                  <p>Calculadora</p>
-                </div>
-              </ModalWrapper>
-            )}
+          {openedCalculator && (
+            <ModalWrapper
+              onClose={() => setOpenedCalculator(false)}
+              centered={true}
+            >
+              <Calculator
+                onResult={(calculatedValue) => {
+                  if (setValue) {
+                    setValue(name, calculatedValue, { shouldValidate: true });
+                  }
+                  setOpenedCalculator(false);
+                }}
+              />
+            </ModalWrapper>
+          )}
         </div>
       </div>
     );
@@ -54,6 +68,7 @@ InputCalculator.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // El valor es requerido
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func, // El manejador de cambio es requerido
+  setValue: PropTypes.any,
 };
 
 export { InputCalculator };

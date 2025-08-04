@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AuthContext } from "../../context/AuthContext";
@@ -8,7 +8,7 @@ import { Select } from "../../components";
 import { Textarea } from "../../components/Forms/Textarea";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Toggle } from "../../components";
 import { StatusBar } from "../../components/StatusBar";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -25,29 +25,55 @@ const schema = yup.object().shape({
   progreso: yup
     .number()
     .typeError("Debe ser un número")
-    .positive("El monto debe ser positivo")
-    .notRequired()
-    .default(0),
+    .min(0, "El progreso no puede ser negativo")
+    .default(0)
+    .notRequired(),
   tipo: yup
     .string()
-    .oneOf(["montoMensual", "porcentajeMensual"], "Tipo de meta inválido"),
+    .oneOf(["montoMensual", "", "porcentajeMensual"], "Tipo de meta inválido")
+    .notRequired(),
   porcentajeMensual: yup
     .number()
     .typeError("Debe ser un número")
-    .positive("El porcentaje debe ser positivo"),
+    .positive("El porcentaje debe ser positivo")
+    .notRequired(),
   montoMensual: yup
     .number()
     .typeError("Debe ser un número")
-    .positive("El monto debe ser positivo"),
-});
-
-// Esquema de validación para el formulario de avances
-const advanceSchema = yup.object().shape({
-  avance: yup
-    .number()
-    .typeError("Debe ser un número")
     .positive("El monto debe ser positivo")
-    .required("El monto del avance es obligatorio"),
+    .notRequired(),
+  moneda_extranjera: yup.boolean().default(false),
+  monedaNombre: yup.string().when("moneda_extranjera", {
+    is: true,
+    then: (schema) => schema.required("El nombre de la moneda es obligatorio"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  monedaSimbolo: yup.string().when("moneda_extranjera", {
+    is: true,
+    then: (schema) =>
+      schema
+        .required("El símbolo de la moneda es obligatorio")
+        .max(5, "El símbolo no puede tener más de 5 caracteres"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  /* cantidad: yup.number().when("moneda_extranjera", {
+    is: true,
+    then: (schema) =>
+      schema
+        .typeError("Debe ser un número")
+        .positive("La cantidad debe ser positiva")
+        .required("La cantidad es obligatoria"),
+    otherwise: (schema) => schema.notRequired(),
+  }), */
+  /*  precioMoneda: yup.number().when("moneda_extranjera", {
+    is: true,
+    then: (schema) =>
+      schema
+        .typeError("Debe ser un número")
+        .positive("El precio debe ser positivo")
+        .required("El precio de la moneda es obligatorio"),
+    otherwise: (schema) => schema.notRequired(),
+  }), */
 });
 
 const NewGoal = () => {
@@ -55,11 +81,8 @@ const NewGoal = () => {
   const navigate = useNavigate();
   const [goals, setGoals] = useState([]); // Lista de metas
   const [error, setError] = useState(null); // Estado para errores
-  const [showModal, setShowModal] = useState(false); // Controlar visibilidad del modal
-  const [goalToDelete, setGoalToDelete] = useState(null); // Meta seleccionada para eliminar
-  const [goalToUpdate, setGoalToUpdate] = useState(null); // Meta seleccionada para agregar avance
-  const [showAdvanceModal, setShowAdvanceModal] = useState(false); // Modal para agregar avance
   const [type, setType] = useState(""); // Tipo de meta seleccionado
+  const [isForeignCurrency, setIsForeignCurrency] = useState(false);
 
   // Formulario para crear metas
   const {
@@ -67,69 +90,67 @@ const NewGoal = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
       nombre: "",
-      objetivo: null,
+      objetivo: undefined,
       descripcion: "",
-      progreso: null,
+      progreso: 0,
+      tipo: "",
+      porcentajeMensual: undefined,
+      montoMensual: undefined,
+      moneda_extranjera: false,
+      monedaNombre: "",
+      monedaSimbolo: "",
+      // cantidad: undefined,
+      // precioMoneda: undefined,
     },
   });
-
-  // Formulario para agregar avances
-  const {
-    register: registerAdvance,
-    handleSubmit: handleAdvanceSubmit,
-    formState: { errors: advanceErrors },
-    reset: resetAdvanceForm,
-  } = useForm({
-    resolver: yupResolver(advanceSchema),
-    defaultValues: {
-      avance: 0,
-    },
-  });
-
-  useEffect(() => {
-    const fetchGoal = async () => {
-      if (!user) return;
-      try {
-        const token = Cookies.get("token") || null;
-        const response = await axios.get(
-          `https://back-fbch.onrender.com/metas/usuario/${user.id}`,
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
-        setGoals(response.data);
-      } catch (error) {
-        console.error(error);
-        setError("Error al obtener las metas.");
-      }
-    };
-    fetchGoal();
-  }, [user]);
 
   const onSubmit = async (data) => {
     try {
-      const token = Cookies.get("token") || null;
+      const progresoPrevio = parseFloat(data.progreso || 0);
+      const cantidad = parseFloat(data.cantidad || 0);
+      const precioMoneda = parseFloat(data.precioMoneda || 0);
+      const objetivo = parseFloat(data.objetivo || 0);
+
+      const avanceExtranjero = isForeignCurrency ? cantidad * precioMoneda : 0;
+      const progresoFinal = progresoPrevio + avanceExtranjero;
+
+      const payload = {
+        ...data,
+        user_fk: user.id,
+        progreso: progresoFinal,
+        porcentaje: undefined,
+        moneda_extranjera: isForeignCurrency
+          ? { nombre: data.monedaNombre, simbolo: data.monedaSimbolo }
+          : null,
+        avance: isForeignCurrency ? { cantidad, precioMoneda } : undefined,
+      };
+
+      if (isForeignCurrency) {
+        delete payload.tipo;
+        delete payload.montoMensual;
+        delete payload.porcentajeMensual;
+      }
+
+      const token = Cookies.get("token") || "";
       const response = await axios.post(
-        "https://back-fbch.onrender.com/metas",
+        "http://localhost:3000/metas",
+        payload,
         {
-          ...data,
-          user_fk: user.id,
-          progreso: data.progreso || 0,
-        },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setGoals([...goals, response.data.goal]);
-      reset(); // Reiniciar el formulario de creación
+
+      // Si querés asegurarte que porcentaje esté actualizado, podés hacer:
+      // const createdGoal = response.data.goal;
+      // luego pedir el goal completo actualizado, o confiar en backend.
+
+      setGoals((prev) => [...prev, response.data.goal]);
+      reset();
       navigate("/goals");
     } catch (error) {
       console.error("Error al crear la meta:", error);
@@ -137,88 +158,17 @@ const NewGoal = () => {
     }
   };
 
-  const handleDelete = async () => {
-    if (!goalToDelete) return;
-    try {
-      const token = Cookies.get("token") || null;
-      await axios.delete(
-        `https://back-fbch.onrender.com/metas/${goalToDelete._id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      // Actualizar la lista de metas después de eliminar
-      setGoals(goals.filter((goal) => goal._id !== goalToDelete._id));
-      setShowModal(false); // Cerrar el modal
-      setGoalToDelete(null); // Limpiar la meta seleccionada
-    } catch (error) {
-      console.error("Error al eliminar la meta:", error);
-      setError("Error al eliminar la meta.");
-    }
-  };
-
-  const handleAdvanceSubmitAction = async (data) => {
-    if (!goalToUpdate) return;
-    try {
-      const token = Cookies.get("token") || null;
-      const updatedProgreso = goalToUpdate.progreso + parseFloat(data.avance);
-      const response = await axios.put(
-        `https://back-fbch.onrender.com/metas/${goalToUpdate._id}`,
-        {
-          progreso: updatedProgreso,
-        },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      // Actualizar la meta en la lista
-      setGoals(
-        goals.map((goal) =>
-          goal._id === goalToUpdate._id
-            ? { ...goal, progreso: response.data.progreso }
-            : goal
-        )
-      );
-      setShowAdvanceModal(false); // Cerrar el modal
-      setGoalToUpdate(null); // Limpiar la meta seleccionada
-      resetAdvanceForm(); // Reiniciar el formulario de avances
-    } catch (error) {
-      console.error("Error al agregar avance:", error);
-      setError("Error al agregar avance.");
-    }
-  };
-
-  const openDeleteModal = (goal) => {
-    setGoalToDelete(goal); // Establecer la meta seleccionada
-    setShowModal(true); // Mostrar el modal
-  };
-
-  const openAdvanceModal = (goal) => {
-    setGoalToUpdate(goal); // Establecer la meta seleccionada
-    setShowAdvanceModal(true); // Mostrar el modal para agregar avance
-  };
-
-  const closeModal = () => {
-    setShowModal(false); // Cerrar el modal
-    setGoalToDelete(null); // Limpiar la meta seleccionada
-  };
-
-  const closeAdvanceModal = () => {
-    setShowAdvanceModal(false); // Cerrar el modal
-    setGoalToUpdate(null); // Limpiar la meta seleccionada
-    resetAdvanceForm(); // Reiniciar el formulario de avances
-  };
-
   return (
     <>
       <StatusBar label="Nueva meta" />
 
       <div id="new-goal">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={handleSubmit(onSubmit, (errs) =>
+            console.log("Errores de validación:", errs)
+          )}
+          className="autolayout-1"
+        >
           <Input
             name="nombre"
             label="Nombre"
@@ -229,6 +179,7 @@ const NewGoal = () => {
           {errors.nombre && (
             <p className="error-message">{errors.nombre.message}</p>
           )}
+
           <Input
             sign="$"
             name="objetivo"
@@ -240,6 +191,7 @@ const NewGoal = () => {
           {errors.objetivo && (
             <p className="error-message">{errors.objetivo.message}</p>
           )}
+
           <Textarea
             name="descripcion"
             label="Descripción"
@@ -247,113 +199,115 @@ const NewGoal = () => {
             {...register("descripcion")}
           />
 
-          <Select
-            labelField="tipo de meta"
-            register={register("tipo")}
-            options={[
-              {
-                value: null,
-                label: "quiero agregar avances manuales",
-                selected: true,
-              },
-              { value: "montoMensual", label: "Monto Mensual" },
-              { value: "porcentajeMensual", label: "Porcentaje Mensual" },
-            ]}
-            onChange={(e) => setType(e.target.value)}
+          <Toggle
+            label="¿Es en moneda extranjera?"
+            checked={isForeignCurrency}
+            onChange={() => setIsForeignCurrency(!isForeignCurrency)}
           />
-          {errors.tipo && (
-            <p className="error-message">{errors.tipo.message}</p>
+
+          {isForeignCurrency && (
+            <>
+              <Input
+                name="monedaNombre"
+                label="Nombre de la moneda"
+                type="text"
+                placeholder="Ej: Dólar, Euro"
+                {...register("monedaNombre")}
+              />
+              <Input
+                name="monedaSimbolo"
+                label="Símbolo"
+                type="text"
+                placeholder="Ej: USD, EUR"
+                {...register("monedaSimbolo")}
+              />
+              {/* <Input
+                name="cantidad"
+                label="Cantidad comprada"
+                type="hidden"
+                placeholder="Cantidad de la moneda"
+                {...register("cantidad")}
+              />
+              <Input
+                name="precioMoneda"
+                label="Precio por unidad (ARS)"
+                type="hidden"
+                placeholder="Precio de la moneda en ARS"
+                {...register("precioMoneda")}
+              /> */}
+            </>
           )}
 
-          {type === "porcentajeMensual" && (
-            <Input
-              name="porcentajeMensual"
-              label="Porcentaje Mensual"
-              type="number"
-              {...register("porcentajeMensual")}
-            />
-          )}
+          {!isForeignCurrency && (
+            <>
+              <Select
+                labelField="Tipo de meta"
+                register={register("tipo")}
+                options={[
+                  { value: "", label: "Agregar avances manualmente." },
+                  {
+                    value: "montoMensual",
+                    label: "Ahorrar un monto fijo por mes",
+                  },
+                  {
+                    value: "porcentajeMensual",
+                    label: "Ahorrar un porcentaje del ingreso mensual",
+                  },
+                ]}
+                onChange={(e) => {
+                  const selected = e.target.value;
+                  setType(selected);
+                  setValue("tipo", selected);
 
-          {errors.porcentajeMensual && (
-            <p className="error-message">{errors.porcentajeMensual.message}</p>
-          )}
+                  // 🔥 Limpiar el campo opuesto
+                  if (selected === "montoMensual") {
+                    setValue("porcentajeMensual", undefined);
+                  } else if (selected === "porcentajeMensual") {
+                    setValue("montoMensual", undefined);
+                  } else {
+                    setValue("porcentajeMensual", undefined);
+                    setValue("montoMensual", undefined);
+                  }
+                }}
+              />
 
-          {type === "montoMensual" && (
-            <Input
-              name="montoMensual"
-              label="Monto Mensual"
-              type="number"
-              {...register("montoMensual")}
-            />
-          )}
-
-          {errors.montoMensual && (
-            <p className="error-message">{errors.montoMensual.message}</p>
+              {type === "porcentajeMensual" && (
+                <Input
+                  name="porcentajeMensual"
+                  label="Porcentaje Mensual"
+                  type="number"
+                  {...register("porcentajeMensual")}
+                  sign="%"
+                />
+              )}
+              {type === "montoMensual" && (
+                <Input
+                  name="montoMensual"
+                  label="Monto Mensual"
+                  type="number"
+                  {...register("montoMensual")}
+                />
+              )}
+            </>
           )}
 
           <Input
             name="progreso"
-            label="Progreso"
+            label="Dinero ya ahorrado destinado a esta meta"
             type="number"
-            placeholder="Progreso actual de la meta"
+            placeholder="Ej: 5000"
             {...register("progreso")}
+            sign="$"
           />
+
           <Button
             type="submit"
             label="Crear meta"
             className="btn btn--filled-blue margin-top-2"
           />
         </form>
-        {/* Modal de confirmación para eliminar */}
-        {showModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>¿Estás seguro de que deseas eliminar esta meta?</h3>
-              <p>
-                <strong>{goalToDelete?.nombre}</strong> - $
-                {goalToDelete?.objetivo}
-              </p>
-              <div className="modal-actions">
-                <button className="btn-cancel" onClick={closeModal}>
-                  Cancelar
-                </button>
-                <button className="btn-confirm" onClick={handleDelete}>
-                  Eliminar
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        {/* Modal para agregar avance */}
-        {showAdvanceModal && (
-          <div className="modal">
-            <div className="modal-content">
-              <h3>Agregar Avance</h3>
-              <form onSubmit={handleAdvanceSubmit(handleAdvanceSubmitAction)}>
-                <Input
-                  name="avance"
-                  label="Monto del avance"
-                  type="number"
-                  placeholder="Ingresa el monto del avance"
-                  {...registerAdvance("avance")}
-                />
-                {advanceErrors.avance && (
-                  <p className="error-message">
-                    {advanceErrors.avance.message}
-                  </p>
-                )}
-                <div className="modal-actions">
-                  <button className="btn-cancel" onClick={closeAdvanceModal}>
-                    Cancelar
-                  </button>
-                  <Button className="btn-confirm" type="submit">
-                    Agregar
-                  </Button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+
+        {error && <p className="error-message">{error}</p>}
       </div>
     </>
   );

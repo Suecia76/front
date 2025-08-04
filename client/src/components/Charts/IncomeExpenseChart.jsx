@@ -19,14 +19,14 @@ const IncomeExpenseChart = () => {
 
         // Obtener ingresos
         const ingresosRes = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `http://localhost:3000/ingresos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setIngresos(ingresosRes.data);
 
         // Obtener gastos
         const gastosRes = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`,
+          `http://localhost:3000/gastos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setGastos(gastosRes.data);
@@ -72,13 +72,37 @@ const IncomeExpenseChart = () => {
           { name: "Gastos", data: gastosData },
         ],
         options: {
-          chart: { type: "line", height: 350, width: "100%" },
+          chart: {
+            type: "line",
+            height: 350,
+            width: "100%",
+            zoom: { enabled: false },
+            pan: { enabled: false },
+            toolbar: { show: false },
+            selection: { enabled: false },
+            animations: { enabled: false },
+            events: {
+              mounted: (chartContext) => {
+                const el = chartContext.el;
+                if (el) {
+                  el.style.userSelect = "none";
+                  el.style.webkitUserSelect = "none";
+                  el.style.touchAction = "none";
+                }
+              },
+            },
+          },
           xaxis: {
             categories: fechas,
-            labels: { show: false }, // Oculta fechas
+            tickAmount: 5,
+            labels: {
+              show: true,
+              rotate: -45,
+              style: { fontSize: "10px" },
+            },
           },
           yaxis: {
-            labels: { show: false }, // Oculta números del costado
+            labels: { show: true },
           },
           stroke: { curve: "smooth" },
           colors: ["#28F1A4", "#2057F2"],
@@ -92,17 +116,19 @@ const IncomeExpenseChart = () => {
   return (
     <div>
       <h3>Resumen de Ingresos y Gastos</h3>
-      {chartData.series.length > 0 ? (
-        <Chart
-          options={chartData.options}
-          series={chartData.series}
-          type="line"
-          height={350}
-          width="100%"
-        />
-      ) : (
-        <p>No hay datos suficientes para generar el gráfico.</p>
-      )}
+      <div className="chart-container ">
+        {chartData.series.length > 0 ? (
+          <Chart
+            options={chartData.options}
+            series={chartData.series}
+            type="line"
+            height={350}
+            width="100%"
+          />
+        ) : (
+          <p>No hay datos suficientes para generar el gráfico.</p>
+        )}
+      </div>
     </div>
   );
 };

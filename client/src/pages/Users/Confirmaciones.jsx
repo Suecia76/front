@@ -21,7 +21,7 @@ const Confirmaciones = () => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/pendientes/${user.id}`,
+          `http://localhost:3000/usuarios/pendientes/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setPendientes(res.data);
@@ -34,15 +34,16 @@ const Confirmaciones = () => {
     if (user && user.id) fetchPendientes();
   }, [user]);
 
+  console.log(pendientes);
   const handleConfirm = async (type, id) => {
     try {
       const token = Cookies.get("token");
       let url;
 
       if (type === "ingreso" && id) {
-        url = `https://back-fbch.onrender.com/ingresos/${id}/confirmar`;
+        url = `http://localhost:3000/ingresos/${id}/confirmar`;
       } else if (type === "gasto" && id) {
-        url = `https://back-fbch.onrender.com/gastos/${id}/confirmar`;
+        url = `http://localhost:3000/gastos/${id}/confirmar`;
       }
 
       await axios.post(
@@ -96,18 +97,19 @@ const Confirmaciones = () => {
         <>
           <div>
             <h2>Ingresos a confirmar</h2>
-
-            {pendientes.ingresosPendientes.length === 0 ? (
-              <p>No hay ingresos pendientes.</p>
-            ) : (
-              pendientes.ingresosPendientes.map((ingreso) => (
-                <>
+            <div className="autolayout-1">
+              {pendientes.ingresosPendientes.length === 0 ? (
+                <p>No hay ingresos pendientes.</p>
+              ) : (
+                pendientes.ingresosPendientes.map((ingreso) => (
                   <ConfirmTransactionCard
                     _id={ingreso._id}
                     key={ingreso._id}
                     title={ingreso.nombre}
                     amount={ingreso.cantidad}
                     type="income"
+                    totalInstallments={ingreso.cuotas}
+                    payedInstallments={ingreso.cuotasProcesadas}
                     onConfirm={() =>
                       setSelectedTransaction({
                         type: "ingreso",
@@ -115,9 +117,9 @@ const Confirmaciones = () => {
                       })
                     }
                   />
-                </>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
         </>
       )}
@@ -127,24 +129,29 @@ const Confirmaciones = () => {
           <div>
             <h2>Gastos a confirmar</h2>
 
-            {pendientes.gastosPendientes.length === 0 ? (
-              <p>No hay gastos pendientes.</p>
-            ) : (
-              pendientes.gastosPendientes.map((gasto) => (
-                <>
+            <div className="autolayout-1">
+              {pendientes.gastosPendientes.length === 0 ? (
+                <p>No hay gastos pendientes.</p>
+              ) : (
+                pendientes.gastosPendientes.map((gasto) => (
                   <ConfirmTransactionCard
                     _id={gasto._id}
                     key={gasto._id}
                     title={gasto.nombre}
                     amount={gasto.cantidad}
                     type="outcome"
+                    totalInstallments={gasto.cuotas}
+                    payedInstallments={gasto.cuotasProcesadas}
                     onConfirm={() => {
-                      setSelectedTransaction({ type: "gasto", id: gasto._id });
+                      setSelectedTransaction({
+                        type: "gasto",
+                        id: gasto._id,
+                      });
                     }}
                   />
-                </>
-              ))
-            )}
+                ))
+              )}
+            </div>
           </div>
         </>
       )}
