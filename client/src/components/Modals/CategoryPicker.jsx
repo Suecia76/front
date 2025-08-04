@@ -14,7 +14,7 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
   const [userCategories, setUserCategories] = useState([]);
   const [error, setError] = useState(null);
 
-  const url = "https://back-fbch.onrender.comuploads/";
+  const url = "https://back-fbch.onrender.com/uploads/";
   // const extension = ".png";
 
   useEffect(() => {
@@ -28,13 +28,13 @@ const CategoryPicker = ({ onClose, handleCategoryClick }) => {
 
       try {
         const defaultResponse = await axios.get(
-          "https://back-fbch.onrender.comcategorias"
+          "https://back-fbch.onrender.com/categorias"
         );
 
         setDefaultCategories(defaultResponse.data);
 
         const userResponse = await axios.get(
-          `https://back-fbch.onrender.comcategorias/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${Cookies.get("token")}`,

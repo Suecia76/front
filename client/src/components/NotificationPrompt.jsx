@@ -42,7 +42,7 @@ const NotificationPrompt = ({ userId }) => {
             });
             if (token) {
               await axios.post(
-                "https://back-fbch.onrender.com/usuarios/suscripcion-fcm",
+                "https://back-fbch.onrender.com//usuarios/suscripcion-fcm",
                 {
                   userId,
                   fcmToken: token,
@@ -64,7 +64,7 @@ const NotificationPrompt = ({ userId }) => {
             ),
           });
           await axios.post(
-            "https://back-fbch.onrender.com/usuarios/suscripcion-push",
+            "https://back-fbch.onrender.com//usuarios/suscripcion-push",
             {
               subscription,
               userId,

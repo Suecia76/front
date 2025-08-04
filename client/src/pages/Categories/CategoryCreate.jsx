@@ -47,7 +47,7 @@ const CategoryCreate = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.comcategorias/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -96,7 +96,7 @@ const CategoryCreate = () => {
       });
 
       const response = await axios.post(
-        "https://back-fbch.onrender.comcategorias",
+        "https://back-fbch.onrender.com/categorias",
         formData,
         {
           headers: {
@@ -133,7 +133,7 @@ const CategoryCreate = () => {
     try {
       const token = Cookies.get("token") || null;
       await axios.delete(
-        `https://back-fbch.onrender.comcategorias/${categoryToDelete._id}`,
+        `https://back-fbch.onrender.com/categorias/${categoryToDelete._id}`,
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -160,7 +160,7 @@ const CategoryCreate = () => {
     setCategoryToDelete(null);
   }; */
 
-  let url = "https://back-fbch.onrender.comuploads/";
+  let url = "https://back-fbch.onrender.com/uploads/";
 
   return (
     <>

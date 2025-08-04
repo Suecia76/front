@@ -52,7 +52,7 @@ const FormLogin = () => {
     try {
       setLoginError(""); // Limpiar error previo
       const response = await axios.post(
-        "https://back-fbch.onrender.comusuarios/login",
+        "https://back-fbch.onrender.com/usuarios/login",
         data
       );
 

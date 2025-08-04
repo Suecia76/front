@@ -92,7 +92,7 @@ const IncomeDetail = () => {
         const token = Cookies.get("token") || null;
 
         const res = await axios.get(
-          `https://back-fbch.onrender.comingresos/${id}`,
+          `https://back-fbch.onrender.com/ingresos/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -132,7 +132,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.put(`https://back-fbch.onrender.comingresos/${id}`, data, {
+      await axios.put(`https://back-fbch.onrender.com/ingresos/${id}`, data, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -156,7 +156,7 @@ const IncomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.comcategorias/${id}`,
+          `https://back-fbch.onrender.com/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -199,7 +199,7 @@ const IncomeDetail = () => {
       console.log(token);
 
       const res = await axios.post(
-        `https://back-fbch.onrender.comingresos/${id}/confirmar`,
+        `https://back-fbch.onrender.com/ingresos/${id}/confirmar`,
         {},
         /* {
             // ...getValues(), 
@@ -220,7 +220,7 @@ const IncomeDetail = () => {
     }
   };
 
-  const url = "https://back-fbch.onrender.comuploads/";
+  const url = "https://back-fbch.onrender.com/uploads/";
 
   const cuotas = watch("cuotas");
 
@@ -230,7 +230,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.delete(`https://back-fbch.onrender.comingresos/${id}`, {
+      await axios.delete(`https://back-fbch.onrender.com/ingresos/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -349,7 +349,7 @@ const IncomeDetail = () => {
                       className="data-card__icon"
                       src={
                         category?.imagen
-                          ? `https://back-fbch.onrender.comuploads/${category.imagen}`
+                          ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
                           : "/assets/icons/default.svg"
                       }
                       alt={category?.nombre || "icono"}
