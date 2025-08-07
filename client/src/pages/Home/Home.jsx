@@ -55,11 +55,6 @@ const Home = () => {
 
   useEffect(() => {
     const fetchSaldo = async () => {
-      if (!user || !user.id) {
-        console.error("El usuario no está definido o no tiene un ID.");
-        return;
-      }
-
       try {
         console.log("ID del usuario:", user.id); // Verificar ID
         const token = Cookies.get("token") || null;
