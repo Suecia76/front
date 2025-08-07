@@ -92,7 +92,7 @@ const OutcomeDetail = () => {
         const token = Cookies.get("token") || null;
 
         const res = await axios.get(
-          `https://back-fbch.onrender.com/gastos/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/gastos/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -132,11 +132,15 @@ const OutcomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.put(`https://back-fbch.onrender.com/gastos/${id}`, data, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/gastos/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
 
       console.log("Gasto actualizado");
 
@@ -156,7 +160,7 @@ const OutcomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/categorias/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -194,7 +198,7 @@ const OutcomeDetail = () => {
       const token = Cookies.get("token") || null;
 
       const res = await axios.put(
-        `https://back-fbch.onrender.com/gastos/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/gastos/${id}`,
         {
           ...getValues(), // obtiene los valores actuales del form
           pendienteConfirmacion: false, // marca como confirmado
@@ -213,7 +217,7 @@ const OutcomeDetail = () => {
     }
   }
 
-  const url = "https://back-fbch.onrender.com/uploads/";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
   const cuotas = watch("cuotas");
 
@@ -223,7 +227,7 @@ const OutcomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.delete(`https://back-fbch.onrender.com/gastos/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/gastos/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -344,7 +348,9 @@ const OutcomeDetail = () => {
                       className="data-card__icon"
                       src={
                         category?.imagen
-                          ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
+                          ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${
+                              category.imagen
+                            }`
                           : "/assets/icons/default.svg"
                       }
                       alt={category?.nombre || "icono"}

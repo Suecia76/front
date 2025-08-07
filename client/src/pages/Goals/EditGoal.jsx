@@ -89,7 +89,7 @@ const EditGoal = () => {
       try {
         const token = Cookies.get("token") || "";
         const response = await axios.get(
-          `https://back-fbch.onrender.com/metas/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/metas/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -147,9 +147,13 @@ const EditGoal = () => {
           : null,
       };
 
-      await axios.put(`https://back-fbch.onrender.com/metas/${id}`, payload, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/metas/${id}`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       console.log("Updated");
       navigate("/goals");
@@ -163,7 +167,7 @@ const EditGoal = () => {
     setDeleting(true);
     try {
       const token = Cookies.get("token") || "";
-      await axios.delete(`https://back-fbch.onrender.com/metas/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/metas/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/goals");

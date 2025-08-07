@@ -31,7 +31,7 @@ const Profile = () => {
       try {
         const token = Cookies.get("token");
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/${user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/usuarios/${user.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -39,7 +39,9 @@ const Profile = () => {
         setUserData(response.data);
         setPreviewImage(
           response.data.image
-            ? `https://back-fbch.onrender.com/uploads/imagenes_perfil/${response.data.image}`
+            ? `${import.meta.env.VITE_BACKEND_URL}/uploads/imagenes_perfil/${
+                response.data.image
+              }`
             : null
         );
         setFormData({ email: response.data.email, password: "" });
@@ -84,7 +86,7 @@ const Profile = () => {
       // No incluyo imagen para edición, pero podés agregar si querés
 
       const response = await axios.put(
-        `https://back-fbch.onrender.com/usuarios/${user.id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/usuarios/${user.id}`,
         formDataToSend,
         {
           headers: {

@@ -22,7 +22,7 @@ const Incomes = () => {
         setLoading(true);
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",

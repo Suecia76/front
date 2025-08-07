@@ -27,7 +27,7 @@ const CategoryInput = forwardRef(
       setShowModal(false);
     };
 
-    let url = "https://back-fbch.onrender.com/uploads/";
+    let url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
     return (
       <div ref={ref}>

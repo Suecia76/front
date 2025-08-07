@@ -56,7 +56,7 @@ const Home = () => {
         console.log("ID del usuario:", user.id); // Verificar ID
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/saldo/${user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -83,8 +83,9 @@ const Home = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/${user.id}/resumen-mensual
-      `,
+          `${import.meta.env.VITE_BACKEND_URL}/usuarios/${
+            user.id
+          }/resumen-mensual`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados

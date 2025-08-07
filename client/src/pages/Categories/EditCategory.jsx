@@ -41,7 +41,7 @@ const EditCategory = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/categorias/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -76,7 +76,7 @@ const EditCategory = () => {
       }
 
       const response = await axios.put(
-        `https://back-fbch.onrender.com/categorias/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/categorias/${id}`,
         formData,
         {
           headers: {
@@ -100,11 +100,14 @@ const EditCategory = () => {
     try {
       setLoading(true);
       const token = Cookies.get("token") || null;
-      await axios.delete(`https://back-fbch.onrender.com/categorias/${id}`, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/categorias/${id}`,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
       navigate("/categories/add");
     } catch (error) {
       console.error("Error al eliminar la categoría:", error.response?.data);

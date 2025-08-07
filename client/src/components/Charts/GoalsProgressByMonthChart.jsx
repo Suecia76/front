@@ -15,7 +15,9 @@ const GoalsProgressByMonthChart = () => {
       try {
         const token = Cookies.get("token") || null;
         const res = await axios.get(
-          `https://back-fbch.onrender.com/metas/usuario/${user.id}/avances-mes`,
+          `${import.meta.env.VITE_BACKEND_URL}/metas/usuario/${
+            user.id
+          }/avances-mes`,
           {
             headers: { Authorization: token ? `Bearer ${token}` : "" },
           }

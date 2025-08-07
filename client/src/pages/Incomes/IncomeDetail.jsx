@@ -92,7 +92,7 @@ const IncomeDetail = () => {
         const token = Cookies.get("token") || null;
 
         const res = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/ingresos/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -132,11 +132,15 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.put(`https://back-fbch.onrender.com/ingresos/${id}`, data, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      });
+      await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/ingresos/${id}`,
+        data,
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : "",
+          },
+        }
+      );
 
       console.log("Ingreso actualizado");
 
@@ -156,7 +160,7 @@ const IncomeDetail = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/categorias/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -199,7 +203,7 @@ const IncomeDetail = () => {
       console.log(token);
 
       const res = await axios.post(
-        `https://back-fbch.onrender.com/ingresos/${id}/confirmar`,
+        `${import.meta.env.VITE_BACKEND_URL}/ingresos/${id}/confirmar`,
         {},
         /* {
             // ...getValues(), 
@@ -220,7 +224,7 @@ const IncomeDetail = () => {
     }
   };
 
-  const url = "https://back-fbch.onrender.com/uploads/";
+  const url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
   const cuotas = watch("cuotas");
 
@@ -230,7 +234,7 @@ const IncomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      await axios.delete(`https://back-fbch.onrender.com/ingresos/${id}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/ingresos/${id}`, {
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
         },
@@ -349,7 +353,9 @@ const IncomeDetail = () => {
                       className="data-card__icon"
                       src={
                         category?.imagen
-                          ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
+                          ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${
+                              category.imagen
+                            }`
                           : "/assets/icons/default.svg"
                       }
                       alt={category?.nombre || "icono"}

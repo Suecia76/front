@@ -21,7 +21,7 @@ const IncomesCard = ({
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/categorias/${id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/categorias/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -56,7 +56,9 @@ const IncomesCard = ({
               className="transaction-card__icon"
               src={
                 category?.imagen
-                  ? `https://back-fbch.onrender.com/uploads/${category.imagen}`
+                  ? `${import.meta.env.VITE_BACKEND_URL}/uploads/${
+                      category.imagen
+                    }`
                   : "/assets/icons/default.svg"
               }
               alt={category?.nombre || "icono"}

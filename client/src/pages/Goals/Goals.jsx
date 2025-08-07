@@ -19,7 +19,7 @@ const Goals = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/metas/usuario/${user.id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/metas/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
