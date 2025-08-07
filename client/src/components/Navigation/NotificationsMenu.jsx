@@ -7,6 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 const NotificationsMenu = ({ open }) => {
   const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -18,6 +19,7 @@ const NotificationsMenu = ({ open }) => {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setNotifications(res.data);
+        setLoading(false);
       } catch (err) {
         console.error("Error al obtener notificaciones:", err);
       }
@@ -44,7 +46,11 @@ const NotificationsMenu = ({ open }) => {
     <div className="notifications">
       {open && (
         <div className="notifications__container">
-          {notifications.length > 0 ? (
+          {loading ? (
+            <div className="notifications__loading">
+              Cargando notificaciones...
+            </div>
+          ) : notifications.length > 0 ? (
             <ul className="notifications__list">
               {notifications.map((n) => (
                 <li className="notifications__item" key={n._id}>
