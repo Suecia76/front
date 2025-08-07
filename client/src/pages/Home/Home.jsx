@@ -126,10 +126,10 @@ const Home = () => {
           ))}
         </section>
 
-        {/* saldoActual
-        totalIngresosMes
-        totalGastosMes
-        disponible */}
+        <section>
+          <NotificationPrompt />
+        </section>
+
         <section className="section-info" id="balance-status">
           <h2>Resumen Mensual</h2>
 
