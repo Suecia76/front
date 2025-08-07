@@ -41,6 +41,7 @@ const Home = () => {
   const [isInStandaloneMode, setIsInStandaloneMode] = useState(false);
 
   useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
     setIsIos(isIosDevice);
     const standalone = window.navigator.standalone === true;
