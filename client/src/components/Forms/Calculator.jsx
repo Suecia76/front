@@ -7,6 +7,7 @@ const Calculator = ({ onResult }) => {
   const [error, setError] = useState("");
 
   const handleClick = (value) => {
+    e.preventDefault();
     if (value === "C") {
       setExpression("");
       setResult("");
@@ -57,13 +58,13 @@ const Calculator = ({ onResult }) => {
           "C",
           "+",
         ].map((btn) => (
-          <button key={btn} onClick={() => handleClick(btn)}>
+          <button key={btn} onClick={(e) => handleClick(btn)}>
             {btn}
           </button>
         ))}
         <button
           className="equal btn btn--outline"
-          onClick={() => handleClick("=")}
+          onClick={(e) => handleClick("=")}
         >
           =
         </button>
