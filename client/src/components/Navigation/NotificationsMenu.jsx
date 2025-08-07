@@ -57,7 +57,7 @@ const NotificationsMenu = ({ open }) => {
 
                   {n.imagen && (
                     <img
-                      src={n.imagen}
+                      src={n.imagen.replace(/^\.\/src\//, "/")}
                       alt="icono"
                       className="notification__icon"
                     />
