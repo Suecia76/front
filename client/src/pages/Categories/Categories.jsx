@@ -24,7 +24,7 @@ const Categories = () => {
 
       try {
         const defaultResponse = await axios.get(
-          "${import.meta.env.VITE_BACKEND_URL}/categorias"
+          `${import.meta.env.VITE_BACKEND_URL}/categorias`
         );
 
         setDefaultCategories(defaultResponse.data);
