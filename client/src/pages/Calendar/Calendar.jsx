@@ -15,6 +15,7 @@ const CalendarPage = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [visibleDate, setVisibleDate] = useState(new Date());
   const [movimientosPorTipo, setMovimientosPorTipo] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMovimientos = async () => {
@@ -24,6 +25,7 @@ const CalendarPage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMovimientos(res.data);
+      setLoading(false);
     };
     if (user && user.id) fetchMovimientos();
   }, [user]);
@@ -85,16 +87,6 @@ const CalendarPage = () => {
     <div>
       <StatusBar label="Confimar transacciones" />
 
-      {/*  <div className="tabs">
-          {tabs.map(tab=> (
-          <Tab 
-          label={tab.label}
-          key ={tab.value}
-          isSelected={selectedTab === tab.value}
-          onSelect={()=> setSelectedTab(tab.value)}/>
-        ))}
-      </div> */}
-
       {selectedTab === "mes" && (
         <>
           <div className="month-picker">
@@ -121,8 +113,6 @@ const CalendarPage = () => {
               </p>
             </div>
 
-            {/* <div className="month-picker__nav"> */}
-
             <button
               onClick={() => {
                 setSelectedDate(null); // Limpiar la selección
@@ -132,7 +122,6 @@ const CalendarPage = () => {
             >
               <img src="/assets/icons/arrow-right-light.svg" alt="" />
             </button>
-            {/* </div> */}
           </div>
 
           <Calendar
@@ -140,8 +129,8 @@ const CalendarPage = () => {
             onClickDay={handleDayClick}
             view="month"
             maxDetail="month"
-            activeStartDate={visibleDate} // 👈 Forzar mes visible
-            value={selectedDate ? new Date(selectedDate) : null} // 👈 Solo marca el día si hay selección
+            activeStartDate={visibleDate} // Forzar mes visible
+            value={selectedDate ? new Date(selectedDate) : null} // Solo marca el día si hay selección
             onActiveStartDateChange={({ activeStartDate }) =>
               setVisibleDate(activeStartDate)
             }
@@ -153,6 +142,7 @@ const CalendarPage = () => {
               selectedDate={selectedDate}
               movements={movimientosPorFecha}
               onClose={closeModal}
+              loading={loading}
             />
           )}
         </>
