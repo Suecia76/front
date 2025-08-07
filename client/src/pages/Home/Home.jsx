@@ -37,8 +37,15 @@ const Home = () => {
   const [saldo, setSaldo] = useState(0); // Estado para almacenar el saldo del usuario
   const { user } = useContext(AuthContext);
   const [summary, setSummary] = useState([]);
+  const [isIos, setIsIos] = useState(false);
+  const [isInStandaloneMode, setIsInStandaloneMode] = useState(false);
 
   useEffect(() => {
+    const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+    setIsIos(isIosDevice);
+    const standalone = window.navigator.standalone === true;
+    setIsInStandaloneMode(standalone);
+
     const el = carouselRef.current;
     if (el) {
       setWidth(el.scrollWidth - el.offsetWidth);
