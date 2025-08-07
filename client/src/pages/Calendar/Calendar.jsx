@@ -20,7 +20,7 @@ const CalendarPage = () => {
     const fetchMovimientos = async () => {
       const token = Cookies.get("token");
       const res = await axios.get(
-        `https://back-fbch.onrender.com/usuarios/calendario/${user.id}`,
+        `https://app-nttd.onrender.com/usuarios/calendario/${user.id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMovimientos(res.data);

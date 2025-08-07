@@ -6,20 +6,23 @@ import { StatusBar } from "../../components/StatusBar";
 import { OutcomesCard } from "../../components/Outcomes/OutcomesCard";
 import { Link } from "react-router-dom";
 import { FilterBar } from "../../components/Buttons/FilterBar";
+import LoaderOverlay from "../../components/Animations/LoaderOverlay";
 
 const Outcomes = () => {
   const { user } = useContext(AuthContext);
   const [gastos, setGastos] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("recientes");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchGastos = async () => {
       if (!user) return;
       try {
+        setLoading(true);
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`,
+          `https://app-nttd.onrender.com/gastos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -29,6 +32,8 @@ const Outcomes = () => {
         setGastos(response.data);
       } catch (error) {
         console.error("Error al obtener los gastos:", error.response?.data);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -70,48 +75,52 @@ const Outcomes = () => {
 
   return (
     <>
-      <div className="outcomes">
-        <StatusBar label="Mis gastos" />
+      <LoaderOverlay isVisible={loading} />
 
-        {gastos.length > 0 ? (
-          <>
-            <FilterBar
-              search={search}
-              setSearch={setSearch}
-              sort={sort}
-              setSort={setSort}
-              sortOptions={sortOptions}
-              placeholder="Buscar gastos..."
-            />
+      {!loading && (
+        <div className="outcomes">
+          <StatusBar label="Mis gastos" />
 
-            <ul className="outcomes">
-              {filteredGastos.map((gasto) => (
-                <OutcomesCard
-                  key={gasto._id}
-                  amount={gasto.cantidad}
-                  title={gasto.nombre}
-                  categoria_fk={gasto.categoria_fk}
-                  state={
-                    gasto.pendienteConfirmacion ? "Pendiente" : "Confirmado"
-                  }
-                  stateClassName={
-                    gasto.pendienteConfirmacion ? "Pendiente" : "Confirmado"
-                  }
-                  _id={gasto._id}
-                />
-              ))}
-            </ul>
-          </>
-        ) : (
-          <p>No tienes gastos registrados.</p>
-        )}
+          {gastos.length > 0 ? (
+            <>
+              <FilterBar
+                search={search}
+                setSearch={setSearch}
+                sort={sort}
+                setSort={setSort}
+                sortOptions={sortOptions}
+                placeholder="Buscar gastos..."
+              />
 
-        <div className="outcomes__actions">
-          <Link to="/outcome/add" className="btn btn--filled-blue">
-            Añadir nuevo gasto
-          </Link>
+              <ul className="outcomes">
+                {filteredGastos.map((gasto) => (
+                  <OutcomesCard
+                    key={gasto._id}
+                    amount={gasto.cantidad}
+                    title={gasto.nombre}
+                    categoria_fk={gasto.categoria_fk}
+                    state={
+                      gasto.pendienteConfirmacion ? "Pendiente" : "Confirmado"
+                    }
+                    stateClassName={
+                      gasto.pendienteConfirmacion ? "Pendiente" : "Confirmado"
+                    }
+                    _id={gasto._id}
+                  />
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>No tienes gastos registrados.</p>
+          )}
+
+          <div className="outcomes__actions">
+            <Link to="/outcome/add" className="btn btn--filled-blue">
+              Añadir nuevo gasto
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

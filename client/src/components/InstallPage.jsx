@@ -48,20 +48,13 @@ export default function InstallPage() {
 
       {isIos && !isInStandaloneMode ? (
         <>
-          <p className="download__text">Para instalar la app en tu iPhone:</p>
+          <p className="download__text">
+            Para instalar la app en tu iPhone:
+          </p>
           <ol className="download__list">
-            <li>
-              <span className="download__item">1.</span>Abrí este sitio en
-              Safari.
-            </li>
-            <li>
-              <span className="download__item">2.</span>Tocá el botón
-              “Compartir”
-            </li>
-            <li>
-              <span className="download__item">3.</span>Elegí “Agregar a
-              pantalla de inicio”.
-            </li>
+            <li><span className="download__item">1.</span>Abrí este sitio en Safari.</li>
+            <li><span className="download__item">2.</span>Tocá el botón “Compartir”</li>
+            <li><span className="download__item">3.</span>Elegí “Agregar a pantalla de inicio”.</li>
           </ol>
         </>
       ) : (

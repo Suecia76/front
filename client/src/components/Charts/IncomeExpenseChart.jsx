@@ -19,14 +19,14 @@ const IncomeExpenseChart = () => {
 
         // Obtener ingresos
         const ingresosRes = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `https://app-nttd.onrender.com/ingresos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setIngresos(ingresosRes.data);
 
         // Obtener gastos
         const gastosRes = await axios.get(
-          `https://back-fbch.onrender.com/gastos/usuario/${user.id}`,
+          `https://app-nttd.onrender.com/gastos/usuario/${user.id}`,
           { headers: { Authorization: token ? `Bearer ${token}` : "" } }
         );
         setGastos(gastosRes.data);

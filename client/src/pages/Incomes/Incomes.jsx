@@ -6,21 +6,23 @@ import { StatusBar } from "../../components/StatusBar";
 import { IncomesCard } from "../../components/Incomes/IncomesCard";
 import { Link } from "react-router-dom";
 import { FilterBar } from "../../components/Buttons/FilterBar";
+import LoaderOverlay from "../../components/Animations/LoaderOverlay";
 
 const Incomes = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [ingresos, setIngresos] = useState([]);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("recientes");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchIngresos = async () => {
-      if (loading || !user?.id) return;
-
+      if (!user) return;
       try {
+        setLoading(true);
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
+          `https://app-nttd.onrender.com/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -30,11 +32,13 @@ const Incomes = () => {
         setIngresos(response.data);
       } catch (error) {
         console.error("Error al obtener los ingresos:", error.response?.data);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchIngresos();
-  }, [user, loading]);
+  }, [user]);
 
   const sortOptions = [
     { value: "recientes", label: "Más recientes" },
@@ -70,47 +74,51 @@ const Incomes = () => {
 
   return (
     <>
-      <div>
-        <StatusBar label="Mis ingresos" />
+      <LoaderOverlay isVisible={loading} />
 
-        {ingresos.length > 0 ? (
-          <>
-            <FilterBar
-              search={search}
-              setSearch={setSearch}
-              sort={sort}
-              setSort={setSort}
-              sortOptions={sortOptions}
-              placeholder="Buscar ingresos..."
-            />
-            <ul className="incomes">
-              {filteredIngresos.map((ingreso) => (
-                <IncomesCard
-                  key={ingreso._id}
-                  _id={ingreso._id}
-                  title={ingreso.nombre}
-                  amount={ingreso.cantidad}
-                  categoria_fk={ingreso.categoria_fk}
-                  state={
-                    ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"
-                  }
-                  stateClassName={
-                    ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"
-                  }
-                />
-              ))}
-            </ul>
-          </>
-        ) : (
-          <p>No tienes ingresos registrados.</p>
-        )}
+      {!loading && (
+        <div>
+          <StatusBar label="Mis ingresos" />
 
-        <div className="incomes__actions">
-          <Link to="/income/add" className="btn btn--filled-blue">
-            Añadir nuevo ingreso
-          </Link>
+          {ingresos.length > 0 ? (
+            <>
+              <FilterBar
+                search={search}
+                setSearch={setSearch}
+                sort={sort}
+                setSort={setSort}
+                sortOptions={sortOptions}
+                placeholder="Buscar ingresos..."
+              />
+              <ul className="incomes">
+                {filteredIngresos.map((ingreso) => (
+                  <IncomesCard
+                    key={ingreso._id}
+                    _id={ingreso._id}
+                    title={ingreso.nombre}
+                    amount={ingreso.cantidad}
+                    categoria_fk={ingreso.categoria_fk}
+                    state={
+                      ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"
+                    }
+                    stateClassName={
+                      ingreso.pendienteConfirmacion ? "Pendiente" : "Confirmado"
+                    }
+                  />
+                ))}
+              </ul>
+            </>
+          ) : (
+            <p>No tienes ingresos registrados.</p>
+          )}
+
+          <div className="incomes__actions">
+            <Link to="/income/add" className="btn btn--filled-blue">
+              Añadir nuevo ingreso
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

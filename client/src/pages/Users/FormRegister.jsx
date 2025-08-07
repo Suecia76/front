@@ -59,7 +59,7 @@ const FormRegister = () => {
       // Elimina confirmPassword antes de enviar al backend
       const { confirmPassword, ...userData } = data;
       const response = await axios.post(
-        "https://back-fbch.onrender.com/usuarios",
+        "https://app-nttd.onrender.com/usuarios",
         userData
       );
       console.log("Registro exitoso", response.data);

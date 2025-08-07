@@ -12,22 +12,22 @@ const Home = () => {
   const navCards = [
     {
       label: "Ingresos",
-      img: "assets/icons/Incomes.svg",
+      img: "icons/Incomes.svg",
       link: "/incomes",
     },
     {
       label: "Gastos",
-      img: "assets/icons/Gastos.svg",
+      img: "icons/Gastos.svg",
       link: "/outcomes",
     },
     {
       label: "Metas",
-      img: "assets/icons/Ahorro.svg",
+      img: "icons/Ahorro.svg",
       link: "/goals",
     },
     {
-      label: "Categorias",
-      img: "assets/icons/Categorias.svg",
+      label: "Categorías",
+      img: "icons/Categorias.svg",
       link: "/categories",
     },
   ];
@@ -56,7 +56,7 @@ const Home = () => {
         console.log("ID del usuario:", user.id); // Verificar ID
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/saldo/${user.id}`,
+          `https://app-nttd.onrender.com/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -83,7 +83,7 @@ const Home = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://back-fbch.onrender.com/usuarios/${user.id}/resumen-mensual
+          `https://app-nttd.onrender.com/usuarios/${user.id}/resumen-mensual
       `,
           {
             headers: {

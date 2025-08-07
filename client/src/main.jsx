@@ -5,6 +5,8 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { AppLayout } from "./components/AppLayout.jsx";
+import RouteChangeLoader from "./components/Animations/RouteChangeLoader";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

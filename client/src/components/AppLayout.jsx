@@ -1,6 +1,7 @@
 import { TopBar, NavBar } from "../components";
 import { useLocation } from "react-router-dom";
 import useIsStandalone from "../hooks/useIsStandalone";
+import RouteChangeLoader from "./Animations/RouteChangeLoader";
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -15,6 +16,7 @@ const AppLayout = ({ children }) => {
     <div
       className={`app-wrapper ${isStandalone ? "app-wrapper--standalone" : ""}`}
     >
+      <RouteChangeLoader />
       {!hideTopBarRoutes.includes(location.pathname) && <TopBar />}
 
       <div className="content">{children}</div>

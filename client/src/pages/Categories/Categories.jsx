@@ -24,13 +24,13 @@ const Categories = () => {
 
       try {
         const defaultResponse = await axios.get(
-          "https://back-fbch.onrender.com/categorias"
+          "https://app-nttd.onrender.com/categorias"
         );
 
         setDefaultCategories(defaultResponse.data);
 
         const userResponse = await axios.get(
-          `https://back-fbch.onrender.com/categorias/usuario/${user.id}`,
+          `https://app-nttd.onrender.com/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${Cookies.get("token")}`,
@@ -58,7 +58,7 @@ const Categories = () => {
     { label: "Personalizadas", value: "custom" },
   ];
 
-  const url = "https://back-fbch.onrender.com/uploads/";
+  const url = "https://app-nttd.onrender.com/uploads/";
 
   return (
     <div>
@@ -75,60 +75,62 @@ const Categories = () => {
         ))}
       </div>
 
-      <section className="categories">
-        {selectedTab === "custom" ? (
-          userCategories.length > 0 ? (
+      {loading ? (
+        <p style={{ padding: "1rem" }}>Cargando categorías...</p>
+      ) : (
+        <section className="categories">
+          {selectedTab === "custom" ? (
+            userCategories.length > 0 ? (
+              <>
+                {/* Hay categorías personalizadas */}
+                <div className="categories__list">
+                  {userCategories.map((cat) => (
+                    <a
+                      key={cat._id}
+                      className="category"
+                      href={`/categories/edit/${cat._id}`}
+                    >
+                      <img
+                        className="category__icon"
+                        src={url + cat.imagen}
+                        alt={cat.nombre}
+                      />
+                      <p>{cat.nombre}</p>
+                    </a>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <>
+                {/* El usuario no agregó categorías personalizadas aún */}
+                <p>Aún no agregaste categorías personalizadas</p>
+              </>
+            )
+          ) : (
             <>
-              {/* Hay categorías personalizadas */}
+              {/* Mostramos las basicas*/}
               <div className="categories__list">
-                {userCategories.map((cat) => (
-                  <a
-                    key={cat._id}
-                    className="category"
-                    href={`/categories/edit/${cat._id}`}
-                  >
+                {defaultCategories.map((cat) => (
+                  <div key={cat._id} className="category">
                     <img
                       className="category__icon"
-                      src={url + cat.imagen}
+                      src={`/${cat.imagen}.png`}
                       alt={cat.nombre}
                     />
-                    <p>{cat.nombre}</p>
-                  </a>
+                    <div>
+                      <p>{cat.nombre}</p>
+                    </div>
+                  </div>
                 ))}
               </div>
             </>
-          ) : (
-            <>
-              {/* El usuario no agregó categorías personalizadas aún */}
-              <p className="margin-bottom-1">
-                Aún no agregaste categorías personalizadas
-              </p>
-            </>
-          )
-        ) : (
-          <>
-            {/* Mostramos las basicas*/}
-            <div className="categories__list">
-              {defaultCategories.map((cat) => (
-                <div key={cat._id} className="category">
-                  <img
-                    className="category__icon"
-                    src={`/assets/icons/${cat.imagen}.png`}
-                    alt={cat.nombre}
-                  />
-                  <div>
-                    <p>{cat.nombre}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+          )}
 
-        <a href="/categories/add" className="btn btn--filled-blue">
-          Agregar categoría
-        </a>
-      </section>
+          <a href="/categories/add" className="btn btn--filled-blue">
+            Agregar categoría
+          </a>
+        </section>
+      )}
     </div>
   );
 };
