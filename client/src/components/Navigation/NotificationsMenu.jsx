@@ -57,7 +57,7 @@ const NotificationsMenu = ({ open }) => {
 
                   {n.imagen && (
                     <img
-                      src={n.imagen}
+                      src={`https://back-fbch.onrender.com${n.imagen}`}
                       alt="icono"
                       className="notification__icon"
                     />
