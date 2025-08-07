@@ -130,9 +130,11 @@ const Home = () => {
           ))}
         </section>
 
-        <section>
-          <NotificationPrompt />
-        </section>
+        {!isIos && (
+          <section>
+            <NotificationPrompt />
+          </section>
+        )}
 
         <section className="section-info" id="balance-status">
           <h2>Resumen Mensual</h2>
