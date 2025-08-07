@@ -78,7 +78,10 @@ const NotificationPrompt = ({ userId }) => {
   return (
     <div>
       {permission !== "granted" && (
-        <button className="btn btn-outline" onClick={handleEnableNotifications}>
+        <button
+          className="btn btn--outline"
+          onClick={handleEnableNotifications}
+        >
           Activar notificaciones
         </button>
       )}
