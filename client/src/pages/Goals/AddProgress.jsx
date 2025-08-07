@@ -62,7 +62,7 @@ const AddProgress = () => {
       try {
         const token = Cookies.get("token") || "";
         const response = await axios.get(
-          `https://app-nttd.onrender.com/metas/${id}`,
+          `https://back-fbch.onrender.com/metas/${id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -113,7 +113,7 @@ const AddProgress = () => {
         payload.progreso = Number(data.progreso);
       }
 
-      await axios.put(`https://app-nttd.onrender.com/metas/${id}`, payload, {
+      await axios.put(`https://back-fbch.onrender.com/metas/${id}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

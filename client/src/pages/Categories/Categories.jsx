@@ -24,13 +24,13 @@ const Categories = () => {
 
       try {
         const defaultResponse = await axios.get(
-          "https://app-nttd.onrender.com/categorias"
+          "https://back-fbch.onrender.com/categorias"
         );
 
         setDefaultCategories(defaultResponse.data);
 
         const userResponse = await axios.get(
-          `https://app-nttd.onrender.com/categorias/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/categorias/usuario/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${Cookies.get("token")}`,
@@ -58,7 +58,7 @@ const Categories = () => {
     { label: "Personalizadas", value: "custom" },
   ];
 
-  const url = "https://app-nttd.onrender.com/uploads/";
+  const url = "https://back-fbch.onrender.com/uploads/";
 
   return (
     <div>

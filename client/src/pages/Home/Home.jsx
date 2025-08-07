@@ -56,7 +56,7 @@ const Home = () => {
         console.log("ID del usuario:", user.id); // Verificar ID
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://app-nttd.onrender.com/usuarios/saldo/${user.id}`,
+          `https://back-fbch.onrender.com/usuarios/saldo/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Enviar el token en los encabezados
@@ -83,7 +83,7 @@ const Home = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://app-nttd.onrender.com/usuarios/${user.id}/resumen-mensual
+          `https://back-fbch.onrender.com/usuarios/${user.id}/resumen-mensual
       `,
           {
             headers: {

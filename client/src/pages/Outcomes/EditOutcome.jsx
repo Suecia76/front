@@ -78,7 +78,7 @@ const EditOutcome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://app-nttd.onrender.com/gastos/${id}`,
+          `https://back-fbch.onrender.com/gastos/${id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -120,7 +120,7 @@ const EditOutcome = () => {
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.put(
-        `https://app-nttd.onrender.com/gastos/${id}`,
+        `https://back-fbch.onrender.com/gastos/${id}`,
         {
           ...data,
         },

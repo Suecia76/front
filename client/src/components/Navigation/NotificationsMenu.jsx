@@ -14,7 +14,7 @@ const NotificationsMenu = ({ open }) => {
       try {
         const token = Cookies.get("token");
         const res = await axios.get(
-          `https://app-nttd.onrender.com/notificaciones/${user.id}`,
+          `https://back-fbch.onrender.com/notificaciones/${user.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setNotifications(res.data);
@@ -28,9 +28,12 @@ const NotificationsMenu = ({ open }) => {
   const handleDelete = async (id) => {
     try {
       const token = Cookies.get("token");
-      await axios.delete(`https://app-nttd.onrender.com/notificaciones/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `https://back-fbch.onrender.com/notificaciones/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setNotifications((prev) => prev.filter((n) => n._id !== id));
     } catch (err) {
       console.error("Error al borrar notificación:", err);

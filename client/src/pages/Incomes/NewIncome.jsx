@@ -90,7 +90,7 @@ const NewIncome = () => {
       try {
         const token = Cookies.get("token") || null;
         const response = await axios.get(
-          `https://app-nttd.onrender.com/ingresos/usuario/${user.id}`,
+          `https://back-fbch.onrender.com/ingresos/usuario/${user.id}`,
           {
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -131,7 +131,7 @@ const NewIncome = () => {
       const estado = data.acreditado ? "pagado" : "pendiente";
 
       const response = await axios.post(
-        "https://app-nttd.onrender.com/ingresos",
+        "https://back-fbch.onrender.com/ingresos",
         {
           ...data,
           user_fk: user.id,
