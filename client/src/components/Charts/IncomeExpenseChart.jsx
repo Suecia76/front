@@ -114,7 +114,7 @@ const IncomeExpenseChart = () => {
   }, [ingresos, gastos]);
 
   return (
-    <div>
+    <div className="chart">
       <h3>Resumen de Ingresos y Gastos</h3>
       <div className="chart-container ">
         {chartData.series.length > 0 ? (

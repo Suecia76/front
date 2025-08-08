@@ -76,7 +76,7 @@ const CategoryExpenseChart = () => {
   if (error) return <p className="error-message">{error}</p>;
 
   return (
-    <div>
+    <div className="chart">
       <h3>Gastos por Categoría</h3>
       {chartData.series.length > 0 ? (
         <Chart

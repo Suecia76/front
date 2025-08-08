@@ -1164,6 +1164,12 @@ input:checked + .slider:before {
   gap: 1rem;
 }
 
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .total-balance {
   margin-top: 1rem;
   background-color: var(--white);
