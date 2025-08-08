@@ -55,7 +55,7 @@ const CategoryCreate = () => {
           }
         );
         setCategorias(response.data);
-        navigate("/categories/add");
+        navigate("/categories");
       } catch (error) {
         console.error("Error al obtener las categorías:", error.response?.data);
         setError("Error al cargar las categorías.");

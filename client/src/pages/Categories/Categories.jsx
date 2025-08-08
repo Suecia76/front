@@ -59,7 +59,7 @@ const Categories = () => {
   ];
 
   const url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
-
+  console.log(userCategories);
   return (
     <div>
       <StatusBar label="Categorías" />
@@ -128,7 +128,7 @@ const Categories = () => {
             </>
           )}
 
-          <a href="/categories/add" className="btn btn--filled-blue">
+          <a href="/categories" className="btn btn--filled-blue">
             Agregar categoría
           </a>
         </section>
