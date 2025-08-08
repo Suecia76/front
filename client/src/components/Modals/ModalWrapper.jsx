@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { createPortal } from "react-dom";
 
 const ModalWrapper = ({ children, centered, onClose, loading }) => {
   const handleOverlayClick = (e) => {
@@ -8,7 +9,7 @@ const ModalWrapper = ({ children, centered, onClose, loading }) => {
     }
   };
 
-  return (
+  return createPortal(
     <section
       className={`modal__overlay ${centered ? "modal__overlay--centered" : ""}`}
       onClick={handleOverlayClick}
@@ -20,7 +21,8 @@ const ModalWrapper = ({ children, centered, onClose, loading }) => {
       )}
 
       {children}
-    </section>
+    </section>,
+    document.body
   );
 };
 
