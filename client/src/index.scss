@@ -251,7 +251,7 @@ textarea {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: calc(
-    $navbar-height + 1rem + env(safe-area-inset-bottom, 0px)
+    $navbar-height + 2rem + env(safe-area-inset-bottom, 0px)
   );
 }
 
