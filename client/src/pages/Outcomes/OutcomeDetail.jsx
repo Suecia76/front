@@ -259,16 +259,14 @@ const OutcomeDetail = () => {
 
       {confirmationModalOpened && (
         <ModalWrapper>
-          <div className="modal__content">
-            <Dialog
-              title="Confirmando gasto"
-              text="Si lo confirmas, restaremos le dinero de tu balance y marcaremos el gasto como abonado"
-              option1="Confirmar"
-              option2="Cancelar"
-              onClick1={handleConfirmTransaction}
-              onClick2={() => setConfirmationModalOpened(false)}
-            />
-          </div>
+          <Dialog
+            title="Confirmando gasto"
+            text="Si lo confirmas, restaremos le dinero de tu balance y marcaremos el gasto como abonado"
+            option1="Confirmar"
+            option2="Cancelar"
+            onClick1={handleConfirmTransaction}
+            onClick2={() => setConfirmationModalOpened(false)}
+          />
         </ModalWrapper>
       )}
 
