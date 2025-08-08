@@ -87,7 +87,7 @@ const EditCategory = () => {
       );
 
       console.log("Categoría actualizada:", response.data);
-      navigate("/categories/add");
+      navigate("/categories");
     } catch (error) {
       console.error("Error al actualizar la categoría:", error.response?.data);
       setError("Error al actualizar la categoría.");
