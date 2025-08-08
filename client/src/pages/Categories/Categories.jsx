@@ -59,7 +59,7 @@ const Categories = () => {
   ];
 
   const url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
-  console.log(userCategories);
+  console.log("categorias del usuario:", userCategories);
   return (
     <div>
       <StatusBar label="Categorías" />
