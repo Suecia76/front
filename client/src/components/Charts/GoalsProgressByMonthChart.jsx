@@ -52,6 +52,10 @@ const GoalsProgressByMonthChart = () => {
     fetchData();
   }, [user]);
 
+  if (chartData.series.length < 0) {
+    return <></>;
+  }
+
   return (
     <div>
       <h3>Avance mensual en metas</h3>
