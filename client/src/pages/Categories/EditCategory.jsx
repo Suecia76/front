@@ -108,7 +108,7 @@ const EditCategory = () => {
           },
         }
       );
-      navigate("/categories/add");
+      navigate("/categories");
     } catch (error) {
       console.error("Error al eliminar la categoría:", error.response?.data);
       setError("Error al eliminar la categoría.");
