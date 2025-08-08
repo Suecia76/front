@@ -56,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, logoutUser, loading }}>
-      {loading ? <Loader /> : { children }}
+      {loading ? <Loader isLoading={true} /> : children}
     </AuthContext.Provider>
   );
 };
