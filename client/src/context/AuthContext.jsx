@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import RouteChangeLoader from "../components/Animations/Loader";
 
 export const AuthContext = createContext();
 
@@ -55,7 +56,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, logoutUser, loading }}>
-      {children}
+      {loading ? <Loader /> : { children }}
     </AuthContext.Provider>
   );
 };
