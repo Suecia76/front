@@ -197,11 +197,11 @@ const OutcomeDetail = () => {
     try {
       const token = Cookies.get("token") || null;
 
-      const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/gastos/confirmar/${id}`,
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/gastos/${id}/confirmar`,
         {
-          ...getValues(), // obtiene los valores actuales del form
-          pendienteConfirmacion: false, // marca como confirmado
+          ...getValues(),
+          pendienteConfirmacion: false,
         },
         {
           headers: {

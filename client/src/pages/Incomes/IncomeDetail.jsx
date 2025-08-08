@@ -186,7 +186,7 @@ const IncomeDetail = () => {
   const handleCategoryClick = (category) => {
     setCategory(category);
 
-    setValue("categoria_fk", category._id); // ajustá según tu modelo
+    setValue("categoria_fk", category._id);
 
     handleSubmit(onSubmit)();
     setIsEditing("");
@@ -205,10 +205,6 @@ const IncomeDetail = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/ingresos/${id}/confirmar`,
         {},
-        /* {
-            // ...getValues(), 
-            // pendienteConfirmacion: false,
-           }, */
         {
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
