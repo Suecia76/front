@@ -625,6 +625,9 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   z-index: 1000000;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    calc(env(safe-area-inset-bottom) + var(--navbar-h))
+    env(safe-area-inset-left);
 
   &.modal__overlay--centered {
     .modal__content {
@@ -646,7 +649,6 @@ input:checked + .slider:before {
 
   .modal__content {
     width: 100%;
-    overflow: scroll;
     background: white;
     padding-inline: 1rem;
     padding-block: 1rem;
@@ -654,7 +656,11 @@ input:checked + .slider:before {
     text-align: center;
     position: relative;
     bottom: 0;
-    overflow-x: scroll;
+    overflow-x: auto;
+    max-height: calc(
+      100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) -
+        var(--navbar-h) - 2rem /* margencito visual */
+    );
 
     .btn-close {
       position: sticky;
