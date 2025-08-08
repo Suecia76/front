@@ -253,7 +253,7 @@ const OutcomeDetail = () => {
       {outcome.pendienteConfirmacion && (
         <ConfirmTransaction
           type="gasto"
-          confirmTransaction={() => setConfirmationModalOpened(true)}
+          openModal={() => setConfirmationModalOpened(true)}
         />
       )}
 
