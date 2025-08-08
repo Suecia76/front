@@ -142,6 +142,7 @@
 
 $max-width: 480px;
 $border-radius: 0.5rem;
+$navbar-height: 80px;
 
 @mixin input {
   background-color: var(--white);
@@ -249,6 +250,9 @@ textarea {
   flex-grow: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(
+    $navbar-height + 1rem + env(safe-area-inset-bottom, 0px)
+  );
 }
 
 /* Status Bar */
