@@ -142,16 +142,6 @@ const Home = () => {
           <div className="summary">
             <div className="summary__item">
               <p className="summary__title">
-                Saldo actual:{" "}
-                <span className="summary__value">
-                  {summary.saldoActual !== undefined
-                    ? summary.saldoActual.toFixed(2)
-                    : "-"}
-                </span>
-              </p>
-            </div>
-            <div className="summary__item">
-              <p className="summary__title">
                 Ingresos del mes:{" "}
                 <span className="summary__value">
                   {summary.totalIngresosMes !== undefined
@@ -166,16 +156,6 @@ const Home = () => {
                 <span className="summary__value">
                   {summary.totalGastosMes !== undefined
                     ? summary.totalGastosMes.toFixed(2)
-                    : "-"}
-                </span>
-              </p>
-            </div>
-            <div className="summary__item">
-              <p className="summary__title">
-                Disponible:{" "}
-                <span className="summary__value">
-                  {summary.disponible !== undefined
-                    ? summary.disponible.toFixed(2)
                     : "-"}
                 </span>
               </p>
