@@ -105,7 +105,7 @@ const TransactionsModal = ({ onClose, selectedDate, movements, loading }) => {
                   {gastos.map((mov, index) => (
                     <article
                       className={`movements__item ${
-                        mov.pendienteConfirmacion
+                        mov.pendienteConfirmacionccccccc
                           ? "movements__item--pending"
                           : "movements__item--fulfilled"
                       }`}
