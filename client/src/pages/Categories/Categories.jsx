@@ -60,6 +60,11 @@ const Categories = () => {
 
   const url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
   console.log("categorias del usuario:", userCategories);
+  console.log(
+    "userCategories con imágenes:",
+    userCategories.map((c) => c.imagen)
+  );
+
   return (
     <div>
       <StatusBar label="Categorías" />
@@ -128,7 +133,7 @@ const Categories = () => {
             </>
           )}
 
-          <a href="/categories" className="btn btn--filled-blue">
+          <a href="/categories/add" className="btn btn--filled-blue">
             Agregar categoría
           </a>
         </section>
