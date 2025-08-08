@@ -9,13 +9,13 @@ import { TopBar } from "../../components/Topbar";
 const Balances = () => {
     const { user } = useContext(AuthContext);
   return (
-    <>
+    <div className="balances">
       <StatusBar label="Balances" />
 
       <IncomeExpenseChart />
       <GoalsProgressByMonthChart />
       <CategoryExpenseChart user={user} />
-    </>
+    </div>
   );
 };
 

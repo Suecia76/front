@@ -142,6 +142,7 @@
 
 $max-width: 480px;
 $border-radius: 0.5rem;
+$navbar-height: 80px;
 
 @mixin input {
   background-color: var(--white);
@@ -223,7 +224,9 @@ textarea {
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
   width: 100%;
   padding-bottom: 70px;
   margin: auto;
@@ -243,11 +246,13 @@ textarea {
 
 .content {
   padding-inline: 1rem;
-  // padding-top: 1rem;
   background-color: var(--extralight-blue);
   flex-grow: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: calc(
+    $navbar-height + 2rem + env(safe-area-inset-bottom, 0px)
+  );
 }
 
 /* Status Bar */
@@ -620,12 +625,14 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   z-index: 1000000;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    calc(env(safe-area-inset-bottom) + $navbar-height) env(safe-area-inset-left);
 
   &.modal__overlay--centered {
     .modal__content {
       margin: auto;
       width: 85%;
-      height: 90vh;
+      height: 80vh;
       overflow: scroll;
       top: 0.5rem;
 
@@ -641,7 +648,6 @@ input:checked + .slider:before {
 
   .modal__content {
     width: 100%;
-    overflow: scroll;
     background: white;
     padding-inline: 1rem;
     padding-block: 1rem;
@@ -649,7 +655,11 @@ input:checked + .slider:before {
     text-align: center;
     position: relative;
     bottom: 0;
-    overflow-x: scroll;
+    overflow-x: auto;
+    max-height: calc(
+      100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) -
+        $navbar-height - 2rem
+    );
 
     .btn-close {
       position: sticky;
@@ -1153,6 +1163,20 @@ input:checked + .slider:before {
   }
 }
 
+.balances {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-block: 1rem;
+  border-bottom: 1px solid var(--white);
+}
+
 .total-balance {
   margin-top: 1rem;
   background-color: var(--white);
@@ -1334,8 +1358,12 @@ input:checked + .slider:before {
 }
 
 .navbar {
-  position: relative;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 0;
+  max-width: 480px;
+  margin-top: 0;
   background-color: var(--extralight-blue);
   background-position: center bottom;
   margin-top: 3rem;
@@ -1343,6 +1371,7 @@ input:checked + .slider:before {
   border-top-right-radius: 2rem;
   width: 100%;
   max-width: $max-width;
+  z-index: 1000;
 
   .navbar__container {
     display: flex;
@@ -1352,7 +1381,7 @@ input:checked + .slider:before {
     align-items: baseline;
     position: relative;
     background-color: var(--white);
-    padding-bottom: 0.5rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
     padding-top: 1rem;
     border-radius: 2rem;
     margin-bottom: 1rem;

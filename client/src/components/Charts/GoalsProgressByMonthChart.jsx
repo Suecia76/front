@@ -53,17 +53,20 @@ const GoalsProgressByMonthChart = () => {
   }, [user]);
 
   return (
-    <div>
+    <div className="chart">
       <h3>Avance mensual en metas</h3>
+
       {chartData.series.length > 0 ? (
-        <Chart
-          options={chartData.options}
-          series={chartData.series}
-          type="bar"
-          height={350}
-        />
+        <>
+          <Chart
+            options={chartData.options}
+            series={chartData.series}
+            type="bar"
+            height={350}
+          />
+        </>
       ) : (
-        <p>No hay datos para mostrar</p>
+        <p>No hay datos suficientes para generar el gráfico.</p>
       )}
     </div>
   );
