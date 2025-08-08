@@ -212,6 +212,7 @@ const OutcomeDetail = () => {
 
       console.log("Gasto confirmado:", res.data);
       setOutcome(res.data); // Actualizamos la UI
+      setConfirmationModalOpened(false);
     } catch (err) {
       console.error("Error al confirmar el gasto:", err.response?.data);
     }
