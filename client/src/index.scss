@@ -1375,6 +1375,7 @@ input:checked + .slider:before {
     justify-content: space-evenly;
     align-items: baseline;
     position: relative;
+    background-color: none;
     background-color: var(--white);
     padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
     padding-top: 1rem;
