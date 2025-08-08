@@ -223,7 +223,9 @@ textarea {
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
+  min-height: 100dvh;
+  padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px));
   width: 100%;
   padding-bottom: 70px;
   margin: auto;
@@ -243,7 +245,6 @@ textarea {
 
 .content {
   padding-inline: 1rem;
-  // padding-top: 1rem;
   background-color: var(--extralight-blue);
   flex-grow: 1;
   overflow-y: auto;
@@ -1334,8 +1335,12 @@ input:checked + .slider:before {
 }
 
 .navbar {
-  position: relative;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 0;
+  max-width: 480px;
+  margin-top: 0;
   background-color: var(--extralight-blue);
   background-position: center bottom;
   margin-top: 3rem;
@@ -1343,6 +1348,7 @@ input:checked + .slider:before {
   border-top-right-radius: 2rem;
   width: 100%;
   max-width: $max-width;
+  z-index: 1000;
 
   .navbar__container {
     display: flex;
@@ -1352,7 +1358,7 @@ input:checked + .slider:before {
     align-items: baseline;
     position: relative;
     background-color: var(--white);
-    padding-bottom: 0.5rem;
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
     padding-top: 1rem;
     border-radius: 2rem;
     margin-bottom: 1rem;
