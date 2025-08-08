@@ -638,7 +638,6 @@ input:checked + .slider:before {
       height: 80vh;
       overflow: scroll;
       top: 0.5rem;
-      padding-bottom: calc(1rem + env(safe-area-inset-bottom));
       z-index: 2001;
 
       &--fit {
@@ -663,8 +662,8 @@ input:checked + .slider:before {
     overflow-x: auto;
     z-index: 2001;
     max-height: calc(
-      100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) -
-        $navbar-height - 2rem
+      100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
+        $navbar-height - $topbar-height - 1.5rem
     );
     padding-bottom: calc(1rem + env(safe-area-inset-bottom));
 
