@@ -627,7 +627,8 @@ input:checked + .slider:before {
   align-items: center;
   z-index: 2000;
   padding: calc(env(safe-area-inset-top, 0px) + $topbar-height)
-    env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-right, 0px) calc
+    (env(safe-area-inset-bottom, 0px) + $navbar-height)
     env(safe-area-inset-left, 0px);
 
   &.modal__overlay--centered {
