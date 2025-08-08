@@ -625,7 +625,7 @@ input:checked + .slider:before {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2000;
+  z-index: 20000;
   padding: calc(env(safe-area-inset-top, 0px) + $topbar-height)
     env(safe-area-inset-right, 0px) calc
     (env(safe-area-inset-bottom, 0px) + $navbar-height)
@@ -1341,7 +1341,7 @@ input:checked + .slider:before {
 .navbar {
   position: fixed;
   left: 50%;
-  // transform: translateX(-50%);
+  transform: translateX(-50%);
   bottom: 0;
   max-width: 480px;
   margin-top: 0;
