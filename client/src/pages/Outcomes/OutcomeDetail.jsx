@@ -198,7 +198,7 @@ const OutcomeDetail = () => {
       const token = Cookies.get("token") || null;
 
       const res = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/gastos/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/gastos/confirmar/${id}`,
         {
           ...getValues(), // obtiene los valores actuales del form
           pendienteConfirmacion: false, // marca como confirmado
