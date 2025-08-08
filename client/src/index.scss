@@ -1341,7 +1341,7 @@ input:checked + .slider:before {
 .navbar {
   position: fixed;
   left: 50%;
-  transform: translateX(-50%);
+  // transform: translateX(-50%);
   bottom: 0;
   max-width: 480px;
   margin-top: 0;
