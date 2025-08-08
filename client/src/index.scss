@@ -143,6 +143,7 @@
 $max-width: 480px;
 $border-radius: 0.5rem;
 $navbar-height: 80px;
+$topbar-height: 62px;
 
 @mixin input {
   background-color: var(--white);
@@ -625,8 +626,9 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    calc(env(safe-area-inset-bottom) + $navbar-height) env(safe-area-inset-left);
+  padding: calc(env(safe-area-inset-top, 0px) + $topbar-height)
+    env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px)
+    env(safe-area-inset-left, 0px);
 
   &.modal__overlay--centered {
     .modal__content {
