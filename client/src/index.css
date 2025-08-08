@@ -1,48 +1,69 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-*{
+* {
   padding: 0;
   margin: 0;
 }
 
 :root {
-  --blue: #2057F2;
-  --indigo: #426AE4;
-  --black: #24272B;
-  --dark-blue: #182B54;
-  --light-blue: #97B1F9;
-  --extralight-blue: #EFF3FF;
+  --blue: #2057f2;
+  --indigo: #426ae4;
+  --black: #24272b;
+  --dark-blue: #182b54;
+  --light-blue: #97b1f9;
+  --extralight-blue: #eff3ff;
   --white: #fafafa;
-  --green: #28F1A4;
-  --light-green: #AFFDDE;
-  --grey: #D9DAE0;
+  --green: #28f1a4;
+  --light-green: #affdde;
+  --grey: #d9dae0;
 
-  --gradient1: linear-gradient(90deg, rgba(110,140,223,1) 0%, rgba(112,143,222,1) 19%, rgba(119,155,222,1) 38%, rgba(130,175,222,1) 57%, rgba(146,203,222,1) 75%, rgba(166,238,222,1) 94%, rgba(175,253,222,1) 100%);
+  --gradient1: linear-gradient(
+    90deg,
+    rgba(110, 140, 223, 1) 0%,
+    rgba(112, 143, 222, 1) 19%,
+    rgba(119, 155, 222, 1) 38%,
+    rgba(130, 175, 222, 1) 57%,
+    rgba(146, 203, 222, 1) 75%,
+    rgba(166, 238, 222, 1) 94%,
+    rgba(175, 253, 222, 1) 100%
+  );
   /* background: rgb(110,140,223); 
   background: -webkit-linear-gradient(90deg, rgba(110,140,223,1) 0%, rgba(112,143,222,1) 19%, rgba(119,155,222,1) 38%, rgba(130,175,222,1) 57%, rgba(146,203,222,1) 75%, rgba(166,238,222,1) 94%, rgba(175,253,222,1) 100%);
   background: -moz-linear-gradient(90deg, rgba(110,140,223,1) 0%, rgba(112,143,222,1) 19%, rgba(119,155,222,1) 38%, rgba(130,175,222,1) 57%, rgba(146,203,222,1) 75%, rgba(166,238,222,1) 94%, rgba(175,253,222,1) 100%);
   background: -o-linear-gradient(90deg, rgba(110,140,223,1) 0%, rgba(112,143,222,1) 19%, rgba(119,155,222,1) 38%, rgba(130,175,222,1) 57%, rgba(146,203,222,1) 75%, rgba(166,238,222,1) 94%, rgba(175,253,222,1) 100%);
   background: linear-gradient(90deg, rgba(110,140,223,1) 0%, rgba(112,143,222,1) 19%, rgba(119,155,222,1) 38%, rgba(130,175,222,1) 57%, rgba(146,203,222,1) 75%, rgba(166,238,222,1) 94%, rgba(175,253,222,1) 100%); */
-  --gradient2: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(33,248,165,1) 15%);
+  --gradient2: linear-gradient(
+    90deg,
+    rgba(250, 250, 250, 1) 0%,
+    rgba(33, 248, 165, 1) 15%
+  );
   /* background: rgb(250,250,250);
     background: -moz-linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(33,248,165,1) 100%);
     background: -webkit-linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(33,248,165,1) 100%);
     background: linear-gradient(90deg, rgba(250,250,250,1) 0%, rgba(33,248,165,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fafafa",endColorstr="#21f8a5",GradientType=1); */ 
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fafafa",endColorstr="#21f8a5",GradientType=1); */
 
-    --gradient3: linear-gradient(90deg, rgba(13,67,220,1) 0%, rgba(110,140,223,1) 15%);
-    /*  background: rgb(13,67,220);
+  --gradient3: linear-gradient(
+    90deg,
+    rgba(13, 67, 220, 1) 0%,
+    rgba(110, 140, 223, 1) 15%
+  );
+  /*  background: rgb(13,67,220);
       background: -moz-linear-gradient(90deg, rgba(13,67,220,1) 0%, rgba(110,140,223,1) 15%);
       background: -webkit-linear-gradient(90deg, rgba(13,67,220,1) 0%, rgba(110,140,223,1) 15%);
       background: linear-gradient(90deg, rgba(13,67,220,1) 0%, rgba(110,140,223,1) 15%);
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0d43dc",endColorstr="#6e8cdf",GradientType=1);*/
-    --gradient4: linear-gradient(90deg, rgba(66,106,228,1) 0%, rgba(110,140,223,1) 15%);
-    /*background: rgb(66,106,228);
+  --gradient4: linear-gradient(
+    90deg,
+    rgba(66, 106, 228, 1) 0%,
+    rgba(110, 140, 223, 1) 15%
+  );
+  /*background: rgb(66,106,228);
         background: -moz-linear-gradient(90deg, rgba(66,106,228,1) 0%, rgba(110,140,223,1) 15%);
         background: -webkit-linear-gradient(90deg, rgba(66,106,228,1) 0%, rgba(110,140,223,1) 15%);
         background: linear-gradient(90deg, rgba(66,106,228,1) 0%, rgba(110,140,223,1) 15%);
         filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#426ae4",endColorstr="#6e8cdf",GradientType=1);  */
-  
+
   --montserrat: "Montserrat", Avenir, Helvetica, Arial, sans-serif;
   --fredoka: "Fredoka", Avenir, Helvetica, Arial, sans-serif;
 }
@@ -67,7 +88,7 @@ a:hover {
   color: #535bf2;
 }
 
-nav ul{
+nav ul {
   display: flex;
   list-style: none;
   flex-wrap: wrap;
@@ -93,16 +114,16 @@ body {
   font-family: var(--montserrat);
 }
 
-#menu{
+#menu {
   display: flex;
   gap: 3rem;
   max-width: 80%;
   justify-content: center;
-  align-items:baseline;
+  align-items: baseline;
   margin: auto;
 }
 
-.card-menu{
+.card-menu {
   background-color: var(--indigo);
   padding: 2rem;
   border-radius: 1rem;
@@ -110,11 +131,11 @@ body {
   flex-direction: column;
 }
 
-.card-menu:hover{
-filter: brightness(90%);
+.card-menu:hover {
+  filter: brightness(90%);
 }
 
-.navigationCard-label{
+.navigationCard-label {
   font-family: var(--fredoka);
   color: var(--white);
 }
@@ -124,7 +145,7 @@ form {
   margin: auto;
 }
 
-button{
+button {
   border: none;
   border-radius: 10rem;
   padding: 1rem;
@@ -134,36 +155,42 @@ button{
   cursor: pointer;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-    }
-input[type=number] { -moz-appearance:textfield; }
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 
 /* Login and Register */
-#login, #register {
+#login,
+#register {
   display: flex;
   align-items: flex-start;
   width: 100%;
 }
 
-#login input, #register input {
+#login input,
+#register input {
   background-color: var(--extralight-blue);
   border: none;
   font-family: var(--montserrat);
   width: 100%;
   height: 3rem;
-  border-radius: .5rem;
-  padding-left: .5rem;
+  border-radius: 0.5rem;
+  padding-left: 0.5rem;
   font-size: 1.1rem;
 }
 
-#login input:focus, #register input:focus {
+#login input:focus,
+#register input:focus {
   outline: var(--light-blue) 2px solid;
 }
 
-#login label, #register label{
+#login label,
+#register label {
   color: var(--black);
   font-family: var(--fredoka);
   font-size: 1.2rem;
@@ -171,68 +198,79 @@ input[type=number] { -moz-appearance:textfield; }
 
 /* Incomes */
 
-
 /* General styles */
-.display-flex{
+.display-flex {
   display: flex;
 }
 
-.autolayout-1{
+.autolayout-1 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.autolayout-2{
-display: flex;
-flex-direction: column;
-gap: 2rem;
+.autolayout-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.gap-2{
-gap: 2rem;
+.gap-2 {
+  gap: 2rem;
 }
 
-.black-text{
+.black-text {
   color: var(--black);
 }
 
-.section-info{
+.section-info {
   background-color: var(--extralight-blue);
   border-radius: 2rem;
 }
 
-.input-group{
+.input-group {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.margin-top-2{
+.margin-top-2 {
   margin-top: 2rem;
+}
+
+.margin-bottom-2 {
+  margin-bottom: 2rem;
 }
 
 /* Buttons */
 .btn-filled-blue {
   background-color: var(--blue);
-  
+
   color: var(--white);
   font-size: 1.1rem;
 }
 
-.btn-filled-blue:focus{
+.btn-filled-blue:focus {
   filter: brightness(95%);
 }
 
-.btn-text-blue{
+.btn-text-blue {
   color: var(--blue);
 }
 
-.btn-text-blue:focus{
-font-weight: 500
+.btn-text-blue:focus {
+  font-weight: 500;
 }
 
-#newIncome input:not(.input-calculator):not([type=checkbox]), #newIncome textarea, #newIncome select, #newOutcome input:not(.input-calculator):not([type=checkbox]), #newOutcome textarea, #newOutcome select, #categorias input:not(.input-calculator):not([type=checkbox]), #categorias select, #categorias textarea {
+#newIncome input:not(.input-calculator):not([type="checkbox"]),
+#newIncome textarea,
+#newIncome select,
+#newOutcome input:not(.input-calculator):not([type="checkbox"]),
+#newOutcome textarea,
+#newOutcome select,
+#categorias input:not(.input-calculator):not([type="checkbox"]),
+#categorias select,
+#categorias textarea {
   height: 3rem;
   border-radius: 0.5rem;
   padding-left: 0.5rem;

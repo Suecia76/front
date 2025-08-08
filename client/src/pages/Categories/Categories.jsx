@@ -103,7 +103,7 @@ const Categories = () => {
             ) : (
               <>
                 {/* El usuario no agregó categorías personalizadas aún */}
-                <p className="text__empty">
+                <p className="text__empty margin-bottom-2">
                   Aún no agregaste categorías personalizadas
                 </p>
               </>
