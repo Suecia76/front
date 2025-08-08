@@ -626,8 +626,7 @@ input:checked + .slider:before {
   align-items: center;
   z-index: 1000000;
   padding: env(safe-area-inset-top) env(safe-area-inset-right)
-    calc(env(safe-area-inset-bottom) + var(--navbar-h))
-    env(safe-area-inset-left);
+    calc(env(safe-area-inset-bottom) + $navbar-height) env(safe-area-inset-left);
 
   &.modal__overlay--centered {
     .modal__content {
@@ -659,7 +658,7 @@ input:checked + .slider:before {
     overflow-x: auto;
     max-height: calc(
       100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) -
-        var(--navbar-h) - 2rem /* margencito visual */
+        $navbar-height - 2rem
     );
 
     .btn-close {
