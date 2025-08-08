@@ -65,7 +65,7 @@ const GoalsProgressByMonthChart = () => {
           />
         </>
       ) : (
-        <div></div>
+        <p>No hay datos suficientes para generar el gráfico.</p>
       )}
     </div>
   );

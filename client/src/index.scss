@@ -1158,6 +1158,12 @@ input:checked + .slider:before {
   }
 }
 
+.balances {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .total-balance {
   margin-top: 1rem;
   background-color: var(--white);
