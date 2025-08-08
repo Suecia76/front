@@ -126,9 +126,9 @@ const CategoryCreate = () => {
       setValue("imagen", file);
     }
   };
+  let asd;
 
   let url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
-
   return (
     <>
       <StatusBar label="Agregar categoría" />
