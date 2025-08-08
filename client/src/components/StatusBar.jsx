@@ -16,7 +16,6 @@ const StatusBar = ({ label }) => {
         icon="arrow-left"
         className="status-bar__btn"
       />
-      {/* )} */}
       <h2 className="h6">{label}</h2>
     </div>
   );

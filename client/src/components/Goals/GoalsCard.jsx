@@ -31,7 +31,7 @@ const GoalsCard = ({
         {currency && (
           <p className="goal-card__amount">Moneda extranjera: {currency}</p>
         )}
-        {/* Div contenedor */}
+
         <div className="progress-container">
           <div
             style={{
@@ -69,11 +69,6 @@ const GoalsCard = ({
         />
       </div>
 
-      {/*   <div className='goal-card__buttons'>
-        <IconButton label="Eliminar" icon="delete"/>
-      </div>
- */}
-      {/* Si el progreso está completo, le mostramos un bton para archivar la meta y la pintamos de */}
       {progress === 100 && (
         <div className="goal-card__buttons">
           <IconButton label="Archivar" icon="calendar" />

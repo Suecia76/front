@@ -145,10 +145,6 @@ const NewGoal = () => {
         }
       );
 
-      // Si querés asegurarte que porcentaje esté actualizado, podés hacer:
-      // const createdGoal = response.data.goal;
-      // luego pedir el goal completo actualizado, o confiar en backend.
-
       setGoals((prev) => [...prev, response.data.goal]);
       reset();
       navigate("/goals");
@@ -221,20 +217,6 @@ const NewGoal = () => {
                 placeholder="Ej: USD, EUR"
                 {...register("monedaSimbolo")}
               />
-              {/* <Input
-                name="cantidad"
-                label="Cantidad comprada"
-                type="hidden"
-                placeholder="Cantidad de la moneda"
-                {...register("cantidad")}
-              />
-              <Input
-                name="precioMoneda"
-                label="Precio por unidad (ARS)"
-                type="hidden"
-                placeholder="Precio de la moneda en ARS"
-                {...register("precioMoneda")}
-              /> */}
             </>
           )}
 
@@ -259,7 +241,6 @@ const NewGoal = () => {
                   setType(selected);
                   setValue("tipo", selected);
 
-                  // 🔥 Limpiar el campo opuesto
                   if (selected === "montoMensual") {
                     setValue("porcentajeMensual", undefined);
                   } else if (selected === "porcentajeMensual") {

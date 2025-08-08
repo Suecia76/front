@@ -1,12 +1,6 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import PropTypes from "prop-types";
-import { useContext } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { AuthContext } from "../../context/AuthContext";
 import { CategoryPicker } from "../../components/Modals/CategoryPicker";
-import { ModalWrapper } from "../Modals/ModalWrapper";
 
 const CategoryInput = forwardRef(
   ({ onCategorySelect, selectedCategory, errorMessage }, ref) => {

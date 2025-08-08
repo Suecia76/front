@@ -83,7 +83,6 @@ const IncomeDetail = () => {
     { value: "mensual", label: "Mensual" },
   ];
 
-  /* fetch Income */
   useEffect(() => {
     const fetchIncome = async (id) => {
       if (!user?.id) return;
@@ -152,7 +151,7 @@ const IncomeDetail = () => {
   };
 
   console.log(income);
-  //fetch category
+
   useEffect(() => {
     const fetchCategory = async (id) => {
       if (!user?.id) return;
@@ -194,7 +193,6 @@ const IncomeDetail = () => {
   };
 
   const handleConfirmTransaction = async () => {
-    //Backend code
     try {
       console.log("Confirmando");
 
@@ -317,14 +315,13 @@ const IncomeDetail = () => {
         <div className="transaction-detail__cards">
           {/* Categoría */}
           <DataCard title="Categoría" small={true}>
-            {category ? ( //Category loaded
-              isEditing === "category" ? ( // Category is being edited
+            {category ? (
+              isEditing === "category" ? (
                 <CategoryPicker
                   onClose={handleClose}
                   handleCategoryClick={handleCategoryClick}
                 />
               ) : (
-                /* Static */
                 <div>
                   <div className="data-card__actions">
                     <IconButton

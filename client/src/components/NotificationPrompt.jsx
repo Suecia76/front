@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { messaging, getToken } from "../../firebase"; // Ajusta la ruta si es necesario
+import { messaging, getToken } from "../../firebase";
 
 // Función para detectar Opera o Safari
 function isOpera() {
@@ -37,7 +37,7 @@ const NotificationPrompt = ({ userId }) => {
         if (isOpera() || isSafari()) {
           try {
             const token = await getToken(messaging, {
-              vapidKey: import.meta.env.VITE_VAPID_PUBLIC_KEY, // O la clave pública de Firebase
+              vapidKey: import.meta.env.VITE_VAPID_PUBLIC_KEY,
               serviceWorkerRegistration: await navigator.serviceWorker.ready,
             });
             if (token) {
@@ -55,7 +55,6 @@ const NotificationPrompt = ({ userId }) => {
             alert("Error al obtener el token FCM: " + error.message);
           }
         } else if ("serviceWorker" in navigator && "PushManager" in window) {
-          // Lógica web-push (tu código actual)
           const registration = await navigator.serviceWorker.ready;
           const subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,

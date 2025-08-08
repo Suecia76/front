@@ -72,7 +72,7 @@ const AddProgress = () => {
 
         // Moneda extranjera
         const hasForeign = Boolean(goal.moneda_extranjera);
-        // Después de determinar hasForeign...
+
         setIsForeignCurrency(hasForeign);
 
         if (hasForeign) {

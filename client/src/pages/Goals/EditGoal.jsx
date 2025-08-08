@@ -185,15 +185,6 @@ const EditGoal = () => {
 
   return (
     <>
-      {/* <div className="btn-floating__container">
-        <Button
-          type="button"
-          label="Atrás"
-          className="btn btn--floating-right"
-          onClick={() => navigate("/goals")}
-        />
-      </div> */}
-
       <StatusBar label="Editar Meta" />
 
       <div id="editGoal">
@@ -240,7 +231,6 @@ const EditGoal = () => {
               setType(selected);
               setValue("tipo", selected);
 
-              // 🔥 Limpiamos el campo que no corresponde
               if (selected === "montoMensual") {
                 setValue("porcentajeMensual", undefined);
               } else if (selected === "porcentajeMensual") {

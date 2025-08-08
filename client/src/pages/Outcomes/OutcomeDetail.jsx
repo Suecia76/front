@@ -83,7 +83,6 @@ const OutcomeDetail = () => {
     { value: "mensual", label: "Mensual" },
   ];
 
-  /* fetch Outcome */
   useEffect(() => {
     const fetchOutcome = async (id) => {
       if (!user?.id) return;
@@ -152,7 +151,7 @@ const OutcomeDetail = () => {
   };
 
   console.log(outcome);
-  //fetch category
+
   useEffect(() => {
     const fetchCategory = async (id) => {
       if (!user?.id) return;
@@ -186,7 +185,7 @@ const OutcomeDetail = () => {
   const handleCategoryClick = (category) => {
     setCategory(category);
 
-    setValue("categoria_fk", category._id); // ajustá según tu modelo
+    setValue("categoria_fk", category._id);
 
     handleSubmit(onSubmit)();
     setIsEditing("");
@@ -315,14 +314,13 @@ const OutcomeDetail = () => {
         <div className="transaction-detail__cards">
           {/* Categoría */}
           <DataCard title="Categoría" small={true}>
-            {category ? ( //Category loaded
-              isEditing === "category" ? ( // Category is being edited
+            {category ? (
+              isEditing === "category" ? (
                 <CategoryPicker
                   onClose={handleClose}
                   handleCategoryClick={handleCategoryClick}
                 />
               ) : (
-                /* Static */
                 <div>
                   <div className="data-card__actions">
                     <IconButton

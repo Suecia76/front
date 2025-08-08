@@ -8,9 +8,9 @@ const TopBar = () => {
 
   const toggleMenu = (menuName) => {
     if (openMenu === menuName) {
-      setOpenMenu(null); //If already opened, it closes
+      setOpenMenu(null);
     } else {
-      setOpenMenu(menuName); //Open the other
+      setOpenMenu(menuName);
     }
   };
 
@@ -41,10 +41,6 @@ const TopBar = () => {
         open={openMenu === "notifications"}
         toggle={() => toggleMenu("notifications")}
       />
-
-      {/*        <div id="notifications">
-
-        </div> */}
     </div>
   );
 };

@@ -40,7 +40,6 @@ const Outcomes = () => {
     fetchGastos();
   }, [user]);
 
-  // 🔥 Opciones de orden
   const sortOptions = [
     { value: "recientes", label: "Más recientes" },
     { value: "antiguos", label: "Más antiguos" },

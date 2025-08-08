@@ -8,15 +8,20 @@ const Toggle = ({ label, onChange, defaultChecked, ...moreProps }) => {
     const newChecked = !isChecked;
     setIsChecked(newChecked);
     if (onChange) {
-          onChange(newChecked); // ✅ comunicamos el nuevo estado
-        }
+      onChange(newChecked);
+    }
   };
 
   return (
     <div className="toggle">
       <p>{label}</p>
       <label className="switch">
-        <input type="checkbox" checked={isChecked} onChange={handleToggle} {...moreProps} />
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleToggle}
+          {...moreProps}
+        />
         <span className="slider"></span>
       </label>
     </div>

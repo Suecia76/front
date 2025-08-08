@@ -89,7 +89,6 @@ const CategoryCreate = () => {
         return;
       }
 
-      // Depurar el contenido del FormData
       console.log("Contenido del FormData antes de enviar:");
       formData.forEach((value, key) => {
         console.log(key, value);
@@ -124,41 +123,9 @@ const CategoryCreate = () => {
       const file = event.target.files[0];
       console.log("Archivo seleccionado:", file);
       setImagen(file);
-      setValue("imagen", file); // Actualiza el valor en react-hook-form
+      setValue("imagen", file);
     }
   };
-
-  /* const handleDelete = async () => {
-    if (!categoryToDelete) return;
-    try {
-      const token = Cookies.get("token") || null;
-      await axios.delete(
-        `${import.meta.env.VITE_BACKEND_URL}/categorias/${categoryToDelete._id}`,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
-      setCategorias(
-        categorias.filter((categoria) => categoria._id !== categoryToDelete._id)
-      );
-      setShowModal(false);
-      setCategoryToDelete(null);
-    } catch (error) {
-      console.error("Error al eliminar la categoría:", error.response?.data);
-    }
-  }; */
-
-  /* const openDeleteModal = (categoria) => {
-    setCategoryToDelete(categoria);
-    setShowModal(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setCategoryToDelete(null);
-  }; */
 
   let url = `${import.meta.env.VITE_BACKEND_URL}/uploads/`;
 
@@ -169,7 +136,7 @@ const CategoryCreate = () => {
         method="POST"
         onSubmit={handleSubmit(onSubmit)}
         className="autolayout-1 display-flex flex-start"
-        encType="multipart/form-data" // Importante para enviar archivos
+        encType="multipart/form-data"
       >
         <Input
           type="text"

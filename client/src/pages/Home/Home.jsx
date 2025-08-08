@@ -1,6 +1,6 @@
 import { NavigationCard2 } from "../../components/NavigationCard2";
 import { useEffect, useRef, useState, useContext } from "react";
-import axios from "axios"; // Importar axios para realizar solicitudes HTTP
+import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import Cookies from "js-cookie";
 import { IncomeExpenseChart } from "../../components/Charts/IncomeExpenseChart";
@@ -8,7 +8,6 @@ import { TotalBalance } from "../../components/TotalBalance";
 import { NotificationPrompt } from "../../components/NotificationPrompt";
 
 const Home = () => {
-  /* List of navigation cards */
   const navCards = [
     {
       label: "Ingresos",
@@ -34,7 +33,7 @@ const Home = () => {
 
   const carouselRef = useRef();
   const [width, setWidth] = useState(0);
-  const [saldo, setSaldo] = useState(0); // Estado para almacenar el saldo del usuario
+  const [saldo, setSaldo] = useState(0);
   const { user } = useContext(AuthContext);
   const [summary, setSummary] = useState([]);
   const [isIos, setIsIos] = useState(false);
@@ -111,12 +110,8 @@ const Home = () => {
   return (
     <>
       <div id="home" className="autolayout-2">
-        {/* <h1>Bienvenido, Usuario</h1> */}
-
         {/* Mostrar el saldo del usuario */}
-        <TotalBalance
-          saldo={parseFloat(saldo.toFixed(2))} /* options={options} */
-        />
+        <TotalBalance saldo={parseFloat(saldo.toFixed(2))} />
 
         <section className="navigation">
           {navCards.map((card) => (
@@ -160,8 +155,6 @@ const Home = () => {
                 </span>
               </p>
             </div>
-
-            {/* <button onClick={s}>Obtener Resumen Mensual</button> */}
           </div>
           <div>
             <IncomeExpenseChart />

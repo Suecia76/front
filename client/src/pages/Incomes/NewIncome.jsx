@@ -321,15 +321,6 @@ const NewIncome = () => {
             <p className="input-error">{errors.cuotas.message}</p>
           )}
 
-          {/* Campo para la fecha de inicio */}
-          {/*   <Input
-            type="date"
-            label="Fecha de cobro"
-            name="fechaInicio"
-            {...register("fechaInicio")}
-            error={errors.fechaInicio && errors.fechaInicio.message}
-          /> */}
-
           <input
             type="hidden"
             {...register("cuotasAutomaticas")}

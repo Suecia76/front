@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { Tab } from "../../components/Buttons/Tab";
 import { StatusBar } from "../../components/StatusBar";
 import { addMonths, subMonths, format } from "date-fns";
-import { es } from "date-fns/locale"; // para mostrarlo en español
+import { es } from "date-fns/locale";
 import TransactionsModal from "../../components/Modals/TransactionsModal";
 
 const CalendarPage = () => {

@@ -7,7 +7,6 @@ import { AuthContextProvider } from "./context/AuthContext.jsx";
 import { AppLayout } from "./components/AppLayout.jsx";
 import RouteChangeLoader from "./components/Animations/RouteChangeLoader";
 
-
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
@@ -22,7 +21,6 @@ createRoot(document.getElementById("root")).render(
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    // Registrar el service worker principal (web-push)
     navigator.serviceWorker.register("/service-worker.js").then(
       (registration) => {
         console.log("Service Worker registrado:", registration);

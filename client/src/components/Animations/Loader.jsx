@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "/assets/logo.png"; // Ajusta la ruta
+import logo from "/assets/logo.png";
 import PropTypes from "prop-types";
 
 const Loader = ({ isLoading }) => (
@@ -40,7 +40,7 @@ const Loader = ({ isLoading }) => (
 );
 
 Loader.propTypes = {
-  isLoading: PropTypes.bool
-}
+  isLoading: PropTypes.bool,
+};
 
 export default Loader;

@@ -7,7 +7,7 @@ import { Input } from "../../components";
 
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext);
-  const [userData, setUserData] = useState(null); // Para almacenar datos completos del usuario
+  const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -82,8 +82,6 @@ const Profile = () => {
       if (formData.password) {
         formDataToSend.append("password", formData.password);
       }
-
-      // No incluyo imagen para edición, pero podés agregar si querés
 
       const response = await axios.put(
         `${import.meta.env.VITE_BACKEND_URL}/usuarios/${user.id}`,

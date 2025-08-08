@@ -116,7 +116,7 @@ const EditOutcome = () => {
   }, [id, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("Datos enviados:", data); // <-- Agrega esto
+    console.log("Datos enviados:", data);
     try {
       const token = Cookies.get("token") || null;
       const response = await axios.put(
